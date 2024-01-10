@@ -1,9 +1,19 @@
 # App-frontend
+
 Front-end do portal
 
 ## Instalação/Preparando o ambiente
 
-Para preparar o seu ambiente execute o comando abaixo (cetifique-se de ter o node instalado):
 ```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source /home/menotti/.bashrc
+nvm install 20.10.0
 npm install
+```
+
+## Run
+
+```
+unset HOST
+npm start
 ```
