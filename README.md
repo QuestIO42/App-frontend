@@ -19,4 +19,5 @@ npm start
 ```
 
 ## To DO
-Implementar telas do fígma, focar no judge
+- Implementar telas do fígma, focar no judge
+- Comunicar com o back
