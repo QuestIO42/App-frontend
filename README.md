@@ -2,7 +2,7 @@
 
 Front-end do portal
 
-## Install 
+## Instalação/Preparando o ambiente
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
