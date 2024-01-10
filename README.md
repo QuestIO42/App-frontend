@@ -17,3 +17,6 @@ npm install
 unset HOST
 npm start
 ```
+
+## To DO
+Implementar telas do fígma, focar no judge
