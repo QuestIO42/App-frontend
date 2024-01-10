@@ -1,4 +1,127 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --roxo-claro: #5A4AC2;
+  --roxo-escuro: #3E347B;
+  --amarelo: #F2DB3F;
+  --vermelho: #F2543F;
+  --verde-claro: #3FF29B;
+  --verde-escuro: #5D9D7E;
+  --cinza: #454545;
+  --preto-texto: rgba(0, 0, 0, 0.75);
+  --branco: #FFFFFF;
+
+  --debug: red;
+}
+
+.text-button {
+  border: none;
+    background-color: transparent;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--roxo-claro);
+}
+
+.card-default{
+  border: 5px solid var(--cinza);
+  /*box-shadow: 0px 0px 0 0px var(--branco), -14px 14px var(--cinza);*/
+  /*height: 10rem;*/
+  /*width: 40rem;*/
+
+  padding: 1em;
+  margin: 0;
+
+  min-width: 25rem;
+}
+
+.card-inner {
+  /*position: relative;*/
+  /*top: -3em;*/
+  /*left: 2em;*/
+  /*box-shadow: inset 0 0 0 5px var(--cinza);*/
+
+  /*!*padding: 19px;*!*/
+
+  /*!*height: 10rem;*!*/
+  /*!*width: 40rem;*!*/
+}
+
+.card-login{
+  /*min-height: 80vh;*/
+  font-family: 'Space Mono', monospace;
+    font-size: 1.2em;
+    font-weight: 600;
+
+    padding: 1em;
+  /*text-align: center;*/
+}
+
+.title{
+  font-family: 'Space Mono', monospace;
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--preto-texto);
+  margin-bottom: 1em;
+}
+
+.login-body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-label{
+  font-family: 'Space Mono', monospace;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--preto-texto);
+  display: block;
+}
+
+.form-input {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--preto-texto);
+  border: 3px solid var(--roxo-claro);
+  padding: 0.3em 1em;
+
+  box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-claro);
+
+  &:focus {
+    border: 3px solid var(--roxo-escuro);
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+  }
+}
+
+.default-btn {
+  background-color: var(--branco);
+  color: var(--preto-texto);
+  border: none;
+  border: 3px solid var(--roxo-claro);
+  padding: 0.3em 1em;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-claro);
+
+  &:hover {
+    background-color: var(--roxo-claro);
+    color: var(--branco);
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+  }
+}
+
+.form{
+  margin-bottom: 1em;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +158,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
