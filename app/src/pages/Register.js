@@ -70,7 +70,7 @@ const Register = () => {
                             <div className="text-center">
                                 <button
                                     type="button"
-                                    className="text-button">Ainda não é cadastrado? <u>Cadastre-se</u>
+                                    className="text-button">Já possue conta? <u>Login</u>
                                 </button>
                             </div>
                         </div>
