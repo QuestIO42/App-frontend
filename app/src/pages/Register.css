@@ -1,0 +1,11 @@
+.text-end{
+  position: relative;
+}
+.text-button.link{
+  position: absolute;
+  right: 0;
+  top: 4px;
+}
+.text-button.link:hover{
+  text-decoration: underline;
+}

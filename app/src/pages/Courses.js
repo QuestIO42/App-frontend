@@ -3,9 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 
-const Cursos = () => {
+const Courses = () => {
     
 
 
 }
-export default Cursos;
+export default Courses;

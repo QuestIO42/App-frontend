@@ -2,14 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
-import Cursos from './pages/Cursos';
+import Courses from './pages/Courses';
+import Register from './pages/Register';
 
 function App() {
   return (
       <Router>
           <Routes>
               <Route path="/" element={<Login/>} />
-              <Route path="/cursos" element={<Cursos />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/cursos" element={<Courses />} />
           </Routes>
       </Router>
   );
