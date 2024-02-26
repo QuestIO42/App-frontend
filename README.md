@@ -6,17 +6,16 @@ Front-end do portal
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source /home/menotti/.bashrc
+source ~/.bashrc
 nvm install 20.10.0
 npm install
 ```
 
-## Run
+## [Run](./app/README.md)
 
-```
-unset HOST
-npm start
-```
+Para rodar siga as instruções do [/app/README.md](./app/README.md)
+
+Porém durante o desenvolvimento utilizaremos o comando `npm start`.
 
 ## To DO
 - Implementar telas do fígma, focar no judge
