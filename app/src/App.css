@@ -120,7 +120,47 @@
 .form{
   margin-bottom: 1em;
 }
+/* === Estilos do Componente : SquareDisplay === (START) */
 
+.rectangle-upper{
+  background-color: rgba(0, 0, 0, 0);
+  position: relative;
+  width: 250px;
+  height: 250px;
+  padding: 0.5em;
+  border: 5px solid #000000;
+  margin: 0;
+  top: -18px;
+  left:-5px
+}
+
+.rectangle-lower{
+  background-color: rgba(0, 0, 0, 0);
+  position: relative;
+  width: 250px;
+  height: 250px;
+  padding: 0.5em;
+  border: 5px solid #000000;
+  margin: 0;
+  top:-250px;
+  right:18px;
+}
+
+.square-image{
+  height: 228px;
+  width: 227;
+  object-fit: fill;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  background-color: #D9D9D9;
+}
+
+/* === Estilos do Componente : SquareDisplay === (END) */
+
+.navbar ,navbar-light ,bg-light{
+  background-color:#3E347B ;
+}
 
 /* .App {
   text-align: center;
