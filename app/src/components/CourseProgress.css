@@ -1,0 +1,26 @@
+.course-progress{
+    font-family: 'Space Mono';
+    font-weight: bold;
+    color: #454545B2;
+}
+
+.course-progress > .label{
+    font-size: 25px;
+}
+
+.progress-percent{
+    font-size: 18px;
+    text-align: right;
+}
+
+
+.progress-bar{
+    background-color: #F2953F;
+    height: 24px;
+    width: 20%;
+}
+.progress-border{
+    width: 100%;
+    border-color: #454545;
+    border-style: solid;
+}
