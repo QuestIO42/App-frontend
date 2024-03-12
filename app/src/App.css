@@ -97,6 +97,25 @@
   }
 }
 
+.search-input {
+  width: 100%;
+  /*margin-top: 16px;*/
+
+  font-family: 'Space Mono', monospace;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--preto-texto);
+  border: 3px solid var(--roxo-claro);
+  padding: 0.3em 1em;
+
+  /*box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-claro);*/
+
+  &:focus {
+    border: 3px solid var(--roxo-escuro);
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+  }
+}
+
 .default-btn {
   background-color: var(--branco);
   color: var(--preto-texto);
@@ -158,8 +177,40 @@
 
 /* === Estilos do Componente : SquareDisplay === (END) */
 
-.navbar ,navbar-light ,bg-light{
+.navbar-default{
   background-color:#3E347B ;
+
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 16px;
+  /*padding-bottom: 16px;*/
+}
+
+.navbar-auth{ /*ver isso depois*/
+  background-color: --branco;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+}
+.nav-login{
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.nav-search {
+  text: center;
+}
+
+.search-button{
+  padding: none;
+  border: none;
+  background: transparent;
+
+  width: 54px;
+  height: 54px;
 }
 
 /* .App {

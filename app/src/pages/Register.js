@@ -9,7 +9,7 @@ import '../App.css';
 // Not sure if creating a separate css is the best decision, might change later
 import './Register.css';
 
-import logo from "../img/logo.svg";
+import logo from "../img/logoLogin.svg";
 import Input from '../components/Input';
 
 const Register = () => {
@@ -24,54 +24,56 @@ const Register = () => {
     }
 
     return (
-        <div className="container">
-           <nav className="navbar navbar-expand-sm">
-               <a className="navbar-brand" href="/"><img src={logo} class="" alt="logo"/></a>
-           </nav>
+        <div>
+            <nav className="nav-login">
+                <a className="navbar-brand" href="/"><img src={logo} className="" alt="logo"/></a>
+            </nav>
 
+            <div className="container">
 
-            <div className="row">
-                <div className="col-3">
-                </div>
-                <div className="col-6">
-                    <div className="card-default">
+                <div className="row">
+                    <div className="col-3">
+                    </div>
+                    <div className="col-6">
+                        <div className="card-default">
 
-                        <div className="card-inner">
-                            <div className="card-login">
+                            <div className="card-inner">
+                                <div className="card-login">
 
-                                <h3 className="title">Cadastro</h3>
+                                    <h3 className="title">Cadastro</h3>
 
-                                <div className="login-body">
-                                    <form className="form">
-                                        <Input name="nome de usuário" setValue={setUsername} value={username}/>
-                                        <Input name="e-mail" setValue={setEmail} value={email}/>
-                                        <Input name="senha" setValue={setPassword} value={password} type="password">
-                                            <div className="text-end">
+                                    <div className="login-body">
+                                        <form className="form">
+                                            <Input name="nome de usuário" setValue={setUsername} value={username}/>
+                                            <Input name="e-mail" setValue={setEmail} value={email}/>
+                                            <Input name="senha" setValue={setPassword} value={password} type="password">
+                                                <div className="text-end">
+                                                    <button
+                                                        type="button"
+                                                        className="text-button link">esqueceu a senha?
+                                                    </button>
+                                                </div>
+                                            </Input>
+                                            <Input name="confirmar senha" setValue={setConfirmPassword} value={confirmPassword} type="password"/>
+                                            <div className="text-center">
                                                 <button
                                                     type="button"
-                                                    className="text-button link">esqueceu a senha?
+                                                    className="default-btn"
+                                                    onClick={handleRegister}
+                                                >
+                                                    Cadastrar
                                                 </button>
                                             </div>
-                                        </Input>
-                                        <Input name="confirmar senha" setValue={setConfirmPassword} value={confirmPassword} type="password"/>
-                                        <div className="text-center">
-                                            <button
-                                                type="button"
-                                                className="default-btn"
-                                                onClick={handleRegister}
-                                            >
-                                                Cadastrar
-                                            </button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="text-center">
-                                <button
-                                    type="button"
-                                    className="text-button">Já possue conta? <u>Login</u>
-                                </button>
+                                <div className="text-center">
+                                    <button
+                                        type="button"
+                                        className="text-button">Já possue conta? <u>Login</u>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

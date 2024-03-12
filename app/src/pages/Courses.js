@@ -11,16 +11,19 @@ import TestImage from '../img/TestImage.png';
 
 const Courses = () => {
     return (
-        <div className="container">
+        <div>
             <NavHeader />
-            <div className="text-center">  
-                <img src={chapeu} alt="chapeu" />
-                <h1 className="title">Meus Cursos</h1>
-               
+            <div className="container">
 
+                <div className="text-center">
+                    <img src={chapeu} alt="chapeu" />
+                    <h1 className="title">Meus Cursos</h1>
+
+
+                </div>
+                        <SquareDisplay imagem={TestImage} />
+                        <SquareDisplay imagem={TestImage} />
             </div>
-                    <SquareDisplay imagem={TestImage} />
-                    <SquareDisplay imagem={TestImage} />   
         </div>
 
     );

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../App.css';
 
-import logo from "../img/logo.svg";
+import logo from "../img/logoLogin.svg";
 
 const Login = () => {
 
@@ -16,11 +16,16 @@ const Login = () => {
     }
 
     return (
-        <div className="container">
-           <nav className="navbar navbar-expand-sm">
-               <a className="navbar-brand" href="/"><img src={logo} class="" alt="logo"/></a>
-           </nav>
+        <div>
 
+        <nav className="nav-login">
+            <a className="navbar-brand" href="/"><img src={logo} className Name="" alt="logo"/></a>
+        </nav>
+
+            
+        <div className="container">
+
+            <squareForm/>
 
             <div className="row">
                 <div className="col-3">
@@ -84,6 +89,8 @@ const Login = () => {
                 </div>
               </div>
             </div>
+        </div>
+
         </div>
     );
 };
