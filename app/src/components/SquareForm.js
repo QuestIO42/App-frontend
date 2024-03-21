@@ -1,13 +1,16 @@
 import React from 'react';
 
-class SquareForm extends React.Component {
-    render() {
-        return (
-            <div>
-
-            </div>
-        );
-    }
-}
+const SquareForm = ({ children }) => {
+  return (
+    <div className="teste">
+        <div className="square-form">
+          {children}</div>
+          <div className="square-upper"> </div>
+          
+        </div>
+    
+  );
+};
 
 export default SquareForm;
+

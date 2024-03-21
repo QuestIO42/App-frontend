@@ -3,7 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../App.css';
-
+import SquareForm from '../components/SquareForm';
 import logo from "../img/logoLogin.svg";
 
 const Login = () => {
@@ -25,13 +25,11 @@ const Login = () => {
             
         <div className="container">
 
-            <squareForm/>
-
             <div className="row">
                 <div className="col-3">
                 </div>
               <div className="col-6">
-                <div className="card-default">
+                <SquareForm>
                     <div className="card-inner">
                         <div className="card-login">
 
@@ -86,7 +84,7 @@ const Login = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </SquareForm>
               </div>
             </div>
         </div>

@@ -1,11 +1,19 @@
 import React from 'react';
+import SquareForm from './SquareForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SquareDisplay = ({ imagem }) => {
+const SquareDisplay = ({ imagem, nome,curso }) => {
   return (
-    <div className='square-container'>
-      <img src={imagem} alt="Square-Image" className="square-image" />
-      <div className="rectangle-upper"> </div>
-      <div className="rectangle-lower"> </div>
+    <div className='square-grid'>
+      <SquareForm>
+        <a href="#"> {/* Mudar links depois */}
+        <img src={imagem} className="square-image"/>
+        </a>
+      </SquareForm>
+      <div className="nome-professor-display">
+          <a class="text-decoration-none" href="#"><h3 className='curso-courses'> {curso}</h3></a>
+          <h4 className='nome-professor'>{nome} </h4>
+      </div>
     </div>
   );
 };

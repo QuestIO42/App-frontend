@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Courses from './pages/Courses';
 import Register from './pages/Register';
 
+
 function App() {
   return (
       <Router>

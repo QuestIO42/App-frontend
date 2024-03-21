@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import SquareForm from '../components/SquareForm';
 import '../App.css';
 
 
@@ -35,8 +35,7 @@ const Register = () => {
                     <div className="col-3">
                     </div>
                     <div className="col-6">
-                        <div className="card-default">
-
+                        <SquareForm>
                             <div className="card-inner">
                                 <div className="card-login">
 
@@ -75,7 +74,7 @@ const Register = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </SquareForm>
                     </div>
                 </div>
             </div>
