@@ -3,8 +3,8 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../App.css';
-
-import logo from "../img/logo.svg";
+import SquareForm from '../components/SquareForm';
+import logo from "../img/logoLogin.svg";
 
 const Login = () => {
 
@@ -16,17 +16,20 @@ const Login = () => {
     }
 
     return (
-        <div className="container">
-           <nav className="navbar navbar-expand-sm">
-               <a className="navbar-brand" href="/"><img src={logo} class="" alt="logo"/></a>
-           </nav>
+        <div>
 
+        <nav className="nav-login">
+            <a className="navbar-brand" href="/"><img src={logo} className Name="" alt="logo"/></a>
+        </nav>
+
+            
+        <div className="container">
 
             <div className="row">
                 <div className="col-3">
                 </div>
               <div className="col-6">
-                <div className="card-default">
+                <SquareForm>
                     <div className="card-inner">
                         <div className="card-login">
 
@@ -81,9 +84,11 @@ const Login = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </SquareForm>
               </div>
             </div>
+        </div>
+
         </div>
     );
 };

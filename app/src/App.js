@@ -5,13 +5,14 @@ import Login from './pages/Login';
 import Courses from './pages/Courses';
 import Register from './pages/Register';
 
+
 function App() {
   return (
       <Router>
           <Routes>
               <Route path="/" element={<Login/>} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/cursos" element={<Courses />} />
+              <Route path="/register" element={<Register/>} />
+              <Route path="/courses" element={<Courses/>} />
           </Routes>
       </Router>
   );
