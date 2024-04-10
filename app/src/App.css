@@ -21,7 +21,7 @@
   font-size: 0.8em;
   font-weight: 600;
   color: var(--roxo-claro);
-  padding-bottom: 1em;
+  padding-bottom: 1.5em;
 }
 
 .card-default{
@@ -216,8 +216,8 @@
 .square-upper{
   grid-area: 1/1/2/2;
   position: absolute;
-  top: -3.5%; /*Altere aqui pra mudar o deslocamento */
-  right: -3.5%;
+  top: -5%; /*Altere aqui pra mudar o deslocamento */
+  right: -5%;
   /* border:0.36vw solid var(--cinza); */
   border: 4px solid var(--cinza);
   width: 100%;
@@ -273,7 +273,7 @@
 }
 
 .nav-search {
-  text: center;
+  text-align: center;
 }
 
 .search-button{
@@ -350,6 +350,20 @@ ul.contato {
 .minha-conta{
   padding-bottom:5em;
   color: var(--laranja);
+}
+
+.button-upload{
+  margin:0;
+  padding: 0;
+  position: absolute;
+  top: 0%;
+  left:0%;
+  border: none;
+  min-width: 100%;
+  min-height:100%;
+  background: none;
+  top: 0%;
+  left: 0%;
 }
 
 /*    Footer  (END)    */

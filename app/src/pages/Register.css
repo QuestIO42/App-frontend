@@ -5,6 +5,7 @@
   position: absolute;
   right: 0;
   top: 4px;
+  padding: 1em;
 }
 .text-button.link:hover{
   text-decoration: underline;

@@ -1,0 +1,242 @@
+
+
+#btn-close{
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5em;
+    font-weight: 600;
+    color: red;
+    border: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    padding-right: 0.3em;
+    padding-bottom: 0;
+    margin:0;
+    background: none;
+}
+
+.modal-dialog {
+    max-width: 77%;
+    max-height: 40%;  
+  }
+#shadowmodal{
+    box-shadow: 20px 20px 0px 0px #3FF29B ;
+    border-radius: 0;
+    border:3px solid #3FF29B;
+    margin-top:5em;
+    
+}
+.modhead{
+padding-bottom: 0;
+}
+.modbody{
+    font: 1.2em 'Space Mono', monospace;
+    display: flex;
+    flex-direction: row;
+}
+.modal-left{
+    flex:1;
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.modal-right{
+    flex:1;
+    overflow: auto;
+    max-width: 100%;
+    min-width: 50%;
+    min-height: 50%;
+    object-fit: contain;
+    margin:0;
+    padding:0;
+    align-content: center;
+    justify-content: center;
+}
+.modal-right-size{
+    max-width: 65%;
+    padding-left: 2em;
+    margin-left: 5em;
+}
+
+.modalcontent{
+    display:flex;
+}
+.form-label2{
+    font-family: 'Space Mono', monospace;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--preto-texto);
+    display: block;
+    margin-bottom:0em;
+    margin-left: 1em;
+}
+.form-label3{
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--preto-texto);
+    display: block;
+    margin-bottom:1em;
+    margin-left: 5em;
+}
+.form-input2{
+    font-family: 'Space Mono', monospace;
+    font-size: 1.0em;
+    font-weight: 600;
+    color: var(--preto-texto);
+    border: 3px solid var(--roxo-escuro);
+    padding: 0.3em 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 0.8em;
+    margin-top: 0.5em;
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+    &:focus {
+        border: 3px solid var(--roxo-escuro);
+        box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+    }
+    max-width: 100%;
+    min-width: 90%;
+    min-height: 10%;
+    
+}
+
+.form-input-slider{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Space Mono', monospace;
+    resize:none;
+    font-size: 0.8em;
+    font-weight:400;
+    color: var(--preto-texto);
+    border: 3px solid var(--roxo-escuro);
+    padding-left: 0.3em;
+    margin-left: 1.46em;
+    margin-right: 0em;
+    margin-bottom: 1em;
+    margin-top: 0.5em;
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+    &:focus {
+        border: 3px solid var(--roxo-escuro);
+        box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+    }
+    max-width: 100%;
+    min-height: 30%;
+    min-width: 90%;
+
+}
+
+.square-image-modal{
+  
+    padding: 0;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: fill;
+    
+}
+.save-cloud{
+    z-index: 1;
+    align-content: center;
+    justify-content: center;
+
+}
+.modal-btn{
+    border: 3px solid var(--roxo-claro);
+    font-family: 'Space Mono', monospace;
+    font-weight: 600;
+    border-radius: 0px;
+    box-shadow: 6px 6px 0px 0px var(--roxo-claro);
+    background-color: none;
+    background: none;
+    color: var(--preto-texto);
+    justify-content: center;
+    align-items: center;
+    margin-top: 2em;
+    margin-bottom: 0.3em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        background-color: var(--roxo-claro);
+        color: var(--branco);
+        box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+      }
+    }
+    
+  
+.cointainer-checkmark{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.container-check{
+    align-items: center;
+    margin-left: 0.6em;
+    margin-right: 0em;
+
+}
+
+
+
+input[type="radio"]{
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--preto-texto);
+}
+
+input[type="radio"]:checked {
+    appearance: none;
+    outline: none;
+    padding: 0;
+    content: none;
+    border: 2px solid var(--preto-texto);  
+  }
+
+  input[type="radio"]:checked::before{
+    position: absolute;
+    color: black !important;
+    border: 1px solid #d3d3d3;
+    font-weight: bolder;
+    font-size: 15px;
+    outline: none;
+    content: url('../../img/tick.svg');
+    border:  none;  
+    padding-left: 0.48em;
+    padding-top: 0.1em;
+  }
+
+#radio-1{
+    background-color: #3FF29B;
+}
+
+#radio-2{
+    background-color: var(--laranja);
+}
+
+#radio-3{
+    background-color: var(--roxo-claro);
+}
+
+#mybtn{
+    border: 3px solid #3FF29B;
+    font-family: 'Space Mono', monospace;
+    font-weight: 600;
+    border-radius: 0px;
+    box-shadow: 6px 6px 0px 0px #3FF29B;
+    background-color: none;
+    background: #ffffff;
+    color: #3FF29B;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        background-color: #3FF29B;
+        color: var(--branco);
+        box-shadow: 0px 0px 0 0px var(--branco), 8px 8px #3FF29B;
+      }
+    }
+
