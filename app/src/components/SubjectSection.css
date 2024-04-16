@@ -1,0 +1,29 @@
+.section-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-title > img{
+    transform: scale(0.9);
+    margin-right: 16px;
+}
+
+.section-title > h4{
+    font-family: 'Space Mono';
+    font-weight: bold;
+    font-size: 35px;
+    color: #454545;
+}
+
+
+.subject-title{
+    margin-left: 32px;
+}
+
+.subjects{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
