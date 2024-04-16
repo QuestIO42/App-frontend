@@ -1,5 +1,5 @@
-import Eye from './eye-selected.svg';
-import EyeSelected from './eye.svg';
+import Eye from '../img/eye-selected.svg';
+import EyeSelected from '../img/eye.svg';
 import { useState } from 'react';
 
 import './SubjectTitle.css';
