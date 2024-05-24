@@ -16,13 +16,14 @@
 
 .text-button {
   border: none;
-    background-color: transparent;
+  background-color: transparent;
   font-family: 'Space Mono', monospace;
   font-size: 0.8em;
   font-weight: 600;
   color: var(--roxo-claro);
   padding-bottom: 1.5em;
 }
+
 
 .card-default{
   border: 5px solid var(--cinza);
@@ -35,6 +36,8 @@
 
   min-width: 25rem;
 }
+
+
 
 .card-inner {
   /*position: relative;*/
@@ -73,7 +76,7 @@
   font-size: 3.6em;
   font-weight: 600;
   color: var(--preto-texto);
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 .login-body{
   display: flex;
@@ -107,17 +110,18 @@
 }
 
 .search-input {
-  width: 100%;
+  min-width: 20em;
+  height: 80%;
   /*margin-top: 16px;*/
-
   font-family: 'Space Mono', monospace;
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: 600;
   color: var(--preto-texto);
-  border: 3px solid var(--roxo-claro);
-  padding: 0.3em 1em;
-
-  /*box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-claro);*/
+  border: 3px solid #1E1E1E;
+  padding: 0.3em 0.6em 0.3em 0.5em;
+  margin:0;
+ 
+  box-shadow: 0px 0px 0 0px var(--branco), 8px 8px #1E1E1E;
 
   &:focus {
     border: 3px solid var(--roxo-escuro);
@@ -153,11 +157,16 @@
   display: grid;
   position: relative;
 }
+.square-grid{
+  margin-top:1em;
+  margin-bottom:2em;
+
+}
 
 .square-image{
   height: 100%;
   width: 100%;
-  padding: 0;
+  padding: 0em;
   margin: 0;
   object-fit:fill;
   justify-content: center;
@@ -205,10 +214,10 @@
 }
 
 .square-form{ 
-  grid-area: 1/1/2/2;
+  grid-area: 1/1/2/2 ;
   /*border: 0.36vw solid var(--cinza); */
   border: 4px solid var(--cinza);
-  padding: 1rem;
+  padding: 2rem;
   z-index: 2;
   margin: 0%;
 }
@@ -216,31 +225,29 @@
 .square-upper{
   grid-area: 1/1/2/2;
   position: absolute;
-  top: -5%; /*Altere aqui pra mudar o deslocamento */
-  right: -5%;
+  top: -4.5%; /*Altere aqui pra mudar o deslocamento */
+  right: -4.5%;
   /* border:0.36vw solid var(--cinza); */
   border: 4px solid var(--cinza);
   width: 100%;
   height: 100%;
-  padding: 1rem;
+  padding:0rem;
   margin:0;
   
 }
 
 .tamanho{
-  width: 220px;
-  height: 220px;
-  padding: 0;
-  margin: 1rem;
+  width: 250px;
+  height: 250px;
+  padding:0;
   object-fit:fill;
   justify-content: center;
   align-items: center;
 }
 .background{
   background-image:  url("img/fundo-quadr.png");
-    height: 150vh;
-    width: 100vw;
-
+    /*height: 100vh;
+    width: 100em; */
     /* Center and scale the image nicely */
     background-position: center center;
     background-repeat:repeat-y;
@@ -265,6 +272,10 @@
   align-items: center;
   padding: 1em;
 }
+.logo-quest-nav{
+  margin:0;
+  padding: 0;
+}
 .nav-login{
     padding-left: 32px;
     padding-right: 32px;
@@ -284,6 +295,24 @@
   width: 54px;
   height: 54px;
 }
+.notification-icon{
+  padding: none;
+  border: none;
+  background: transparent;
+
+  width: 54px;
+  height: 54px;
+  margin-right: 1em;
+}
+
+.account-icon{
+  padding: none;
+  border: none;
+  background: transparent;
+
+  width: 54px;
+  height: 54px;
+}
 
 /*    Footer  (START)    */
 .QuestFoot{
@@ -292,8 +321,8 @@
   font-size: 1.3em;
   font-weight: 600;
   width: 100%;
-  height: 31.72vh;
-  margin:0;
+  height: 100%;
+  margin-top:4em;
   padding: 1rem;
   color: var(--laranja);
   padding-left: 5em;
@@ -336,7 +365,7 @@ ul.contato {
 
 
 .contato li {
-  margin-bottom: 0; /* Ensure no bottom margin for list items */
+  margin-bottom: 0; 
 }
 .data-nome{
   color: var(--verde-escuro);
@@ -365,6 +394,17 @@ ul.contato {
   top: 0%;
   left: 0%;
 }
+/* estilos do chapeu da pagina de cursos */
+
+
+.custom-pad{
+  padding-left: -0.6em !important;
+}
+
+/*.custom-margin{
+  padding: 4em !important;
+}
+*/
 
 /*    Footer  (END)    */
 /* .App {

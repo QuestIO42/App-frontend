@@ -5,9 +5,9 @@ const Footer= () => {
     return (
       <div>
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 QuestFoot border-top">
-          <ul class="col-md-4 mb-0 contato-cont list-unstyled">
+          <ul class="col-md-4 mb-0 contato-cont list-unstyled mt-3">
             <li class="col-md-4 mb-0 contato">Contato</li>
-            <li class="col-md-4 mb-0 contato-email">
+            <li class="col-md-4 mb-0 contato-email mt-1">
               contato@questi0.com.br
             </li>
           </ul>

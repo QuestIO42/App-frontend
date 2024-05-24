@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useRef } from 'react';
 import SaveCloud from './/../img/SaveCloud.svg';
 
@@ -6,13 +7,18 @@ export const FileUploader = ({handleFile}) => {  // Create a reference to the hi
   const handleClick = event => {
     hiddenFileInput.current.click();
   };  
+  const [file, setFile] =useState(SaveCloud);
+    
+
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
     handleFile(fileUploaded);
+    setFile(URL.createObjectURL(fileUploaded)); 
+    
   };return (
     <>
       <button className="button-upload" onClick={handleClick}>
-        <img className="save-cloud" src={SaveCloud}/>
+        <img className="save-cloud" src={file}/>
       </button>
       <input
         type="file"
