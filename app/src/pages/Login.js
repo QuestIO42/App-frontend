@@ -75,10 +75,11 @@ const Login = () => {
                         </div>
 
                         <div className="text-center">
-                            <button
+                            <a href='/register'><button
                                 type="button"
                                 className="text-button">Ainda não é cadastrado? <u>Cadastre-se</u>
                             </button>
+                            </a>
                         </div>
                     </div>
                 </div>

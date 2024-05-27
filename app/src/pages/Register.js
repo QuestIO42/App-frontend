@@ -68,10 +68,11 @@ const Register = () => {
                             </div>
 
                             <div className="text-center">
-                                <button
+                                <a href='/'><button
                                     type="button"
-                                    className="text-button">Já possue conta? <u>Login</u>
+                                    className="text-button">Já possui conta? <u>Login</u>
                                 </button>
+                                </a>
                             </div>
                         </div>
                     </div>
