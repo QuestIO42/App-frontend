@@ -1,5 +1,8 @@
 import logo from "../img/logo.svg";
 import lupa from "../img/lupa.svg";
+import sino from "../img/sinoNotification.svg"
+import conta from "../img/accountIcon.svg"
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -10,47 +13,51 @@ const NavHeader = () => {
     const [search, setSearch] = useState('');
 return (
     <div>
-        <nav className="navbar-default">
+<nav className="navbar navbar-default navbar-expand-lg py-2">
             <div className="container-fluid">
-                <div className="row">
-                    <div className="col-2">
-                    <a className="navbar-brand" href="#">
+                    <a className="navbar-brand mx-3" href="#">
                         <img src={logo} alt="" loading="lazy"/>
                     </a>
-                    </div>
-
-                    <div className="col d-flex justify-content-center text-center">
-                        <form className="nav-search">
-                            <div className="input-group">
-                                <div className="mb-5">
+                    
+                        <form className="d-flex">
                                     <input
                                         type="text"
-                                        className="search-input"
+                                        className=" me-2 search-input"
                                         id="search"
                                         value={search}
-                                        placeholder={"Pesquisar"}
+                                        placeholder={"pesquisar"}
                                         onChange={(e) => setSearch(e.target.value)}
                                     />
-                                </div>
-
-                                <button
-                                    type="button"
-                                    className="search-button"
-                                >
-                                    <img src={lupa} alt="" loading="lazy"/>
-                                </button>
-                            </div>
+                                 <button
+                                type="button"
+                                className=" search-button mx-2 mt-1 "
+                        >
+                                <img src={lupa} alt="" loading="lazy"/>
+                        </button>
                         </form>
+                   
+                   
+                    <div className="d-flex justify-content-end">
+                        <a href=""> <button
+                                type="button"
+                                className=" notification-icon my-2 py-2 px-1 mr-2 ml-2"
+                        > 
+                                <img src={sino} alt="" loading="lazy"/>
+                        </button> </a>
+                        <a href=""><button
+                                type="button"
+                                className=" account-icon my-2  py-2 px-1 mr-2 ml-2"
+                        >
+                                <img src={conta} alt="" loading="lazy"/>
+                        </button></a>
                     </div>
-
-                    <div className="col-2">
-                    </div>
-
-                </div>
             </div>
+            
+            
         </nav>
     </div>
 );
+
 
 }
 export default NavHeader;
