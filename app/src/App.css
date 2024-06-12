@@ -401,6 +401,23 @@ ul.contato {
   padding-left: -0.6em !important;
 }
 
+
+
+/*register.js */
+.texto-box{
+  font-size:1.5em;
+}
+
+.tamanho-box{
+  width: 60%;
+}
+
+.sizeaa{
+  height: 20px;
+}
+
+
+
 /*.custom-margin{
   padding: 4em !important;
 }

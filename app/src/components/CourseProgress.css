@@ -5,19 +5,17 @@
 }
 
 .course-progress > .label{
-    font-size: 25px;
+    font-size: 1em;
 }
 
 .progress-percent{
-    font-size: 18px;
+    font-size: 1em;
     text-align: right;
 }
 
-
 .progress-bar{
     background-color: #F2953F;
-    height: 24px;
-    width: 20%;
+    height: 0.5em;
 }
 .progress-border{
     width: 100%;
