@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SquareDisplay = ({ imagem, nome,curso }) => {
   return (
-    <div className='square-grid'>
+    <div className='square-grid mx-1'>
       <SquareForm>
         <a href="#"> {/* Mudar links depois */}
         <img src={imagem} className="square-image"/>

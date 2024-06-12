@@ -29,7 +29,7 @@ const Register = () => {
                 <a className="navbar-brand" href="/"><img src={logo} className="" alt="logo"/></a>
             </nav>
 
-            <div className="container">
+            <div className="container mb-2">
 
                 <div className="row">
                     <div className="col-3">
@@ -47,10 +47,7 @@ const Register = () => {
                                             <Input name="e-mail" setValue={setEmail} value={email}/>
                                             <Input name="senha" setValue={setPassword} value={password} type="password">
                                                 <div className="text-end">
-                                                    <button
-                                                        type="button"
-                                                        className="text-button link">esqueceu a senha?
-                                                    </button>
+                                                    
                                                 </div>
                                             </Input>
                                             <Input name="confirmar senha" setValue={setConfirmPassword} value={confirmPassword} type="password"/>
@@ -74,6 +71,7 @@ const Register = () => {
                                     className="text-button">Já possui conta? <u>Login</u>
                                 </button>
                                 </a>
+
                                 </div>
 
                             </div>
