@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../App.css';
@@ -12,14 +13,25 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => { //Lógica de Autenticação
-
+        axios.post('http://localhost:9000/api/api/login/', { // replace with your Django backend URL
+            username: username,
+            password: password
+        })
+        .then(response => {
+            console.log(response.data);
+            // handle successful login here
+        })
+        .catch(error => {
+            console.error(error);
+            // handle error here
+        });
     }
 
     return (
         <div>
 
         <nav className="nav-login">
-            <a className="navbar-brand" href="/"><img src={logo} className Name="" alt="logo"/></a>
+            <a className="navbar-brand" href="/"><img src={logo} className alt="logo"/></a>
         </nav>
 
             
