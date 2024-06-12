@@ -64,12 +64,16 @@ const Register = () => {
                                     </div>
                                 </div>
 
-                                <div className="text-center">
-                                    <button
-                                        type="button"
-                                        className="text-button">Já possui conta? <u>Login</u>
-                                    </button>
+
+                            <div className="text-center">
+                                <a href='/'><button
+                                    type="button"
+                                    className="text-button">Já possui conta? <u>Login</u>
+                                </button>
+                                </a>
+
                                 </div>
+
                             </div>
                         </SquareForm>
                     </div>

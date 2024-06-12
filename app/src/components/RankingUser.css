@@ -1,0 +1,39 @@
+.ranking-user-container{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.ranking-number{
+    width: 10px;
+    margin: auto;
+}
+
+.ranking-number .ranking-user-name .ranking-user-college{
+    color: #454545;
+}
+
+.ranking-user-logo{
+    transform: scale(0.5);
+    margin: auto;
+}
+
+.ranking-number{
+    font-family: 'Space Mono', sans-serif;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.ranking-user-name{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.ranking-user-college{
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 12px;
+    overflow: hidden;
+}

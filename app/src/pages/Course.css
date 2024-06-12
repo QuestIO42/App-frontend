@@ -1,0 +1,43 @@
+.up{
+    margin: 32px 0 32px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.main{
+    display: flex;
+    justify-content: space-around;
+}
+
+.up > .title, .up > h1{
+    font-family: 'Space Mono';
+    font-weight: bold;
+    font-size: 60px;
+    color: #454545;
+}
+
+.up > button, .up > .voltar > a{
+    font-family: 'Space Mono';
+    color: #454545;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.voltar{
+    display: flex;
+    flex-direction: column;
+}
+
+.voltar > a{
+    margin-left: 0;
+    margin-right: auto;
+    text-decoration: none;
+}
+
+.editar{
+    position: absolute;
+    background-color: green;
+    display: none;
+}
