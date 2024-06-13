@@ -3,6 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SquareForm from '../components/SquareForm';
 import '../App.css';
+import axios from 'axios';
 
 
 // This css is only being used for the "esqueceu sua senha" button
@@ -17,11 +18,22 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirm_password, setConfirmPassword] = useState('');
 
-    const handleRegister = () => { //Lógica de Autenticação
+    const handleRegister = async () => { //Lógica de Autenticação
+        try {
+            const response = await axios.post('http://localhost:9000/api/user/register', {
+            username: username,
+            email: email,
+            password: password,
+            confirm_password: confirm_password
+            });
 
-    }
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+        };
 
     return (
         <div>
@@ -50,12 +62,12 @@ const Register = () => {
                                                     
                                                 </div>
                                             </Input>
-                                            <Input name="confirmar senha" setValue={setConfirmPassword} value={confirmPassword} type="password"/>
+                                            <Input name="confirmar senha" setValue={setConfirmPassword} value={confirm_password} type="password"/>
                                             <div className="text-center">
                                                 <button
                                                     type="button"
                                                     className="default-btn"
-                                                    onClick={handleRegister}
+                                                    onClick={ handleRegister}
                                                 >
                                                     Cadastrar
                                                 </button>
