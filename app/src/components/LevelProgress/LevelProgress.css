@@ -1,0 +1,35 @@
+.progress-bar-circle {
+    height: 108px;
+    width: 108px;
+    border: 0.5em solid #ab3fff;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-circle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--verde-claro); /* Replace with your desired color */
+    transform-origin: center;
+    transform: rotate(0deg);
+    border-radius: 100%;
+    z-index: 1;
+}
+
+.progress-bar-circle::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: 10px solid #ab3fff;
+    border-radius: 100%;
+    z-index: 2;
+}
