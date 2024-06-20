@@ -7,6 +7,9 @@
  * @param {boolean} type - Sets the input type, defaults to text (text/password/radio/checkbox/button)
  * @returns
  */
+
+import './Input.css'
+
 export default function Input(props){
     return (
 

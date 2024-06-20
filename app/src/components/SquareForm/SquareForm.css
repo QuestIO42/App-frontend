@@ -1,0 +1,29 @@
+.teste {
+    display: grid;
+    position: relative;
+    align-items: center;
+  
+  }
+
+  .square-form{ 
+    grid-area: 1/1/2/2 ;
+    /*border: 0.36vw solid var(--cinza); */
+    border: 4px solid var(--cinza);
+    padding: 2rem;
+    z-index: 2;
+    margin: 0%;
+  }
+
+  .square-upper{
+    grid-area: 1/1/2/2;
+    position: absolute;
+    top: -4.5%; /*Altere aqui pra mudar o deslocamento */
+    right: -4.5%;
+    /* border:0.36vw solid var(--cinza); */
+    border: 4px solid var(--cinza);
+    width: 100%;
+    height: 100%;
+    padding:0rem;
+    margin:0;
+    
+  }

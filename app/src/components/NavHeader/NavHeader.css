@@ -1,0 +1,37 @@
+.navbar-default{
+    background-color:#3E347B ;
+  
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 16px;
+    /*padding-bottom: 16px;*/
+  }
+
+  .search-button{
+    padding: none;
+    border: none;
+    background: transparent;
+  
+    width: 54px;
+    height: 54px;
+  }
+
+  .notification-icon{
+    padding: none;
+    border: none;
+    background: transparent;
+  
+    width: 54px;
+    height: 54px;
+    margin-right: 1em;
+  }
+
+  .account-icon{
+    padding: none;
+    border: none;
+    background: transparent;
+  
+    width: 54px;
+    height: 54px;
+  }
+  

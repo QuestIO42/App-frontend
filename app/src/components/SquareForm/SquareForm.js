@@ -1,3 +1,5 @@
+import './SquareForm.css'
+
 import React from 'react';
 
 const SquareForm = ({ children }) => {

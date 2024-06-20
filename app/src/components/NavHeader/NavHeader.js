@@ -3,6 +3,7 @@ import lupa from "../../img/lupa.svg";
 import sino from "../../img/sinoNotification.svg"
 import conta from "../../img/accountIcon.svg"
 
+import './NavHeader.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

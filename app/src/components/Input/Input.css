@@ -1,0 +1,23 @@
+.form-label{
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--preto-texto);
+    display: block;
+  }
+
+  .form-input {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--preto-texto);
+    border: 3px solid var(--roxo-claro);
+    padding: 0.3em 1em;
+  
+    box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-claro);
+  
+    &:focus {
+      border: 3px solid var(--roxo-escuro);
+      box-shadow: 0px 0px 0 0px var(--branco), 8px 8px var(--roxo-escuro);
+    }
+  }

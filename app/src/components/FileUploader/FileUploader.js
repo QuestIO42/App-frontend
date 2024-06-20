@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import SaveCloud from '../../img/SaveCloud.svg';
 
+import './FileUploader.css'
+
 export const FileUploader = ({handleFile}) => {  // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);
   const handleClick = event => {
@@ -18,7 +20,7 @@ export const FileUploader = ({handleFile}) => {  // Create a reference to the hi
   };return (
     <>
       <button className="button-upload" onClick={handleClick}>
-        <img className="save-cloud" src={file}/>
+        <img className="save-cloud" src={file} alt=''/>
       </button>
       <input
         type="file"
