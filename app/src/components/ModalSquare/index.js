@@ -3,8 +3,8 @@ import {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ModalSquare.css';
 import imagem from '../../img/imagem(1).png';
-import SquareForm from '../SquareForm/SquareForm';
-import FileUploader from '../FileUploader/FileUploader';
+import SquareForm from '../SquareForm';
+import FileUploader from '../FileUploader';
 
 const ModalSquare = ()=> {
   const [selectedColor, setSelectedColor] = useState('orange');

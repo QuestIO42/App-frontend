@@ -4,11 +4,11 @@ import '../../App.css';
 import './Course.css';
 
 
-import NavHeader from '../../components/NavHeader/NavHeader';
-import Ranking from '../../components/Ranking/Ranking';
-import Section from '../../components/SubjectSection/SubjectSection';
+import NavHeader from '../../components/NavHeader';
+import Ranking from '../../components/Ranking';
+import Section from '../../components/SubjectSection';
 import CircuitoImpresso from '../../img/circuito-impresso.png';
-import CourseProgress from '../../components/CourseProgress/CourseProgress';
+import CourseProgress from '../../components/CourseProgress';
 
 const Course = () => {
 

@@ -4,12 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
 
 import chapeu from "../../img/chapeu.svg";
-import Footer from '../../components/Footer/Footer';
-import SquareForm from '../../components/SquareForm/SquareForm';
-import SquareDisplay from '../../components/SquareDisplay/SquareDisplay';
-import NavHeader from '../../components/NavHeader/NavHeader';
+import Footer from '../../components/Footer';
+import SquareForm from '../../components/SquareForm';
+import SquareDisplay from '../../components/SquareDisplay';
+import NavHeader from '../../components/NavHeader';
 import TestImage from '../../img/TestImage.png';
-import ModalSquare from '../../components/ModalSquare/ModalSquare';
+import ModalSquare from '../../components/ModalSquare';
 const Courses = () => {
     return (
         <div>

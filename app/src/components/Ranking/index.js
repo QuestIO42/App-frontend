@@ -1,4 +1,4 @@
-import RankingUser from "../RankingUser/RankingUser";
+import RankingUser from "../RankingUser";
 import './Ranking.css';
 import TrophyIcon from '../../img/trophy.svg';
 

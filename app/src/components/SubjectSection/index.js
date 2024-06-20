@@ -1,4 +1,4 @@
-import SubjectTitle from '../SubjectTitle/SubjectTitle';
+import SubjectTitle from '../SubjectTitle';
 
 import LightBulb from '../../img/light-bulb.svg';
 import './SubjectSection.css';

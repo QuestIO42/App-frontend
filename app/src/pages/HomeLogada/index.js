@@ -1,18 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../App.css';
-import Footer from '../../components/Footer/Footer';
-import SquareForm from '../../components/SquareForm/SquareForm';
-import SquareDisplay from '../../components/SquareDisplay/SquareDisplay';
-import NavHeader from '../../components/NavHeader/NavHeader';
-import RectangleBox from '../../components/RectangleBox/RectangleBox';
-import CourseProgress from '../../components/CourseProgress/CourseProgress';
-import '../../components/CourseProgress/CourseProgress';
-import LevelProgress from '../../components/LevelProgress/LevelProgress';
+import Footer from '../../components/Footer';
+import SquareForm from '../../components/SquareForm';
+import SquareDisplay from '../../components/SquareDisplay';
+import NavHeader from '../../components/NavHeader';
+import RectangleBox from '../../components/RectangleBox';
+import CourseProgress from '../../components/CourseProgress';
+import '../../components/CourseProgress';
+import LevelProgress from '../../components/LevelProgress';
 import imagem from '../../img/imagem(1).png';
-const HomeLogada = () => {
+const HomeLogada = () => 
 
-    return (
+    {return (
         <div>
             <NavHeader />
             <div className='container'>

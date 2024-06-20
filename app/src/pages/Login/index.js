@@ -3,7 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../../App.css';
-import SquareForm from '../../components/SquareForm/SquareForm';
+import SquareForm from '../../components/SquareForm';
 import logo from "../../img/logoLogin.svg";
 
 const Login = () => {

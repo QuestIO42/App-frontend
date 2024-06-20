@@ -1,5 +1,5 @@
 import React from 'react';
-import SquareForm from '../SquareForm/SquareForm';
+import SquareForm from '../SquareForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SquareDisplay = ({ imagem, nome,curso }) => {

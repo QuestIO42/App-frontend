@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SquareForm from '../../components/SquareForm/SquareForm';
+import SquareForm from '../../components/SquareForm';
 import '../../App.css';
 
 
@@ -10,7 +10,7 @@ import '../../App.css';
 import './Register.css';
 
 import logo from "../../img/logoLogin.svg";
-import Input from '../../components/Input/Input';
+import Input from '../../components/Input';
 
 const Register = () => {
 
