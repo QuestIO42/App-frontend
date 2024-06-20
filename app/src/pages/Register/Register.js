@@ -1,16 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SquareForm from '../components/SquareForm';
-import '../App.css';
+import SquareForm from '../../components/SquareForm/SquareForm';
+import '../../App.css';
 
 
 // This css is only being used for the "esqueceu sua senha" button
 // Not sure if creating a separate css is the best decision, might change later
 import './Register.css';
 
-import logo from "../img/logoLogin.svg";
-import Input from '../components/Input';
+import logo from "../../img/logoLogin.svg";
+import Input from '../../components/Input/Input';
 
 const Register = () => {
 

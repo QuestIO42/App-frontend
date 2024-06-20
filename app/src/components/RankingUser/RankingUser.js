@@ -1,5 +1,5 @@
 import './RankingUser.css'
-import RankingUserLogo from '../img/icon-account.svg';
+import RankingUserLogo from '../../img/icon-account.svg';
 
 
 /**

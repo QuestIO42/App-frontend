@@ -1,7 +1,7 @@
-import logo from "../img/logo.svg";
-import lupa from "../img/lupa.svg";
-import sino from "../img/sinoNotification.svg"
-import conta from "../img/accountIcon.svg"
+import logo from "../../img/logo.svg";
+import lupa from "../../img/lupa.svg";
+import sino from "../../img/sinoNotification.svg"
+import conta from "../../img/accountIcon.svg"
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';

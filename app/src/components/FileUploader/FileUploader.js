@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRef } from 'react';
-import SaveCloud from './/../img/SaveCloud.svg';
+import SaveCloud from '../../img/SaveCloud.svg';
 
 export const FileUploader = ({handleFile}) => {  // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);

@@ -1,6 +1,6 @@
-import RankingUser from "./RankingUser";
+import RankingUser from "../RankingUser/RankingUser";
 import './Ranking.css';
-import TrophyIcon from '../img/trophy.svg';
+import TrophyIcon from '../../img/trophy.svg';
 
 export default function Ranking() {
     return (

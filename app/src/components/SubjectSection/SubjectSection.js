@@ -1,6 +1,6 @@
-import SubjectTitle from './SubjectTitle';
+import SubjectTitle from '../SubjectTitle/SubjectTitle';
 
-import LightBulb from '../img/light-bulb.svg';
+import LightBulb from '../../img/light-bulb.svg';
 import './SubjectSection.css';
 
 
