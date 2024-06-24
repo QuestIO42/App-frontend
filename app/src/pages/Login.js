@@ -1,10 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import axios from 'axios';
 import '../App.css';
 import SquareForm from '../components/SquareForm';
 import logo from "../img/logoLogin.svg";
+import { jwtDecode } from 'jwt-decode' ;
 
 const Login = () => {
 
@@ -13,7 +14,20 @@ const Login = () => {
 
     const handleLogin = () => { //Lógica de Autenticação
 
-    }
+        axios.post('http://localhost:9000/api/token/', { username, password })
+            .then(response => {
+                // Handle successful login
+                console.log(response.data);
+                localStorage.setItem('refreshToken',response.data.refresh);
+                localStorage.setItem('accessToken', response.data.access);
+                window.location.href = '/home';
+            })
+            .catch(error => {
+                // Handle login error
+                console.error(error.response.data);
+            });
+        };
+    
 
     return (
         <div>

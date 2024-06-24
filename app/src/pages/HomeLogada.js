@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import Footer from '../components/Footer';
@@ -10,10 +12,35 @@ import CourseProgress from '../components/CourseProgress';
 import '../components/CourseProgress';
 import LevelProgress from '../components/LevelProgress/LevelProgress';
 import imagem from '../img/imagem(1).png';
+import {jwtDecode} from 'jwt-decode';
+
+
+
 const HomeLogada = () => {
+    const [username, setUsername] = useState('Usuário');
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        const user = jwtDecode(token);
+        const id = user.user_id;
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+      
+
+        axios.get('http://localhost:9000/api/user/'+id, config)
+            .then(response => {
+                setUsername(response.data.username);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+);
 
     return (
         <div>
+            
             <NavHeader />
             <div className='container'>
                 <div className='tamanho-box'>
@@ -31,7 +58,7 @@ const HomeLogada = () => {
                                     <div className="row">
                                         <div className='col-8'>
                                         <div className='texto-box border'>
-                                            olá, Usuário!
+                                            olá, {username} !
                                         </div>
                                         <div>
                                         <div className='sizeaa'> </div>
