@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import Footer from '../components/Footer';
@@ -41,6 +42,10 @@ const HomeLogada = () => {
     return (
         <div>
             
+const HomeLogada = () => {
+
+    return (
+        <div>
             <NavHeader />
             <div className='container'>
                 <div className='tamanho-box'>
