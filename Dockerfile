@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:21
 
 WORKDIR /frontend
 
@@ -6,7 +6,7 @@ COPY package.json .
 
 RUN npm install
 
-COPY ./ ./
+COPY . .
 
 EXPOSE 3000
 
