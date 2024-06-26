@@ -11,9 +11,9 @@ nvm install 20.10.0
 npm install
 ```
 
-## [Run](./app/README.md)
+## [Run](./REACT.md)
 
-Para rodar siga as instruções do [/app/README.md](./app/README.md)
+Para rodar siga as instruções do [/REACT.md](./REACT.md)
 
 Porém durante o desenvolvimento utilizaremos o comando `npm start`.
 
