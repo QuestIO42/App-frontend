@@ -1,17 +1,33 @@
 import React from 'react';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 import '../App.css';
 import SquareForm from '../components/SquareForm';
 import logo from "../img/logoLogin.svg";
+import axios from 'axios';
 
 const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigator = useNavigate();
 
     const handleLogin = () => { //Lógica de Autenticação
+        axios.post('http://127.0.0.1:8000/api/user/login/', {
+            username: username,
+            password: password
+        })
+            .then((response) => {
+                console.log(response);
+                //redirecionar para a tela de escolha de curso
+                navigator('/home');
+            })
+            .catch((error) => {
+                console.log(error);
+
+            });
 
     }
 

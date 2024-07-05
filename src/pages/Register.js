@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SquareForm from '../components/SquareForm';
 import '../App.css';
+import axios from 'axios';
 
 
 // This css is only being used for the "esqueceu sua senha" button
@@ -18,9 +20,25 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigator = useNavigate();
 
-    const handleRegister = () => { //Lógica de Autenticação
-
+    const handleRegister = async () => { //Lógica de Autenticação
+        //autenticacao com o backend em django para criar um novo usuário
+        //redirecionar para a tela de login ou redirecionar para a tela de escolha de curso
+        try {
+            const resposta = axios.post('http://127.0.0.1:8000/api/user/register/',
+                {
+                    username: username,
+                    email: email,
+                    password: password,
+                    confirm_password: confirmPassword,
+                });
+            console.log(resposta);
+            navigator('/');
+        } catch (error) {
+            console.log(error);
+        }
+            
     }
 
     return (
