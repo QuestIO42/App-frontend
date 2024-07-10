@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface CircuitBottomRight extends React.SVGProps<SVGSVGElement> {}
 
@@ -65,7 +65,7 @@ const CircuitBottomRight: React.FC<CircuitBottomRight> = ({ className }) => {
         />
       </g>
     </svg>
-  );
-};
+  )
+}
 
-export default CircuitBottomRight;
+export default CircuitBottomRight

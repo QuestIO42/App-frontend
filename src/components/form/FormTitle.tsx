@@ -1,11 +1,11 @@
 interface FormTitleProps {
-  title: string;
+  title: string
 }
 
 export default function FormTitle({ title }: FormTitleProps) {
   return (
-    <h1 className="mr-auto mt-4 text-2xl font-bold leading-8 text-preto-texto sm:mt-5 sm:text-3xl sm:leading-9 md:mt-6 md:text-4xl md:leading-10 lg:text-[2.5rem]">
+    <h1 className="mr-auto text-2xl font-bold leading-8 text-preto-texto sm:mt-5 sm:text-3xl sm:leading-9 md:mt-6 md:text-4xl md:leading-10 lg:text-[2.5rem]">
       {title}
     </h1>
-  );
+  )
 }

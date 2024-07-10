@@ -1,4 +1,4 @@
-import EmailIcon from '../svgComponents/icons/EmailIcon';
+import EmailIcon from '../svgComponents/icons/EmailIcon'
 
 export default function Footer() {
   return (
@@ -27,5 +27,5 @@ export default function Footer() {
         <p className="text-center text-[0.63rem]">by questI0 lab</p>
       </div>
     </footer>
-  );
+  )
 }

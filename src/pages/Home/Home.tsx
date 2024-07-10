@@ -1,12 +1,12 @@
-import Footer from '../../components/footer/Footer';
-import { Header } from '../../components/header/Header';
-import CoursesTemplate from '../../components/home/CoursesTemplate';
-import Ranking from '../../components/home/Ranking';
-import UserProgression from '../../components/home/UserProgression';
-import CircuitHome from '../../components/svgComponents/circuit/CircuitHome';
-import CircuitTopRight from '../../components/svgComponents/circuit/CircuitTopRight';
-import CourseIcon from '../../components/svgComponents/icons/CourseIcon';
-import LabIcon from '../../components/svgComponents/icons/LabIcon';
+import Footer from '@/components/footer/Footer'
+import Header from '@/components/header/Header'
+import CoursesTemplate from '@/components/home/CoursesTemplate'
+import Ranking from '@/components/home/Ranking'
+import UserProgression from '@/components/home/UserProgression'
+import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
+import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
+import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
+import LabIcon from '@/components/svgComponents/icons/LabIcon'
 
 export default function Home() {
   return (
@@ -36,5 +36,5 @@ export default function Home() {
       </div>
       <Footer></Footer>
     </div>
-  );
+  )
 }

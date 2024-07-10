@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface EmailIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const EmailIcon: React.FC<EmailIconProps> = ({ className }) => {
@@ -19,7 +19,7 @@ const EmailIcon: React.FC<EmailIconProps> = ({ className }) => {
         fill="#F2953F"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default EmailIcon;
+export default EmailIcon

@@ -1,4 +1,4 @@
-import SearchButton from '../svgComponents/SearchButton';
+import SearchButton from './SearchButton'
 
 export default function SearchBar() {
   return (
@@ -8,9 +8,7 @@ export default function SearchBar() {
         placeholder="Pesquisar"
         className="w-full border-4 border-preto p-2 shadow-default-black focus:border-roxo-escuro focus:shadow-roxo-escuro focus:outline-none"
       />
-      <button>
-        <SearchButton></SearchButton>
-      </button>
+      <SearchButton></SearchButton>
     </form>
-  );
+  )
 }

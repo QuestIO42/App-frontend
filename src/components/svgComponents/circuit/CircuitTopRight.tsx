@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface CircuitTopRightProps extends React.SVGProps<SVGSVGElement> {}
 
@@ -169,7 +169,7 @@ const CircuitTopRight: React.FC<CircuitTopRightProps> = ({ className }) => {
         fill="#454545"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CircuitTopRight;
+export default CircuitTopRight

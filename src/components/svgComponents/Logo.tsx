@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 interface LogoProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
-  link: string;
+  className?: string
+  link: string
 }
 
 const Logo: React.FC<LogoProps> = ({ className, link }) => {
@@ -56,7 +56,7 @@ const Logo: React.FC<LogoProps> = ({ className, link }) => {
         </defs>
       </svg>
     </Link>
-  );
-};
+  )
+}
 
-export default Logo;
+export default Logo

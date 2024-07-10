@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface LabIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const LabIcon: React.FC<LabIconProps> = ({ className }) => {
@@ -19,7 +19,7 @@ const LabIcon: React.FC<LabIconProps> = ({ className }) => {
         fill="#454545"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default LabIcon;
+export default LabIcon

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface ProfileIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const ProfileIcon: React.FC<ProfileIconProps> = ({ className }) => {
@@ -59,7 +59,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({ className }) => {
         </filter>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default ProfileIcon;
+export default ProfileIcon

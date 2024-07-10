@@ -3,5 +3,5 @@ export default function Course() {
     <div>
       <h1>Course</h1>
     </div>
-  );
+  )
 }

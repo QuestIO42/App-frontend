@@ -1,9 +1,9 @@
-import { ButtonHTMLAttributes } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { ButtonHTMLAttributes } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
-  className?: string;
+  text: string
+  className?: string
 }
 
 export default function Button({ text, className, ...rest }: ButtonProps) {
@@ -14,5 +14,5 @@ export default function Button({ text, className, ...rest }: ButtonProps) {
     >
       {text}
     </button>
-  );
+  )
 }

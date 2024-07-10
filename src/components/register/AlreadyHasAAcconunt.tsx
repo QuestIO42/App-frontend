@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 export default function AlreadyHasAAccount() {
   return (
@@ -8,5 +8,5 @@ export default function AlreadyHasAAccount() {
         Faça login
       </Link>
     </p>
-  );
+  )
 }

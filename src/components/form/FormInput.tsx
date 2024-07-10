@@ -1,6 +1,6 @@
 interface FormInputProps {
-  label: string;
-  type: React.HTMLInputTypeAttribute;
+  label: string
+  type: React.HTMLInputTypeAttribute
 }
 
 export default function FormInput({ label, type }: FormInputProps) {
@@ -14,5 +14,5 @@ export default function FormInput({ label, type }: FormInputProps) {
         type={type}
       />
     </div>
-  );
+  )
 }

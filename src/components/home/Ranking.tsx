@@ -1,4 +1,4 @@
-import RewardIcon from '../svgComponents/icons/RewardIcon';
+import RewardIcon from '../svgComponents/icons/RewardIcon'
 
 export default function Ranking() {
   return (
@@ -12,5 +12,5 @@ export default function Ranking() {
 
       <div className="min-h-[600px] min-w-[326px] bg-roxo-medio shadow-default-btn-hover"></div>
     </div>
-  );
+  )
 }

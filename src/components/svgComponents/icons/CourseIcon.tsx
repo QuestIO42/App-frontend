@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface CourseIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const CourseIcon: React.FC<CourseIconProps> = ({ className }) => {
@@ -19,7 +19,7 @@ const CourseIcon: React.FC<CourseIconProps> = ({ className }) => {
         fill="#454545"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CourseIcon;
+export default CourseIcon

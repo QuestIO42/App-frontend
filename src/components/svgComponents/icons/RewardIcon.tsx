@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface RewardIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const RewardIcon: React.FC<RewardIconProps> = ({ className }) => {
@@ -79,7 +79,7 @@ const RewardIcon: React.FC<RewardIconProps> = ({ className }) => {
         </filter>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default RewardIcon;
+export default RewardIcon

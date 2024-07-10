@@ -1,23 +1,39 @@
 # App-frontend
 
-Front-end do portal
+Aplicação frontend para a plataforma QuestIO utilizando React
 
-## Instalação/Preparando o ambiente
+---
 
+## Sumário
+
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Rodar o Projeto](#rodar-o-projeto)
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter o Node.js e o npm (ou yarn) instalados em sua máquina.
+
+- [Node.js](https://nodejs.org/) (versão 14 ou superior)
+- [Docker](https://docs.docker.com/engine/install/)
+- npm (geralmente incluído com o Node.js)
+- Plugins (Recomendados) Vscode
+  - Prettier
+  - Eslint
+  - EditorConfig
+
+## Instalação
+
+```bash
+git clone https://github.com/QuestIO42/App-frontend.git
+
+cd App-frontend.git
+npm i
 ```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.bashrc
-nvm install 20.10.0
-npm install
-```
 
-## [Run](./REACT.md)
+## Rodar o projeto
 
-Para rodar siga as instruções do [/REACT.md](./REACT.md)
-
-Porém durante o desenvolvimento utilizaremos o comando `npm start`.
-
-## To DO
-
-- Implementar telas do fígma, focar no judge
-- Comunicar com o back
+- Para rodar o projeto utilize o seguinte comandao
+  ```bash
+  npm run dev
+  ```

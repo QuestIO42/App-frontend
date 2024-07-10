@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface NotificationIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string
 }
 
 const NotificationIcon: React.FC<NotificationIconProps> = ({ className }) => {
@@ -59,7 +59,7 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({ className }) => {
         </filter>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default NotificationIcon;
+export default NotificationIcon

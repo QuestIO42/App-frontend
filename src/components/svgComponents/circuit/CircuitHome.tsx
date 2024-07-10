@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 interface CircuitHome extends React.SVGProps<SVGSVGElement> {}
 
@@ -160,7 +160,7 @@ const CircuitHome: React.FC<CircuitHome> = ({ className }) => {
         />
       </g>
     </svg>
-  );
-};
+  )
+}
 
-export default CircuitHome;
+export default CircuitHome

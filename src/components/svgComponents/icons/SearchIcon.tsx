@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-interface SearchButtonProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+interface SearchIconProps extends React.SVGProps<SVGSVGElement> {
+  className?: string
 }
 
-const SearchButton: React.FC<SearchButtonProps> = ({ className }) => {
+const SearchIcon: React.FC<SearchIconProps> = ({ className }) => {
   return (
     <svg
       className={className}
@@ -23,7 +23,7 @@ const SearchButton: React.FC<SearchButtonProps> = ({ className }) => {
         fill="white"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default SearchButton;
+export default SearchIcon

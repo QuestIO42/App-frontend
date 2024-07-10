@@ -1,7 +1,7 @@
-import ForgotPasswordForm from '../../components/forgotPassword/ForgotPasswordForm';
-import Logo from '../../components/svgComponents/Logo';
-import CircuitBottomRight from '../../components/svgComponents/circuit/CircuitBottomRight';
-import CircuitTopLeft from '../../components/svgComponents/circuit/CircuitTopLeft';
+import ForgotPasswordForm from '@/components/forgotPassword/ForgotPasswordForm'
+import Logo from '@/components/svgComponents/Logo'
+import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
+import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 
 export default function ForgotPassword() {
   return (
@@ -14,5 +14,5 @@ export default function ForgotPassword() {
       <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
       <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomRight>
     </div>
-  );
+  )
 }

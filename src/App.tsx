@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login&Registration/Login';
-import Courses from './pages/NotReady/Courses';
-import Register from './pages/Login&Registration/Register';
-import Course from './pages/NotReady/Course';
-import ForgotPassword from './pages/Login&Registration/ForgotPassword';
-import Home from './pages/Home/Home';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import ForgotPassword from './components/form/ForgotPassword'
+import Home from './pages/Home/Home'
+import Login from './pages/Login&Registration/Login'
+import Register from './pages/Login&Registration/Register'
+import Course from './pages/NotReady/Course'
+import Courses from './pages/NotReady/Courses'
 
 export default function App() {
   return (
@@ -18,5 +18,5 @@ export default function App() {
         <Route path="/course" element={<Course />} />
       </Routes>
     </Router>
-  );
+  )
 }

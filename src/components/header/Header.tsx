@@ -1,10 +1,10 @@
-import Logo from '../svgComponents/Logo';
-import NotificationIcon from '../svgComponents/icons/NotificationIcon';
+import Logo from '../svgComponents/Logo'
+import NotificationIcon from '../svgComponents/icons/NotificationIcon'
 
-import ProfileIcon from '../svgComponents/icons/ProfileIcon';
-import SearchBar from './SearchBar';
+import ProfileIcon from '../svgComponents/icons/ProfileIcon'
+import SearchBar from './SearchBar'
 
-export function Header() {
+export default function Header() {
   return (
     <header className="col-span-full flex h-24 w-full items-center justify-between bg-roxo-escuro px-8">
       <div className="flex flex-1 items-center">
@@ -20,5 +20,5 @@ export function Header() {
         <NotificationIcon></NotificationIcon>
       </div>
     </header>
-  );
+  )
 }

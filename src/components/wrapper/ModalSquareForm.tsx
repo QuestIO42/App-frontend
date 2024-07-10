@@ -1,16 +1,15 @@
-import React from 'react';
+import React from 'react'
 
 interface ModalSquareFormProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export default function ModalSquareForm({ children }: ModalSquareFormProps) {
   return (
-    <div className="relative flex flex-col items-center justify-center">
-      <div className="absolute h-full w-full translate-y-6 border-4 border-cinza"></div>
-      <div className="flex translate-x-6 items-center justify-center border-4 border-cinza">
-        {children}
-      </div>
+    <div className="relative flex h-fit w-fit items-center justify-center">
+      <div className="absolute bottom-0 left-0 h-[105%] w-[105%] border-4 border-cinza"></div>
+      <div className="absolute right-0 top-0 h-[105%] w-[105%] border-4 border-cinza"></div>
+      {children}
     </div>
-  );
+  )
 }

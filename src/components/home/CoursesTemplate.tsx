@@ -1,10 +1,10 @@
-import { ElementType } from 'react';
-import Button from '../form/Button';
-import ModalSquareForm from '../wrapper/ModalSquareForm';
+import { ElementType } from 'react'
+import Button from '../form/Button'
+import ModalSquareForm from '../wrapper/ModalSquareForm'
 
 interface CoursesTemplateProps {
-  title: string;
-  Icon: ElementType;
+  title: string
+  Icon: ElementType
 }
 
 export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
@@ -16,17 +16,13 @@ export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
       </div>
 
       <div className="flex flex-wrap justify-center gap-20">
-        <ModalSquareForm>
-          <div className="m-10 h-[166px] w-[166px] bg-cinza"></div>
-        </ModalSquareForm>
-        <ModalSquareForm>
-          <div className="m-10 h-[166px] w-[166px] bg-cinza"></div>
-        </ModalSquareForm>
-        <ModalSquareForm>
-          <div className="m-10 h-[166px] w-[166px] bg-cinza"></div>
-        </ModalSquareForm>
+        {[...Array(3)].map((_, index) => (
+          <ModalSquareForm key={index}>
+            <div className="h-[266px] w-[266px] bg-red-700"></div>
+          </ModalSquareForm>
+        ))}
       </div>
       <Button text="Ver mais"></Button>
     </div>
-  );
+  )
 }

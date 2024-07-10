@@ -1,8 +1,8 @@
-import Button from '../form/Button';
-import ModalSquareForm from '../wrapper/ModalSquareForm';
-import FormInput from '../form/FormInput';
-import FormTitle from '../form/FormTitle';
-import Information from './Infomation';
+import Button from '../form/Button'
+import ModalSquareForm from '../wrapper/ModalSquareForm'
+import FormInput from '../form/FormInput'
+import FormTitle from '../form/FormTitle'
+import Information from './Infomation'
 
 export default function ForgotPasswordForm() {
   return (
@@ -16,5 +16,5 @@ export default function ForgotPasswordForm() {
         </form>
       </div>
     </ModalSquareForm>
-  );
+  )
 }
