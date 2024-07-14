@@ -8,7 +8,7 @@ export default function Register() {
     <div className="min-w-screen flex min-h-screen items-center justify-center">
       <Logo
         link="/"
-        className="absolute left-8 top-4 z-10 hidden cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-escuro md:block"
+        className="absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-900"
       />
       <div className="mb-14 mt-14">
         <RegisterForm />

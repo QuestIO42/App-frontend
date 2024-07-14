@@ -10,7 +10,7 @@ export default function FormInput({ label, type }: FormInputProps) {
         {label}
       </label>
       <input
-        className={`border-[2px] border-roxo-claro px-2 py-1 text-base font-semibold text-preto-texto shadow-default-btn focus:border-roxo-escuro focus:shadow-roxo-escuro sm:border-[2.5px] sm:px-3 sm:text-lg md:border-[3px] md:px-4 md:text-xl lg:text-2xl`}
+        className={`shadow-default-roxo-300 border-2 border-roxo-300 px-2 py-1 text-base font-semibold text-preto-texto focus:border-roxo-900 focus:shadow-roxo-900 sm:border-[2.5px] sm:px-3 sm:text-lg md:border-4 md:px-4 md:text-xl lg:text-2xl`}
         type={type}
       />
     </div>

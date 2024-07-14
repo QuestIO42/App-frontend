@@ -8,7 +8,7 @@ import AlreadyHasAAccount from './AlreadyHasAAcconunt'
 export default function RegisterForm() {
   return (
     <ModalSquareForm>
-      <div className="relative flex max-w-[60%] flex-col items-center justify-center p-5 sm:max-w-[70%] md:max-w-[80%] lg:max-w-[90%] xl:max-h-[700px] xl:min-w-[515px]">
+      <div className="relative flex flex-col items-center justify-center p-10 px-14 xl:min-w-[32rem]">
         <FormTitle title="Cadastro"></FormTitle>
         <form className="mt-16 flex flex-col items-center justify-center">
           <FormInput type="text" label="nome de usuário"></FormInput>

@@ -6,9 +6,9 @@ import SearchBar from './SearchBar'
 
 export default function Header() {
   return (
-    <header className="col-span-full flex h-24 w-full items-center justify-between bg-roxo-escuro px-8">
+    <header className="col-span-full flex h-24 w-full items-center justify-between bg-roxo-900 px-8">
       <div className="flex flex-1 items-center">
-        <Logo className="text-verde-claro" link={'/home'}></Logo>
+        <Logo className="text-verde-300" link={'/home'}></Logo>
       </div>
 
       <div className="flex flex-1 items-center justify-center">

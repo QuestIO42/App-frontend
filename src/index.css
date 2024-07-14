@@ -5,6 +5,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --roxo-300: #5a4ac2;
+  --roxo-500: #877dbf;
+  --roxo-900: #3e347b;
+  --amarelo: #f2db3f;
+  --vermelho: #f2543f;
+  --verde-300: #3ff29b;
+  --verde-900: #5d9d7e;
+  --cinza: #454545;
+  --preto-texto: rgba(0, 0, 0, 0.75);
+  --branco: #ffffff;
+  --laranja: #f2953f;
+  --preto: #1e1e1e;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -15,5 +30,5 @@ body {
   @apply font-spaceMono;
 }
 .btn_primary {
-  @apply flex cursor-pointer items-center justify-center border-[3px] border-roxo-claro bg-branco px-6 py-1 text-center font-bold text-preto-texto shadow-default-btn transition-all duration-200 ease-in-out hover:bg-roxo-claro hover:text-branco hover:shadow-default-btn-hover;
+  @apply flex cursor-pointer items-center justify-center border-[3px] border-roxo-300 bg-branco px-6 py-1 text-center font-bold text-preto-texto shadow-default-roxo-300 transition-all duration-200 ease-in-out hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500;
 }

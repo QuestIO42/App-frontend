@@ -6,7 +6,7 @@ export default function SearchBar() {
       <input
         type="text"
         placeholder="Pesquisar"
-        className="w-full border-4 border-preto p-2 shadow-default-black focus:border-roxo-escuro focus:shadow-roxo-escuro focus:outline-none"
+        className="shadow-default-preto-default border-preto-default w-full border-4 p-2 focus:border-roxo-900 focus:shadow-roxo-900 focus:outline-none"
       />
       <SearchButton></SearchButton>
     </form>

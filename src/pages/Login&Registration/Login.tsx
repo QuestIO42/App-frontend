@@ -15,16 +15,19 @@ export default function Login() {
   }
 
   return (
-    <div className="min-w-screen flex min-h-screen items-center justify-center">
+    <div className="min-w-screen relative flex min-h-screen items-center justify-center">
       <Logo
         link="/"
-        className="absolute left-8 top-4 z-10 hidden cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-escuro md:block"
+        className="hover:text-roxo-escuro absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out"
       />
-      <LoginForm />
-      <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
-      <CircuitBottomLeft className="absolute bottom-5 left-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomLeft>
-      <CircuitTopRight className="absolute right-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitTopRight>
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomRight>
+      <div className="mb-14 sm:mb-0">
+        <LoginForm />
+      </div>
+
+      <CircuitTopLeft className="absolute left-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitBottomLeft className="absolute bottom-5 left-0 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitTopRight className="absolute right-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[50%] max-w-[50%] xl:block" />
     </div>
   )
 }

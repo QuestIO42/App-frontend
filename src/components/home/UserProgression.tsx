@@ -1,14 +1,16 @@
 import ProgressXpBar from './ProgressXpBar'
-import ProgressXpSpinner from './ProgressXpSpinner'
+import ProgressCircle from './ProgressXpCircle'
 
 export default function UserProgression() {
   return (
-    <div className="flex h-40 w-[558px] items-center justify-between rounded-lg border-4 border-preto bg-branco p-4 shadow-default-black">
+    <div className="grid h-40 w-[558px] grid-cols-2 rounded-lg border-4 border-preto-default bg-branco p-4 shadow-default-preto">
       <div className="flex flex-col">
         <h2 className="text-xl font-bold">olá, Usuário!</h2>
-        <ProgressXpBar></ProgressXpBar>
+        <ProgressXpBar value={100}></ProgressXpBar>
       </div>
-      <ProgressXpSpinner></ProgressXpSpinner>
+      <div className="ml-auto flex items-center">
+        <ProgressCircle percentage={50}></ProgressCircle>
+      </div>
     </div>
   )
 }

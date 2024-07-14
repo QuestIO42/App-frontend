@@ -7,7 +7,7 @@ import Information from './Infomation'
 export default function ForgotPasswordForm() {
   return (
     <ModalSquareForm>
-      <div className="relative m-10 flex h-auto max-w-[60%] flex-col items-center justify-center sm:max-w-[70%] md:max-w-[80%] lg:max-w-[90%] lg:px-10 xl:min-w-[480px]">
+      <div className="relative flex flex-col items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
         <FormTitle title="Recuperar senha"></FormTitle>
         <Information></Information>
         <form className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16">

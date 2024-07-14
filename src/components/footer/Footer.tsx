@@ -2,7 +2,7 @@ import EmailIcon from '../svgComponents/icons/EmailIcon'
 
 export default function Footer() {
   return (
-    <footer className="bottom-0 flex min-h-[204px] w-screen flex-col items-center justify-center gap-16 bg-roxo-escuro p-4 text-center text-white">
+    <footer className="bg-roxo-900 bottom-0 flex min-h-[204px] w-screen flex-col items-center justify-center gap-16 p-4 text-center text-white">
       <div className="flex w-full items-center justify-around">
         <div className="flex flex-1 flex-col items-center justify-start">
           <p className="text-2xl font-bold text-amarelo">Contato</p>
