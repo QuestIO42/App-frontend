@@ -1,0 +1,51 @@
+/** @type {import('tailwindcss').Config} */
+import plugin from 'tailwindcss/plugin'
+
+export default {
+  content: ['./index.html', './src/**/*.{tsx,ts,js,jsx}'],
+  theme: {
+    extend: {
+      colors: {
+        roxo: {
+          300: 'var(--roxo-300)',
+          500: 'var(--roxo-500)',
+          900: 'var(--roxo-900)',
+        },
+        amarelo: 'var(--amarelo)',
+        vermelho: 'var(--vermelho)',
+        verde: {
+          300: 'var(--verde-300)',
+          900: 'var(--verde-900)',
+        },
+        cinza: 'var(--cinza)',
+        preto: {
+          texto: 'var(--preto-texto)',
+          default: 'var(--preto)',
+        },
+        branco: 'var(--branco)',
+        laranja: 'var(--laranja)',
+      },
+      fontFamily: {
+        spaceMono: ['"Space Mono"', 'monospace'],
+      },
+      boxShadow: {
+        'default-roxo-300': '0 0 0 0px #FFFFFF, 8px 8px #5A4AC2',
+        'default-roxo-500': '0 0 0 0px #FFFFFF, 8px 8px #3E347B',
+        'default-preto': '0 0 0 0px #FFFFFF, 8px 8px #1E1E1E',
+      },
+      backgroundImage: {
+        'grid-pattern': 'url(/grid.svg)',
+      },
+    },
+  },
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant('progress-unfilled', ['&::-webkit-progress-bar', '&'])
+      addVariant('progress-filled', [
+        '&::-webkit-progress-value',
+        '&::-moz-progress-bar',
+        '&',
+      ])
+    }),
+  ],
+}

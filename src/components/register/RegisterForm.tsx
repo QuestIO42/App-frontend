@@ -1,0 +1,25 @@
+import Button from '../form/Button'
+import ForgotPassword from '../form/ForgotPassword'
+import FormInput from '../form/FormInput'
+import FormTitle from '../form/FormTitle'
+import ModalSquareForm from '../wrapper/ModalSquareForm'
+import AlreadyHasAAccount from './AlreadyHasAAcconunt'
+
+export default function RegisterForm() {
+  return (
+    <ModalSquareForm>
+      <div className="relative flex flex-col items-center justify-center p-10 px-14 xl:min-w-[32rem]">
+        <FormTitle title="Cadastro"></FormTitle>
+        <form className="mt-16 flex flex-col items-center justify-center">
+          <FormInput type="text" label="nome de usuário"></FormInput>
+          <FormInput type="password" label="e-mail"></FormInput>
+          <FormInput type="text" label="senha"></FormInput>
+          <ForgotPassword></ForgotPassword>
+          <FormInput type="password" label="confirmar senha" />
+          <Button className="mt-4" text="Cadastrar"></Button>
+          <AlreadyHasAAccount></AlreadyHasAAccount>
+        </form>
+      </div>
+    </ModalSquareForm>
+  )
+}
