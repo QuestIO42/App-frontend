@@ -1,5 +1,3 @@
-import { CircularProgress } from '@mui/material'
-
 interface ProgressXpCircleProps {
   percentage: number // Assume que percentage é um número entre 0 e 100
 }
