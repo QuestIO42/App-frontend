@@ -15,3 +15,5 @@ semi = false
 quote_type = single
 trailing_comma = es5
 arrow_parens = always
+
+  [*.md]
