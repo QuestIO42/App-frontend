@@ -9,7 +9,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button({ text, className, ...rest }: ButtonProps) {
   return (
     <button
-      className={twMerge(className, 'btn_primary text-base sm:text-2xl')}
+      className={twMerge(
+        'text-base sm:text-2xl',
+        rest.disabled ? 'btn_disable' : 'btn_primary',
+        className
+      )}
       {...rest}
     >
       {text}

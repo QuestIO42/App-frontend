@@ -1,20 +1,79 @@
+import { useForm } from 'react-hook-form'
+import FormInput from '../form/FormInput'
 import Button from '../form/Button'
+import ForgotPassword from '../form/ForgotPassword'
+import FormTitle from '../form/FormTitle'
 import ModalSquareForm from '../wrapper/ModalSquareForm'
 import Cadastration from './Cadastration'
-import ForgotPassword from '../form/ForgotPassword'
-import FormInput from '../form/FormInput'
-import FormTitle from '../form/FormTitle'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import ErrorMessage from '../form/ErrorMessage'
+
+const LoginFormSchema = z.object({
+  email: z
+    .string({
+      required_error: 'O campo de e-mail é obrigatório',
+    })
+    .email({
+      message: 'O e-mail digitado não é válido',
+    }),
+  password: z
+    .string({
+      required_error: 'O campo de senha é obrigatório',
+    })
+    .min(6, {
+      message: 'A senha deve ter no mínimo 6 caracteres',
+    })
+    .max(20, { message: 'A senha deve ter no máximo 20 caracteres' }),
+})
+
+type LoginFormValues = z.infer<typeof LoginFormSchema>
 
 export default function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
+
+  async function handleLogin(data: LoginFormValues) {
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    console.log(data)
+  }
+
   return (
     <ModalSquareForm>
-      <div className="relative flex h-auto flex-col items-center justify-center p-10 md:px-5 md:py-10 xl:min-w-[30rem]">
+      <div className="relative flex h-auto flex-col items-center justify-center p-10 md:px-10 md:py-10 xl:min-w-[30rem]">
         <FormTitle title="Login"></FormTitle>
-        <form className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16">
-          <FormInput type="text" label="usuário ou e-mail"></FormInput>
-          <FormInput type="password" label="senha"></FormInput>
+        <form
+          onSubmit={handleSubmit(handleLogin)}
+          className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16"
+        >
+          <div className="flex flex-col items-start">
+            <FormInput
+              registerProps={register('email')}
+              type="text"
+              label="usuário ou e-mail"
+            />
+            {errors.email && ErrorMessage({ error: errors.email.message })}
+          </div>
+          <div className="flex flex-col items-start">
+            <FormInput
+              registerProps={register('password')}
+              type="password"
+              label="senha"
+            />
+            {errors.password &&
+              ErrorMessage({ error: errors.password.message })}
+          </div>
+
           <ForgotPassword></ForgotPassword>
-          <Button className="mt-4" text="Login"></Button>
+          <Button
+            disabled={isSubmitting}
+            type="submit"
+            className="mt-4"
+            text="Login"
+          ></Button>
           <Cadastration></Cadastration>
         </form>
       </div>
