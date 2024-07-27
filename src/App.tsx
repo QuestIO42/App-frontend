@@ -14,19 +14,22 @@ import ForgotPassword from './pages/Login@Registration/ForgotPassword'
 import { AuthProvider } from './context/AuthProvider'
 import NotFound from './pages/NotFound/NotFound'
 import ProtectedRoutes from './utils/ProtectedRoutes'
+import PublicRoute from './utils/PublicRoutes'
 
 export default function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route element={<PublicRoute />}>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+          </Route>
           <Route path="/not_found" element={<NotFound />} />
-          <Route path="*" element={<Navigate to={'/not_found'}></Navigate>} />
+          <Route path="*" element={<Navigate to="/not_found" />} />
 
-          <Route element={<ProtectedRoutes></ProtectedRoutes>}>
+          <Route element={<ProtectedRoutes />}>
             <Route path="/courses" element={<Courses />} />
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />
