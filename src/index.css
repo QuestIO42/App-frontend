@@ -32,3 +32,7 @@ body {
 .btn_primary {
   @apply flex cursor-pointer items-center justify-center border-[3px] border-roxo-300 bg-branco px-6 py-1 text-center font-bold text-preto-texto shadow-default-roxo-300 transition-all duration-200 ease-in-out hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500;
 }
+
+.btn_disable {
+  @apply cursor-not-allowed items-center justify-center border-[3px] border-roxo-300 bg-roxo-300 px-6 py-1 text-center font-bold text-branco opacity-50 shadow-default-roxo-500;
+}
