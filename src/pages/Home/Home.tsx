@@ -7,14 +7,40 @@ import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
+import { useAuth } from '@/context/AuthProvider'
+import { api } from '@/services/api'
+import { jwtDecode } from 'jwt-decode'
+import { useEffect } from 'react'
 
 export default function Home() {
+  const { user } = useAuth()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      try {
+        const { sub } = jwtDecode(token) as { sub: string }
+        const id = Number(sub)
+        api
+          .get(`/user/${id}`)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.error('Erro ao obter usuário:', error)
+          })
+      } catch (error) {
+        console.error('Token inválido:', error)
+      }
+    }
+  }, [])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
       <div className="col-span-full grid grid-cols-2">
         <div className="flex items-center justify-center">
-          <UserProgression />
+          <UserProgression username={user?.username} />
         </div>
         <div className="flex items-center justify-end">
           <CircuitTopRight />

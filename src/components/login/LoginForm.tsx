@@ -8,6 +8,7 @@ import Cadastration from './Cadastration'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
+import { useAuth } from '@/context/AuthProvider'
 
 const LoginFormSchema = z.object({
   email: z
@@ -30,6 +31,7 @@ const LoginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof LoginFormSchema>
 
 export default function LoginForm() {
+  const { signIn } = useAuth()
   const {
     register,
     handleSubmit,
@@ -37,8 +39,7 @@ export default function LoginForm() {
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
   async function handleLogin(data: LoginFormValues) {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log(data)
+    await signIn(data)
   }
 
   return (
