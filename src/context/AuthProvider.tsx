@@ -20,13 +20,23 @@ type SignInCredentials = {
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
-  logOut(): void
+
   isAuthenticated: boolean
   user: User | null
 }
 
 type AuthProviderProps = {
   children: React.ReactNode
+}
+
+export async function signOut() {
+  try {
+    await api.post('/auth/clear-cookie')
+    Cookies.remove('token')
+    window.location.href = '/'
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -40,15 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const token = Cookies.get('token')
 
     if (token) {
-      try {
-        const { sub } = jwtDecode<{ sub: string }>(token)
-        const id = Number(sub)
-        api.get(`/user/${id}`).then((response) => {
-          setUser(response.data)
-        })
-      } catch (error) {
-        logOut()
-      }
+      fetchPerson(token)
     }
   }, [])
 
@@ -59,31 +61,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       Cookies.set('token', token, { expires: 7 })
 
-      // Decode the token to get the user data
-      const { sub } = jwtDecode<{ sub: string }>(token)
-      const id = Number(sub)
-      const userResponse = await api.get(`/user/${id}`)
-      setUser(userResponse.data)
-
+      fetchPerson(token)
       navigate('/home')
     } catch (error) {
       console.error(error)
     }
   }
 
-  async function logOut() {
+  async function fetchPerson(token: string) {
     try {
-      await api.post('/auth/logout')
-      Cookies.remove('token')
-      setUser(null)
-      navigate('/')
-    } catch (error) {
-      console.error(error)
-    }
+      const { sub } = jwtDecode<{ sub: string }>(token)
+      const id = Number(sub)
+      const userResponse = await api.get(`/user/${id}`)
+      setUser(userResponse.data)
+    } catch (error) {}
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, logOut, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   )

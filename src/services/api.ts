@@ -1,3 +1,4 @@
+import { signOut } from '@/context/AuthProvider'
 import axios, { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
 
@@ -69,8 +70,7 @@ api.interceptors.response.use(
           })
         })
       } else {
-        Cookies.remove('token')
-        Cookies.remove('refreshToken')
+        signOut()
       }
     }
     return Promise.reject(error)
