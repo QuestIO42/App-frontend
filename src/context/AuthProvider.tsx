@@ -145,7 +145,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       fetchPerson(token)
       navigate('/home')
     } catch (error) {
-      console.error(error)
+      throw new Error('Erro ao fazer login')
     }
   }
 
