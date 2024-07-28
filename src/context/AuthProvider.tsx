@@ -19,6 +19,18 @@ type User = {
   college_register: string
   xp_count?: number
 }
+/* Usuario para testar as páginas sem desatuvar a autenticaçao*/
+const mockUser: User = {
+  id: 1,
+  fullname: 'Test User',
+  username: 'testuser',
+  email: 'test@example.com',
+  college_register: '123456',
+  xp_count: 100,
+};
+
+const mockToken = 'mock-token';
+const isTesting = true; /* mudar valor conforme necessário*/
 
 type SignInCredentials = {
   email: string
@@ -44,6 +56,7 @@ interface FailedRequest {
 let isRefreshing = false
 let failedRequestQueue: FailedRequest[] = []
 
+
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -55,10 +68,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = !!token
 
   useEffect(() => {
-    if (token) {
-      fetchPerson(token)
+    if (isTesting) {
+      setUser(mockUser);
+    } else if (token) {
+      fetchPerson(token);
     }
-  }, [token])
+  }, [token]);
 
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use(
@@ -137,18 +152,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-      const response = await api.post('/auth/signin', { email, password })
-      const { token } = response.data
-
-      setToken(token)
-      Cookies.set('token', token)
-      fetchPerson(token)
-      navigate('/home')
+      if (isTesting) {
+        setToken(mockToken);
+        Cookies.set('token', mockToken);
+        setUser(mockUser);
+        navigate('/home');
+      } else {
+        const response = await api.post('/auth/login', { email, password });
+        const { token } = response.data;
+        setToken(token);
+        Cookies.set('token', token);
+        fetchPerson(token);
+        navigate('/home');
+      }
     } catch (error) {
+<<<<<<< HEAD
       throw new Error('Erro ao fazer login')
+=======
+      console.error(error);
+>>>>>>> e085733b334323172c540a5553fb55ef0ad93e62
     }
   }
-
   async function fetchPerson(token: string) {
     try {
       const { sub } = jwtDecode<{ sub: string }>(token)
