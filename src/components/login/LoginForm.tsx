@@ -32,14 +32,30 @@ type LoginFormValues = z.infer<typeof LoginFormSchema>
 
 export default function LoginForm() {
   const { signIn } = useAuth()
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
   async function handleLogin(data: LoginFormValues) {
-    await signIn(data)
+    try {
+      await signIn(data)
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        setError('email', {
+          type: 'manual',
+          message: 'Este e-mail já está em uso',
+        })
+      } else {
+        setError('root', {
+          type: 'manual',
+          message: 'Usuário ou senha inválidos',
+        })
+      }
+    }
   }
 
   return (
@@ -56,7 +72,7 @@ export default function LoginForm() {
               type="text"
               label="usuário ou e-mail"
             />
-            {errors.email && ErrorMessage({ error: errors.email.message })}
+            {errors.email && <ErrorMessage error={errors.email.message} />}
           </div>
           <div className="flex flex-col items-start">
             <FormInput
@@ -64,18 +80,23 @@ export default function LoginForm() {
               type="password"
               label="senha"
             />
-            {errors.password &&
-              ErrorMessage({ error: errors.password.message })}
+            {errors.password && (
+              <ErrorMessage error={errors.password.message} />
+            )}
           </div>
 
-          <ForgotPassword></ForgotPassword>
+          <ForgotPassword />
+          <div className="ml-auto mr-auto">
+            {errors.root && <ErrorMessage error={errors.root.message} />}
+          </div>
+
           <Button
             disabled={isSubmitting}
             type="submit"
             className="mt-4"
             text="Login"
-          ></Button>
-          <Cadastration></Cadastration>
+          />
+          <Cadastration />
         </form>
       </div>
     </ModalSquareForm>
