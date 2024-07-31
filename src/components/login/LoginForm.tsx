@@ -40,21 +40,15 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
-  async function handleLogin(data: LoginFormValues) {
+  async function handleLogin({ email, password }: LoginFormValues) {
     try {
-      await signIn(data)
+      await signIn({ email, password })
     } catch (error: any) {
-      if (error.response && error.response.status === 409) {
-        setError('email', {
-          type: 'manual',
-          message: 'Este e-mail já está em uso',
-        })
-      } else {
-        setError('root', {
-          type: 'manual',
-          message: 'Usuário ou senha inválidos',
-        })
-      }
+      console.error(error, 'dsfds')
+      setError('root', {
+        type: 'manual',
+        message: 'Usuário ou senha inválidos',
+      })
     }
   }
 

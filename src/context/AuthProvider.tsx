@@ -6,10 +6,10 @@ import {
   useLayoutEffect,
 } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode'
 import { api } from '@/services/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
+<<<<<<< Updated upstream
 
 type User = {
   id: number
@@ -24,6 +24,12 @@ type SignInCredentials = {
   email: string
   password: string
 }
+=======
+import UserApi from '@/services/api/user'
+import AuthApi from '@/services/api/auth'
+import { SignInCredentials } from '@/interfaces/SignInCredentials'
+import { User } from '@/interfaces/User'
+>>>>>>> Stashed changes
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
@@ -137,37 +143,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
+<<<<<<< Updated upstream
       const response = await api.post('/auth/signin', { email, password })
       const { token } = response.data
+=======
+      const response = await AuthApi.signInUser({ email, password })
+      const { token } = response
+>>>>>>> Stashed changes
 
       setToken(token)
       Cookies.set('token', token)
       fetchPerson(token)
       navigate('/home')
     } catch (error) {
+      console.error('Erro no login:', error)
       throw new Error('Erro ao fazer login')
     }
   }
 
   async function fetchPerson(token: string) {
     try {
-      const { sub } = jwtDecode<{ sub: string }>(token)
-      const id = Number(sub)
-      const userResponse = await api.get(`/user/${id}`)
-      setUser(userResponse.data)
+      const response = await UserApi.getUser(token)
+      setUser(response)
     } catch (error) {
       console.error(error)
       signOut()
     }
   }
 
-  function signOut() {
-    api.post('/auth/clear-cookie').finally(() => {
+  async function signOut() {
+    try {
+      await AuthApi.clearCookies()
+    } finally {
       setToken(null)
       setUser(null)
       Cookies.remove('token')
-      navigate('/')
-    })
+      navigate('/login')
+    }
   }
 
   return (
