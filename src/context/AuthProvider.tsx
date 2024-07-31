@@ -9,27 +9,10 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-<<<<<<< Updated upstream
-
-type User = {
-  id: number
-  fullname: string
-  username: string
-  email: string
-  college_register: string
-  xp_count?: number
-}
-
-type SignInCredentials = {
-  email: string
-  password: string
-}
-=======
 import UserApi from '@/services/api/user'
 import AuthApi from '@/services/api/auth'
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
->>>>>>> Stashed changes
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
@@ -143,14 +126,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-<<<<<<< Updated upstream
-      const response = await api.post('/auth/signin', { email, password })
-      const { token } = response.data
-=======
       const response = await AuthApi.signInUser({ email, password })
       const { token } = response
->>>>>>> Stashed changes
-
       setToken(token)
       Cookies.set('token', token)
       fetchPerson(token)
