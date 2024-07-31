@@ -9,7 +9,7 @@ export default function Login() {
   return (
     <div className="min-w-screen relative flex min-h-screen items-center justify-center">
       <Logo
-        link="/login"
+        link="/"
         className="hover:text-roxo-escuro absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out"
       />
       <div className="mb-14 sm:mb-0">

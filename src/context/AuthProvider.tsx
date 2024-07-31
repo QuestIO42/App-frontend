@@ -155,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setToken(null)
       setUser(null)
       Cookies.remove('token')
-      navigate('/login')
+      navigate('/')
     }
   }
 

@@ -57,7 +57,7 @@ export default function RegisterForm() {
   }: RegisterFormValues) {
     try {
       await AuthApi.registerUser({ email, password, username })
-      navigate('/login')
+      navigate('/')
     } catch (error: any) {
       if (error.response.data.message === 'The email already exists.') {
         setError('email', {
