@@ -5,7 +5,7 @@ function NotFound() {
   const navigate = useNavigate()
 
   const goHome = useCallback(() => {
-    navigate('/')
+    navigate('/login')
   }, [])
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">

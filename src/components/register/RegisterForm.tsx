@@ -8,6 +8,8 @@ import AlreadyHasAAccount from './AlreadyHasAAcconunt'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
+import AuthApi from '@/services/api/auth'
+import { redirect, useNavigate } from 'react-router-dom'
 
 const RegisterFormSchema = z.object({
   username: z
@@ -38,17 +40,38 @@ const extendedRegisterFormSchema = RegisterFormSchema.refine(
 type RegisterFormValues = z.infer<typeof extendedRegisterFormSchema>
 
 export default function RegisterForm() {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(extendedRegisterFormSchema),
   })
 
-  async function handleRegister(data: RegisterFormValues) {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log(data)
+  async function handleRegister({
+    email,
+    password,
+    username,
+  }: RegisterFormValues) {
+    try {
+      await AuthApi.registerUser({ email, password, username })
+      navigate('/login')
+    } catch (error: any) {
+      if (error.response.data.message === 'The email already exists.') {
+        setError('email', {
+          type: 'manual',
+          message: 'Este e-mail já está em uso',
+        })
+      }
+      if (error.response.data.message === 'The username already exists.') {
+        setError('username', {
+          type: 'manual',
+          message: 'Este nome de usuário já está em uso',
+        })
+      }
+    }
   }
 
   return (

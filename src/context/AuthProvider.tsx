@@ -6,36 +6,13 @@ import {
   useLayoutEffect,
 } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode'
 import { api } from '@/services/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-
-type User = {
-  id: number
-  fullname: string
-  username: string
-  email: string
-  college_register: string
-  xp_count?: number
-}
-/* Usuario para testar as páginas sem desatuvar a autenticaçao*/
-const mockUser: User = {
-  id: 1,
-  fullname: 'Test User',
-  username: 'testuser',
-  email: 'test@example.com',
-  college_register: '123456',
-  xp_count: 100,
-}
-
-const mockToken = 'mock-token'
-const isTesting = false /* mudar valor conforme necessário*/
-
-type SignInCredentials = {
-  email: string
-  password: string
-}
+import UserApi from '@/services/api/user'
+import AuthApi from '@/services/api/auth'
+import { SignInCredentials } from '@/interfaces/SignInCredentials'
+import { User } from '@/interfaces/User'
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
@@ -67,9 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = !!token
 
   useEffect(() => {
-    if (isTesting) {
-      setUser(mockUser)
-    } else if (token) {
+    if (token) {
       fetchPerson(token)
     }
   }, [token])
@@ -151,42 +126,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-      if (isTesting) {
-        setToken(mockToken)
-        Cookies.set('token', mockToken)
-        setUser(mockUser)
-        navigate('/home')
-      } else {
-        const response = await api.post('/auth/signin', { email, password })
-        const { token } = response.data
-        setToken(token)
-        Cookies.set('token', token)
-        fetchPerson(token)
-        navigate('/home')
-      }
+      const response = await AuthApi.signInUser({ email, password })
+      const { token } = response
+      setToken(token)
+      Cookies.set('token', token)
+      fetchPerson(token)
+      navigate('/home')
     } catch (error) {
+      console.error('Erro no login:', error)
       throw new Error('Erro ao fazer login')
     }
   }
+
   async function fetchPerson(token: string) {
     try {
-      const { sub } = jwtDecode<{ sub: string }>(token)
-      const id = Number(sub)
-      const userResponse = await api.get(`/user/${id}`)
-      setUser(userResponse.data)
+      const response = await UserApi.getUser(token)
+      setUser(response)
     } catch (error) {
       console.error(error)
       signOut()
     }
   }
 
-  function signOut() {
-    api.post('/auth/clear-cookie').finally(() => {
+  async function signOut() {
+    try {
+      await AuthApi.clearCookies()
+    } finally {
       setToken(null)
       setUser(null)
       Cookies.remove('token')
-      navigate('/')
-    })
+      navigate('/login')
+    }
   }
 
   return (
