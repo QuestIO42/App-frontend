@@ -3,7 +3,7 @@ import Logo from '@/components/svgComponents/Logo'
 import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
 import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
   return (
     <div className="min-w-screen flex min-h-screen items-center justify-center">
       <Logo
