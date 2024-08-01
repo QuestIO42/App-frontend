@@ -1,5 +1,5 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
-import { api } from '../api'
+import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
 
 async function signInUser({ email, password }: SignInCredentials) {

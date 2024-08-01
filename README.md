@@ -33,7 +33,18 @@ npm i
 
 ## Rodar o projeto
 
-- Para rodar o projeto utilize o seguinte comandao
+- Crie e copie as variáveis de ambiente dos exemplos
+
+  ```bash
+  cp .env.development.example .env.development
+  cp .env.production.example .env.production
+  ```
+
+- Para rodar o projeto em modo de desenvolvimento utilize
   ```bash
   npm run dev
+  ```
+- Para rodar o projeto em modo de desenvolvimento utilize
+  ```bash
+  npm run start
   ```

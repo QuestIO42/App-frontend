@@ -6,13 +6,14 @@ import {
   useLayoutEffect,
 } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { api } from '@/services/api'
+import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
 import UserApi from '@/services/api/user'
 import AuthApi from '@/services/api/auth'
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
+import { mockUser } from '@/utils/mockUser'
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
@@ -41,97 +42,112 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return Cookies.get('token') || null
   })
   const navigate = useNavigate()
-  const isAuthenticated = !!token
+  const isAuthenticated =
+    import.meta.env.VITE_APP_ENV == 'development' ? true : !!token
 
   useEffect(() => {
-    if (token) {
+    if (token && import.meta.env.VITE_APP_ENV !== 'development') {
       fetchPerson(token)
+    } else {
+      setUser(mockUser)
     }
   }, [token])
 
   useLayoutEffect(() => {
-    const authInterceptor = api.interceptors.request.use(
-      (config) => {
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`
-        }
-        return config
-      },
-      (error) => Promise.reject(error)
-    )
-    return () => {
-      api.interceptors.request.eject(authInterceptor)
-    }
-  }, [token])
-
-  useLayoutEffect(() => {
-    const refreshInterceptor = api.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config
-
-        if (error.response.status === 401) {
-          if (error.response.data.message === 'Token expired.') {
-            if (!isRefreshing) {
-              isRefreshing = true
-              api
-                .patch('/auth/token/refresh', {}, { withCredentials: true })
-                .then((response) => {
-                  const { token } = response.data
-                  setToken(token)
-                  Cookies.set('token', token)
-
-                  // Atualiza o header Authorization com o novo token de acesso
-                  api.defaults.headers['Authorization'] = `Bearer ${token}`
-
-                  failedRequestQueue.forEach((request) =>
-                    request.onSuccess(token)
-                  )
-                  failedRequestQueue = []
-                })
-                .catch((err) => {
-                  failedRequestQueue.forEach((request) =>
-                    request.onFailure(err)
-                  )
-                  failedRequestQueue = []
-                })
-                .finally(() => {
-                  isRefreshing = false
-                })
-            }
-
-            return new Promise((resolve, reject) => {
-              failedRequestQueue.push({
-                onSuccess: (token: string) => {
-                  originalRequest.headers['Authorization'] = `Bearer ${token}`
-
-                  resolve(api(originalRequest))
-                },
-                onFailure: (err: AxiosError) => {
-                  reject(err)
-                },
-              })
-            })
-          } else {
-            signOut()
+    if (import.meta.env.VITE_APP_ENV !== 'development') {
+      const authInterceptor = api.interceptors.request.use(
+        (config) => {
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`
           }
-        }
-        return Promise.reject(error)
+          return config
+        },
+        (error) => Promise.reject(error)
+      )
+      return () => {
+        api.interceptors.request.eject(authInterceptor)
       }
-    )
-    return () => {
-      api.interceptors.response.eject(refreshInterceptor)
+    }
+  }, [token])
+
+  useLayoutEffect(() => {
+    if (import.meta.env.VITE_APP_ENV !== 'development') {
+      const refreshInterceptor = api.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+          const originalRequest = error.config
+
+          if (error.response.status === 401) {
+            if (error.response.data.message === 'Token expired.') {
+              if (!isRefreshing) {
+                isRefreshing = true
+                api
+                  .patch('/auth/token/refresh', {}, { withCredentials: true })
+                  .then((response) => {
+                    const { token } = response.data
+                    setToken(token)
+                    Cookies.set('token', token)
+
+                    // Atualiza o header Authorization com o novo token de acesso
+                    api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+                    failedRequestQueue.forEach((request) =>
+                      request.onSuccess(token)
+                    )
+                    failedRequestQueue = []
+                  })
+                  .catch((err) => {
+                    failedRequestQueue.forEach((request) =>
+                      request.onFailure(err)
+                    )
+                    failedRequestQueue = []
+                  })
+                  .finally(() => {
+                    isRefreshing = false
+                  })
+              }
+
+              return new Promise((resolve, reject) => {
+                failedRequestQueue.push({
+                  onSuccess: (token: string) => {
+                    originalRequest.headers['Authorization'] = `Bearer ${token}`
+
+                    resolve(api(originalRequest))
+                  },
+                  onFailure: (err: AxiosError) => {
+                    reject(err)
+                  },
+                })
+              })
+            } else {
+              signOut()
+            }
+          }
+          return Promise.reject(error)
+        }
+      )
+      return () => {
+        api.interceptors.response.eject(refreshInterceptor)
+      }
     }
   }, [token])
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-      const response = await AuthApi.signInUser({ email, password })
-      const { token } = response
-      setToken(token)
-      Cookies.set('token', token)
-      fetchPerson(token)
-      navigate('/home')
+      if (import.meta.env.VITE_APP_ENV === 'development') {
+        // Em desenvolvimento, simula um usuário autenticado
+        setToken('fake-token')
+        setUser(mockUser)
+        Cookies.set('token', 'fake-token')
+        navigate('/home')
+      } else {
+        const response = await AuthApi.signInUser({ email, password })
+        const { token } = response
+        setToken(token)
+        Cookies.set('token', token)
+        fetchPerson(token)
+        navigate('/home')
+      }
     } catch (error) {
       console.error('Erro no login:', error)
       throw new Error('Erro ao fazer login')
@@ -150,7 +166,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     try {
-      await AuthApi.clearCookies()
+      if (import.meta.env.VITE_APP_ENV === 'development') {
+        // Em desenvolvimento, limpa a simulação de autenticação
+        setToken(null)
+        setUser(null)
+        Cookies.remove('token')
+        navigate('/')
+      } else {
+        await AuthApi.clearCookies()
+      }
     } finally {
       setToken(null)
       setUser(null)

@@ -8,7 +8,7 @@ import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
 import { useAuth } from '@/context/AuthProvider'
-import { api } from '@/services/api'
+import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
 
