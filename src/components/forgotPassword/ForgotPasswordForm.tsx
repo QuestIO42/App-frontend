@@ -1,5 +1,5 @@
-import Button from '../form/Button'
-import ModalSquareForm from '../wrapper/ModalSquareForm'
+import Button from '../utility/Button'
+import ModalSquareForm from '../utility/ModalSquareForm'
 import FormInput from '../form/FormInput'
 import FormTitle from '../form/FormTitle'
 import Information from './Infomation'

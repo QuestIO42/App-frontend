@@ -1,6 +1,5 @@
-import { useAuth } from '@/context/AuthProvider'
 import ProgressXpBar from './ProgressXpBar'
-import ProgressCircle from './ProgressXpCircle'
+import ProgressXpCircle from './ProgressXpCircle'
 
 interface UserProgressionProps {
   username?: string
@@ -13,8 +12,8 @@ export default function UserProgression({ username }: UserProgressionProps) {
         <h2 className="center text-xl font-bold">olá {username} !</h2>
         <ProgressXpBar value={75}></ProgressXpBar>
       </div>
-      <div className="ml-auto flex-col items-center">
-        <ProgressCircle level={1} progress={50}></ProgressCircle>
+      <div className="ml-auto flex items-center justify-center">
+        <ProgressXpCircle level={1} progress={50}></ProgressXpCircle>
       </div>
     </div>
   )
