@@ -1,0 +1,65 @@
+import { ButtonHTMLAttributes } from 'react'
+import { cva } from 'class-variance-authority'
+import { cn } from '@/utils/cn'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string
+  className?: string
+  variant?: 'primary' | 'secondary'
+  buttonDisabled?: 'active' | 'disactive'
+  size?: 'small' | 'medium' | 'large'
+}
+
+const buttonVariants = cva(
+  'flex active:scale-90 cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out',
+  {
+    variants: {
+      variant: {
+        primary:
+          'border-roxo-300 shadow-default-roxo-300 hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
+        secondary:
+          'border-verde-300 text-verde-300 shadow-default-verde-300 hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
+      },
+      size: {
+        small: 'text-lg',
+        medium: 'text-2xl',
+        large: 'text-3xl',
+      },
+      buttonDisabled: {
+        active:
+          'cursor-not-allowed bg-roxo-300 opacity-50 shadow-default-roxo-500',
+        disactive: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'medium',
+      buttonDisabled: 'disactive',
+    },
+  }
+)
+
+export default function Button({
+  text,
+  className,
+  variant,
+  buttonDisabled,
+  size,
+  ...rest
+}: ButtonProps) {
+  return (
+    <button
+      className={cn(
+        buttonVariants({
+          variant,
+          buttonDisabled: rest.disabled ? 'active' : 'disactive',
+          size,
+        }),
+        className
+      )}
+      {...rest}
+    >
+      {text}
+    </button>
+  )
+}

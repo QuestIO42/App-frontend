@@ -16,12 +16,14 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/NotReady/Course'
 import Courses from './pages/NotReady/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import TestPage from './pages/testPage'
 
 export default function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          <Route path="/test" element={<TestPage></TestPage>} />
           <Route element={<PublicRoute />}>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />

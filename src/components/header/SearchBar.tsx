@@ -8,7 +8,7 @@ export default function SearchBar() {
         placeholder="Pesquisar"
         className="w-full border-4 border-preto-default p-2 shadow-default-preto focus:border-roxo-900 focus:shadow-roxo-900 focus:outline-none"
       />
-      <SearchButton></SearchButton>
+      <SearchButton className="transition-all duration-300 ease-in-out active:scale-90"></SearchButton>
     </form>
   )
 }
