@@ -7,10 +7,18 @@ import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
+import UserCard from '@/components/home/UserCard'
+import ProfileIcon from '@/components/svgComponents/icons/ProfileIcon'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
+import User from '@/services/api/user'
+
+const ola = [ {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 1},
+  {name: 'Roucas', profilePicture: ProfileIcon, college: 'Universade Federal de São Carlos ', rating: 2},
+  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 3}]
+
 
 export default function Home() {
   const { user } = useAuth()
@@ -57,7 +65,9 @@ export default function Home() {
             title="Laboratórios virtuais"
           ></CoursesTemplate>
         </div>
-        <Ranking></Ranking>
+        <Ranking>
+          <UserCard users={ola}/>
+        </Ranking>
         <CircuitHome className="absolute bottom-0 right-0"></CircuitHome>
       </div>
       <Footer></Footer>
