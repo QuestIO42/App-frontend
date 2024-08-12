@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
 import AuthApi from '@/services/api/auth'
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterFormSchema = z.object({
   username: z
@@ -59,16 +59,30 @@ export default function RegisterForm() {
       await AuthApi.registerUser({ email, password, username })
       navigate('/')
     } catch (error: any) {
-      if (error.response.data.message === 'The email already exists.') {
-        setError('email', {
+      if (error.response && error.response.data) {
+        if (error.response.data.message === 'The email already exists.') {
+          setError('email', {
+            type: 'manual',
+            message: 'Este e-mail já está em uso',
+          })
+        } else if (
+          error.response.data.message === 'The username already exists.'
+        ) {
+          setError('username', {
+            type: 'manual',
+            message: 'Este nome de usuário já está em uso',
+          })
+        } else {
+          setError('root', {
+            type: 'manual',
+            message:
+              'Ocorreu um erro ao tentar registrar. Tente novamente mais tarde.',
+          })
+        }
+      } else {
+        setError('root', {
           type: 'manual',
-          message: 'Este e-mail já está em uso',
-        })
-      }
-      if (error.response.data.message === 'The username already exists.') {
-        setError('username', {
-          type: 'manual',
-          message: 'Este nome de usuário já está em uso',
+          message: 'Erro ao cadastrar usuário. Tente novamente mais tarde.',
         })
       }
     }
@@ -110,6 +124,7 @@ export default function RegisterForm() {
           {errors.confirmPassword && (
             <ErrorMessage error={errors.confirmPassword.message} />
           )}
+          {errors.root && <ErrorMessage error={errors.root.message} />}
           <Button disabled={isSubmitting} className="mt-4" text="Cadastrar" />
           <AlreadyHasAAccount />
         </form>

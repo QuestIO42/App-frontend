@@ -1,6 +1,5 @@
 import BookIcon from '../svgComponents/icons/BookIcon'
 import ModalSquareForm from '../utility/ModalSquareForm'
-import Button from '../utility/Button'
 
 export default function UserCourses() {
   return (

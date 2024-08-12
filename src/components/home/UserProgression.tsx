@@ -1,5 +1,5 @@
-import ProgressXpBar from './ProgressXpBar'
-import ProgressXpCircle from './ProgressXpCircle'
+import ProgressXpBar from '../utility/ProgressXpBar'
+import ProgressXpCircle from '../utility/ProgressXpCircle'
 
 interface UserProgressionProps {
   username?: string

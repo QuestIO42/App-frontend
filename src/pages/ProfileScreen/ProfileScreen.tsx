@@ -4,10 +4,7 @@ import UserCourses from '@/components/profile/UserCourses'
 import UserProfile from '@/components/profile/UserProfile'
 import UserStatistics from '@/components/profile/UserStatistics'
 
-import { useParams } from 'react-router-dom'
-
 export default function ProfileScreen() {
-  const { userId } = useParams()
   return (
     <div className="bg-grid-pattern">
       <Header></Header>
