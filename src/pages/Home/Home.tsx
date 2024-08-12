@@ -15,9 +15,20 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
 import User from '@/services/api/user'
 
+/* APENAS PARA TESTE; DEVE SER REMOVIDO POSTERIORMENTE
+ OU COMENTADO */
 const ola = [ {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 1},
   {name: 'Roucas', profilePicture: ProfileIcon, college: 'Universade Federal de São Carlos ', rating: 2},
-  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 3}]
+  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 3},
+  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 4},
+  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 5},
+  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 6},
+  {name: 'Roucas', profilePicture: ProfileIcon, college: 'Universade Federal de São Carlos ', rating: 7},
+  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 8},
+  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 9},
+  {name: 'Xaleas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 10},
+  {name: 'Xaleas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 11},
+]
 
 
 export default function Home() {
@@ -46,7 +57,7 @@ export default function Home() {
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
-      <div className="col-span-full grid grid-cols-2">
+      <div className="col-span-full grid ml-10 grid-cols-2">
         <div className="flex items-center justify-center">
           <UserProgression username={user?.username} />
         </div>
