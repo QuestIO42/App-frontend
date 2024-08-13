@@ -7,28 +7,13 @@ import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
-import UserCard from '@/components/home/UserCard'
-import ProfileIcon from '@/components/svgComponents/icons/ProfileIcon'
+import RankingItem from '@/components/home/RankingItem'
+import {mockUsers} from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
-import User from '@/services/api/user'
 
-/* APENAS PARA TESTE; DEVE SER REMOVIDO POSTERIORMENTE
- OU COMENTADO */
-const ola = [ {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 1},
-  {name: 'Roucas', profilePicture: ProfileIcon, college: 'Universade Federal de São Carlos ', rating: 2},
-  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 3},
-  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 4},
-  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 5},
-  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 6},
-  {name: 'Roucas', profilePicture: ProfileIcon, college: 'Universade Federal de São Carlos ', rating: 7},
-  {name: 'Peter_Parker', profilePicture: ProfileIcon , college: 'Universidade de NY', rating: 8},
-  {name: 'Lucas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 9},
-  {name: 'Xaleas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 10},
-  {name: 'Xaleas', profilePicture: ProfileIcon , college: 'UFSCar ', rating: 11},
-]
 
 
 export default function Home() {
@@ -77,7 +62,7 @@ export default function Home() {
           ></CoursesTemplate>
         </div>
         <Ranking>
-          <UserCard users={ola}/>
+          <RankingItem users={mockUsers.users}/>
         </Ranking>
         <CircuitHome className="absolute bottom-0 right-0"></CircuitHome>
       </div>

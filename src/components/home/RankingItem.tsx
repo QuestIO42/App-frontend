@@ -1,5 +1,5 @@
 import { ElementType } from 'react'
-interface UserCardProps {
+interface RankingItemProps {
   name: string
   profilePicture: ElementType
   college: string
@@ -7,10 +7,10 @@ interface UserCardProps {
 }
 
 interface UserListProps {
-  users: UserCardProps[]
+  users: RankingItemProps[]
 }
 //Sorteio realizado por XP total?
-export default function UserCard({ users }: UserListProps) {
+export default function RankingItem({ users }: UserListProps) {
   return (
     <>
       {users.slice(0, 10).map((user) => (
