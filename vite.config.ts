@@ -5,15 +5,7 @@ import path from 'path'
 export default defineConfig({
   server: {
     port: 3000,
-    host: '0.0.0.0', // Ou seu hostname local
-    hmr: {
-      host: 'react.vlab.dc.ufscar.br',
-      port: 3000,
-      protocol: 'wss', // WebSocket Secure
-    },
-    proxy: {
-      '/': 'http://localhost:3000',
-    },
+    host: true,
   },
   plugins: [react()],
   resolve: {
