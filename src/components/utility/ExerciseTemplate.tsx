@@ -2,6 +2,8 @@ import { ButtonHTMLAttributes } from 'react'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
+import OpenEyeIcon from '../svgComponents/icons/OpenEyeIcon'
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text: string
     className?: string
@@ -10,12 +12,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const buttonVariants = cva(
-    'flex active:scale-90 cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza',
+    'inline-flex active:scale-90 cursor-pointer items-center justify-between border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza bg-branco flex-nowrap',
     {
       variants: {
         size: {
           small: 'text-lg',
-          medium: 'text-2xl',
+          medium: 'text-2xl', //min-w-[400px]
           large: 'text-3xl',
         },
         buttonDisabled: {
@@ -39,6 +41,12 @@ export default function ExerciseTemplate({
     ...rest
   }: ButtonProps){
 
+    const IconSize = {
+        small: 30,
+        medium: 36,
+        large: 36,
+    };
+
     return(
         <button
         className={cn(
@@ -50,8 +58,9 @@ export default function ExerciseTemplate({
         )}
         {...rest}
       >
-        {text}
-        {/* svg */}
+        <span className="whitespace-nowrap">{text}</span>
+
+        <OpenEyeIcon width={IconSize[size || 'medium']} height={IconSize[size || 'medium']} className={'ml-12'}/>
       </button>
     )
 }
