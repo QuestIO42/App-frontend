@@ -3,7 +3,8 @@ import { api } from './api'
 
 async function getUser(token: string) {
   const { sub } = jwtDecode<{ sub: string }>(token)
-  const id = Number(sub)
+  const id = sub
+  console.log('id', id)
   const userResponse = await api.get(`/user/${id}`)
   return userResponse.data
 }
