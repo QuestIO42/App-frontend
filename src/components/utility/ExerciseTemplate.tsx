@@ -2,8 +2,6 @@ import { ButtonHTMLAttributes, ElementType } from 'react'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
-import OpenEyeIcon from '../svgComponents/icons/OpenEyeIcon'
-
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string
   className?: string
