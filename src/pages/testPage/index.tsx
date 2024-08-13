@@ -1,7 +1,13 @@
+import LockIcon from '@/components/svgComponents/icons/LockIcon'
+import ExerciseTemplate from '@/components/utility/ExerciseTemplate'
+
 export default function TestPage() {
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <h1>Essa pagina é destinada a criação de componentes</h1>
+      <ExerciseTemplate
+        Icon={LockIcon}
+        text="Circuitos Combinacionais"
+      ></ExerciseTemplate>
     </div>
   )
 }
