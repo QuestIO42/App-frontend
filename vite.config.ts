@@ -8,7 +8,7 @@ export default defineConfig({
     host: '0.0.0.0', // Ou seu hostname local
     hmr: {
       host: 'react.vlab.dc.ufscar.br',
-      port: 443,
+      port: 3000,
       protocol: 'wss', // WebSocket Secure
     },
     proxy: {
