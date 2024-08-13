@@ -12,7 +12,7 @@ export default defineConfig({
       protocol: 'wss', // WebSocket Secure
     },
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/': 'http://localhost:3000',
     },
   },
   plugins: [react()],
