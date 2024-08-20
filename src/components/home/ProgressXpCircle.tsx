@@ -5,6 +5,10 @@ interface ProgressCircleXp {
 /* Há uma adaptção interessante aqui. Fazer -progress para que o circulo comece
 no local adequado, como está no figma. */
 
+/*
+<svg width="15.625em" height="8.125em" viewBox="0 0 250 160">
+15.625em = 250px; 8.125em = 130px
+*/
 export default function ProgressXpCircle({
   level,
   progress,
@@ -17,7 +21,7 @@ export default function ProgressXpCircle({
 
   return (
     <div className="flex items-center justify-center">
-      <svg width="12em" height="12em" viewBox="0 43 250 250">
+      <svg width="15.625em" height="8.125em" viewBox="0 0 250 160">
         <defs>
           <filter id="shadow">
             <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="black" />
@@ -29,7 +33,7 @@ export default function ProgressXpCircle({
           fill="transparent"
           r={normalizedRadius}
           cx={125}
-          cy={125}
+          cy={80}
         />
         <circle
           strokeWidth={stroke}
@@ -39,7 +43,7 @@ export default function ProgressXpCircle({
           fill="transparent"
           r={normalizedRadius}
           cx={125}
-          cy={125}
+          cy={80}
           filter="url(#shadow)"
         />
         <text
