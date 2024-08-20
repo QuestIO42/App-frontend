@@ -9,7 +9,6 @@ interface RankingItemProps {
 interface UserListProps {
   users: RankingItemProps[]
 }
-//Sorteio realizado por XP total?
 export default function RankingItem({ users }: UserListProps) {
   return (
     <>
