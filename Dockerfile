@@ -1,13 +1,20 @@
-FROM node:21
+FROM node:21-alpine
 
-WORKDIR /frontend
+WORKDIR /tmp/frontend
 
-COPY package.json .
+COPY package.json ./
 
-RUN npm install
+RUN npm i
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD [ "npm","run","start" ]
+RUN mkdir -p /usr/share/nginx/html
+
+RUN mv dist/* /usr/share/nginx/html
+
+WORKDIR /
+
+RUN rm -rf /tmp/frontend
+
