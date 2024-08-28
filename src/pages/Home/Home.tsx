@@ -7,6 +7,8 @@ import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
+import RankingItem from '@/components/home/RankingItem'
+import { mockUsers } from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
@@ -57,7 +59,11 @@ export default function Home() {
             title="Laboratórios virtuais"
           ></CoursesTemplate>
         </div>
-        <Ranking></Ranking>
+
+        <Ranking>
+          <RankingItem users={mockUsers.users} />
+        </Ranking>
+
         <CircuitHome className="absolute bottom-0 right-0"></CircuitHome>
       </div>
       <Footer></Footer>

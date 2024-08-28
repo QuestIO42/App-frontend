@@ -11,5 +11,6 @@ export default function UserRank() {
         <p className="text-left text-lg font-bold text-amarelo">geral: 150°</p>
       </div>
     </div>
+
   )
 }

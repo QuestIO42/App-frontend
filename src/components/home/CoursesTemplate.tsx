@@ -9,20 +9,20 @@ interface CoursesTemplateProps {
 
 export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-20">
-      <div className="mr-auto flex items-center justify-center gap-3">
+    <div className="flex flex-col items-center justify-center gap-16">
+      <div className="ml-14 mr-auto flex items-center justify-center gap-3">
         <Icon></Icon>
         <h2 className="mr-auto text-4xl font-bold">{title}</h2>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-20">
+      <div className="ml-12 flex flex-wrap justify-center gap-16">
         {[...Array(3)].map((_, index) => (
           <ModalSquareForm key={index}>
-            <div className="h-[266px] w-[266px] bg-red-700"></div>
+            <div className="h-[250px] w-[250px] bg-red-700"></div>
           </ModalSquareForm>
         ))}
       </div>
-      <Button text="Ver mais"></Button>
+      <Button text="ver mais"></Button>
     </div>
   )
 }

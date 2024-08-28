@@ -1,16 +1,22 @@
 import RewardIcon from '../svgComponents/icons/RewardIcon'
 
-export default function Ranking() {
+interface RankingProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export default function Ranking(Children: RankingProps) {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="shadow-default-roxo-500 flex min-h-[80px] min-w-[250px] items-center justify-center bg-roxo-300">
-        <p className="text-center text-xl font-bold text-amarelo">
-          Ranking Geral
+    <div className={`flex flex-col gap-5`}>
+      <div className="flex min-h-[80px] max-w-[23rem] items-center justify-center bg-roxo-300 shadow-default-roxo-500">
+        <p className="mr-2 text-center text-2xl font-bold text-amarelo">
+          ranking geral
         </p>
         <RewardIcon></RewardIcon>
       </div>
-
-      <div className="shadow-default-roxo-500 min-h-[600px] min-w-[326px] bg-roxo-500"></div>
+      <div className="h-auto max-w-[23rem] bg-roxo-500 px-4 py-2 shadow-default-roxo-500">
+        {Children.children}
+      </div>
     </div>
   )
 }
