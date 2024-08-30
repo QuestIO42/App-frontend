@@ -16,7 +16,7 @@ export default function ProgressXpCircle({
   const strokeDashoffset = circumference - (-progress / 100) * circumference
 
   return (
-    <svg width="12em" height="12em" viewBox="0 43 250 250">
+    <svg width="15em" height="8em" viewBox="0 0 200 160 ">
       <defs>
         <filter id="shadow">
           <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="black" />
@@ -27,8 +27,8 @@ export default function ProgressXpCircle({
         stroke={'#F2DB3F'}
         fill="transparent"
         r={normalizedRadius}
-        cx={125}
-        cy={125}
+        cx={100}
+        cy={80}
       />
       <circle
         strokeWidth={stroke}
@@ -37,8 +37,8 @@ export default function ProgressXpCircle({
         stroke={'#F2953F'}
         fill="transparent"
         r={normalizedRadius}
-        cx={125}
-        cy={125}
+        cx={100}
+        cy={80}
         filter="url(#shadow)"
       />
       <text
