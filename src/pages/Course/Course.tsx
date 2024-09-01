@@ -56,15 +56,24 @@ export default function Course() {
       </div>
 
 
-      <div className="relative col-span-full row-auto flex items-start justify-around">
-        <div className="">
+      <div className="relative col-span-full flex-col flex items-end mr-4 justify-around">
 
-
-        </div>
         <Ranking>
           <RankingItem users={mockUsers.users}/>
         </Ranking>
-
+        <div className=" min-h-[271px] max-w-[23em] min-w-[300px] mt-10 min-w-[23.2rem] items-center justify-center bg-laranja shadow-default-laranja">
+        <p className="mr-2 text-center items-center mt-6 text-3xl font-bold text-gray-800">
+          fórum
+        </p>
+        <br />
+        <hr className="border-t-2 border-gray-700 mx-8 mb-4" />
+        <p className="text-center flex flex-col px-7 text-2xl font-bold text-gray-800">
+          Dúvidas? Acrescente um novo tópico de discussão ao fórum!
+        </p>
+        <div className="flex  justify-center">
+        <Button variant='tertiary' text="entrar" size="small"></Button>
+        </div>
+      </div>
       </div>
       <Footer></Footer>
     </div>

@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string
   className?: string
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' |'tertiary'
   buttonDisabled?: 'active' | 'disactive'
   size?: 'small' | 'medium' | 'large'
 }
@@ -19,6 +19,8 @@ const buttonVariants = cva(
           'border-roxo-300 shadow-default-roxo-300 hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
         secondary:
           'border-verde-300 text-verde-300 shadow-default-verde-300 hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
+        tertiary:
+          'border-laranja bg-white text-laranja-300 shadow-default-laranja hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
       },
       size: {
         small: 'text-lg',
