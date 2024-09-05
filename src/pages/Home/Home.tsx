@@ -14,6 +14,9 @@ import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
 
+import ExercisesGroup from '@/components/course/ExercisesGroup'
+import LampIcon from '@/components/svgComponents/icons/LampIcon'
+
 export default function Home() {
   const { user } = useAuth()
 
@@ -39,6 +42,7 @@ export default function Home() {
   }, [])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
+      <ExercisesGroup title='circuitos lógicos' Icon={LampIcon}/>
       <Header />
       <div className="col-span-full grid grid-cols-2">
         <div className="flex items-center justify-center">

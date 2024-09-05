@@ -42,8 +42,8 @@ export default function ExerciseTemplate({
       )}
       {...rest}
     >
-      {text}
-      <Icon className="h-7 w-7"></Icon>
+      <span className='whitespace-nowrap'>{text}</span>
+      <Icon className="h-7 w-7 shrink-0"></Icon>
     </button>
   )
 }
