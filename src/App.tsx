@@ -17,6 +17,7 @@ import Course from './pages/NotReady/Course'
 import Courses from './pages/NotReady/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
 
+
 export default function App() {
   return (
     <Router>
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+
           </Route>
           <Route path="/not_found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not_found" />} />
@@ -35,6 +37,7 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
+
           </Route>
         </Routes>
       </AuthProvider>
