@@ -16,6 +16,7 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/NotReady/Course'
 import Courses from './pages/NotReady/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import Teste from './pages/testPage/index'
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
+            <Route path="/test" element={<Teste />} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -8,14 +8,13 @@ import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
 import RankingItem from '@/components/home/RankingItem'
+import ExercisesGroup from '@/components/course/ExercisesGroup'
 import { mockUsers } from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
 
-import ExercisesGroup from '@/components/course/ExercisesGroup'
-import LampIcon from '@/components/svgComponents/icons/LampIcon'
 
 export default function Home() {
   const { user } = useAuth()
@@ -42,7 +41,6 @@ export default function Home() {
   }, [])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
-      <ExercisesGroup title='circuitos lógicos' Icon={LampIcon}/>
       <Header />
       <div className="col-span-full grid grid-cols-2">
         <div className="flex items-center justify-center">
@@ -62,6 +60,7 @@ export default function Home() {
             Icon={LabIcon}
             title="Laboratórios virtuais"
           ></CoursesTemplate>
+          <ExercisesGroup title="Circuitos lógicos" Icon={LabIcon}  />
         </div>
 
         <Ranking>

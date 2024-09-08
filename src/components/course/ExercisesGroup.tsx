@@ -11,16 +11,16 @@ interface ExercisesGroupProps{
 }
 
 export default function ExercisesGroup({title, Icon} : ExercisesGroupProps) {
-    const vetor = ["Iniciando circuitos", "Circuitos Combinacionais mais pala", "Circuitos sequênciais", "agora", "sentido"]
+    const vetor = ["Iniciando circuitos", "Circuitos Combinacionais", "Circuitos sequênciais", "agora", "sentido"]
 
     return(
-        <div>
+        <div className="">
             <div className="flex justify-start items-center content-center my-8 text-2xl gap-y-3 font-bold">
                 <Icon className="h-8 w-12"/>
                 <p className="grow">{title}</p>
             </div>
 
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col ml-10 gap-8">
                 {vetor.map((content) => (
                     <ExerciseTemplate text={content} Icon={LockIcon} size="small"/>
                 ))}
