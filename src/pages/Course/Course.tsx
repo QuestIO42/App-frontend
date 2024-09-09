@@ -9,6 +9,7 @@ import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
 import LabIcon from '@/components/svgComponents/icons/LabIcon'
 import RankingItem from '@/components/home/RankingItem'
+import Forum from '@/components/course/Forum'
 import {mockUsers} from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
@@ -48,11 +49,11 @@ export default function Course() {
             <div className="w-8"><CircuitCourse/></div>
         </div>
         <div className="flex flex-col justify-center">
-          <h2 className="text-4xl mb-8 mt-10  font-bold">Portas Lógicas</h2>
+          <h2 className="text-4xl mb-8 mt-10 font-bold">Portas Lógicas</h2>
           <ProgressXpBar text="seu progresso" value={75}></ProgressXpBar>
         </div>
-        <div className="flex h-20 w-16 mr-10 mt-10 font-size-1 justify-end">
-          <Button text="práticas Verilog" size="small"></Button></div>
+        <div className="flex  h-20 w-16 mr-5 mt-10 font-size-1 justify-end">
+          <Button className='bg-white' text="práticas Verilog" size="small"></Button></div>
       </div>
 
 
@@ -61,19 +62,7 @@ export default function Course() {
         <Ranking>
           <RankingItem users={mockUsers.users}/>
         </Ranking>
-        <div className=" min-h-[271px] max-w-[23em] min-w-[300px] mt-10 min-w-[23.2rem] items-center justify-center bg-laranja shadow-default-laranja">
-        <p className="mr-2 text-center items-center mt-6 text-3xl font-bold text-gray-800">
-          fórum
-        </p>
-        <br />
-        <hr className="border-t-2 border-gray-700 mx-8 mb-4" />
-        <p className="text-center flex flex-col px-7 text-2xl font-bold text-gray-800">
-          Dúvidas? Acrescente um novo tópico de discussão ao fórum!
-        </p>
-        <div className="flex  justify-center">
-        <Button variant='tertiary' text="entrar" size="small"></Button>
-        </div>
-      </div>
+        <Forum/>
       </div>
       <Footer></Footer>
     </div>
