@@ -13,9 +13,10 @@ import PublicRoute from './utils/PublicRoutes'
 import ProfileScreen from './pages/ProfileScreen/ProfileScreen'
 import Login from './pages/Login@Registration/Login'
 import Register from './pages/Login@Registration/Register'
-import Course from './pages/NotReady/Course'
+import Course from './pages/Course/Course'
 import Courses from './pages/NotReady/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import Teste from './pages/testPage/index'
 
 
 export default function App() {
@@ -37,7 +38,7 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
-
+            <Route path="/test" element={<Teste />} />
           </Route>
         </Routes>
       </AuthProvider>

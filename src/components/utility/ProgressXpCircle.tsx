@@ -20,7 +20,6 @@ export default function ProgressXpCircle({
   const strokeDashoffset = circumference - (-progress / 100) * circumference
 
   return (
-    <div className="flex items-center justify-center">
       <svg width="15.625em" height="8.175em" viewBox="0 0 250 160">
         <defs>
           <filter id="shadow">
@@ -61,6 +60,5 @@ export default function ProgressXpCircle({
           </tspan>
         </text>
       </svg>
-    </div>
   )
 }

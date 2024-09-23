@@ -14,6 +14,7 @@ import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
 
+
 export default function Home() {
   const { user } = useAuth()
 

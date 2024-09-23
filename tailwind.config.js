@@ -34,6 +34,7 @@ export default {
         'default-verde-300': '0 0 0 0px #FFFFFF, 8px 8px #3FF29B',
         'default-verde-900': '0 0 0 0px #FFFFFF, 8px 8px #5D9D7E',
         'default-preto': '0 0 0 0px #FFFFFF, 8px 8px #1E1E1E',
+        'default-laranja': '0 0 0 0px #FFFFFF, 8px 8px #97581F',
       },
       backgroundImage: {
         'grid-pattern': 'url(/grid.svg)',

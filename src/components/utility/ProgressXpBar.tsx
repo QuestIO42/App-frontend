@@ -1,11 +1,12 @@
 interface ProgressXpBarProps {
   value: number
+  text: string
 }
 
-export default function ProgressXpBar({ value }: ProgressXpBarProps) {
+export default function ProgressXpBar({ value, text  }: ProgressXpBarProps) {
   return (
     <div className="mt-2 flex flex-col items-center justify-center gap-3">
-      <p className="mr-auto">xp</p>
+      <p className="mr-auto">{text}</p>
       <div
         className="bg-gray-20 h-4 w-full border-2 border-preto-default" /* uma div pra caixa*/
       >
