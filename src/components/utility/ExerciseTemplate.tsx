@@ -10,7 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const buttonVariants = cva(
-  'flex gap-28 active:scale-90 cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza',
+  'flex gap-28 active:scale-90 bg-white cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza',
   {
     variants: {
       size: {
