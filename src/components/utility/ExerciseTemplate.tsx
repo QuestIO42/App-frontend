@@ -42,8 +42,10 @@ export default function ExerciseTemplate({
       )}
       {...rest}
     >
-      {text}
-      <Icon className="h-7 w-7"></Icon>
+      <div className="flex-grow justify-between items-center flex">
+        <span className='flex whitespace-nowrap'>{text}</span>
+        <Icon className=" flex ml-5  h-10 w-7 shrink-0"></Icon>
+      </div>
     </button>
   )
 }
