@@ -7,7 +7,8 @@ import Voltar from '@/components/course/Voltar'
 import Button from '@/components/utility/Button'
 import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
-import LabIcon from '@/components/svgComponents/icons/LabIcon'
+import LampIcon from '@/components/svgComponents/icons/LampIcon'
+import ExercisesGroup from '@/components/course/ExercisesGroup'
 import RankingItem from '@/components/home/RankingItem'
 import Forum from '@/components/course/Forum'
 import {mockUsers} from '@/utils/mocks/mockUsers'
@@ -56,13 +57,17 @@ export default function Course() {
           <Button className='bg-white' text="práticas Verilog" size="small"></Button></div>
       </div>
 
-
-      <div className="relative col-span-full flex-col flex items-end mr-4 justify-around">
-
+      <div className="relative col-span-full row-auto flex items-start justify-between ">
+        <div className="ml-8 flex-col min-w-[500px] flex gap-10 mb-4">
+          <ExercisesGroup title="Portas Lógicas" Icon={LampIcon}></ExercisesGroup>
+          <ExercisesGroup title="Circuitos Lógicos" Icon={LampIcon}></ExercisesGroup>
+        </div>
+        <div className="flex mr-4 flex-col">
         <Ranking>
           <RankingItem users={mockUsers.users}/>
         </Ranking>
         <Forum/>
+        </div>
       </div>
       <Footer></Footer>
     </div>

@@ -44,7 +44,7 @@ export default function ExerciseTemplate({
     >
       <div className="flex-grow justify-between items-center flex">
         <span className='flex whitespace-nowrap'>{text}</span>
-        <Icon className=" flex ml-5  h-10 w-7 shrink-0"></Icon>
+        <Icon className=" flex ml-5 h-10 w-7 shrink-0"></Icon>
       </div>
     </button>
   )
