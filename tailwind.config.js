@@ -4,6 +4,16 @@ import plugin from 'tailwindcss/plugin'
 export default {
   content: ['./index.html', './src/**/*.{tsx,ts,js,jsx}'],
   theme: {
+    fontSize: {
+      sm: '13.3px',
+      base: '16px',
+      xl: '19.2px',
+      '2xl': '23px',
+      '3xl': '27.6px',
+      '4xl': '33.2px',
+      '5xl': '39.8px',
+      '6xl': '47.8px',
+    },
     extend: {
       colors: {
         roxo: {
