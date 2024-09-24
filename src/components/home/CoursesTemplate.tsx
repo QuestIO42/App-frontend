@@ -12,7 +12,7 @@ export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
     <div className="flex flex-col items-center justify-center gap-16">
       <div className="ml-14 mr-auto flex items-center justify-center gap-3">
         <Icon></Icon>
-        <h2 className="mr-auto text-4xl font-bold">{title}</h2>
+        <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
 
       <div className="ml-12 flex flex-wrap justify-center gap-16">
