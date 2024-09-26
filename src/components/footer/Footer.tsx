@@ -8,7 +8,7 @@ export default function Footer() {
           <p className="text-2xl font-bold text-amarelo">Contato</p>
           <div className="flex items-center justify-center gap-2">
             <EmailIcon></EmailIcon>
-            <p>contato@questi0.com.br</p>
+            <p>menotti@ufscar.br</p>
           </div>
         </div>
 
