@@ -51,12 +51,13 @@ export default function RegisterForm() {
   })
 
   async function handleRegister({
+    username,
     email,
     password,
-    username,
+    confirmPassword: confirm_password,
   }: RegisterFormValues) {
     try {
-      await AuthApi.registerUser({ email, password, username })
+      await AuthApi.registerUser({username, email, password, confirm_password })
       navigate('/')
     } catch (error: any) {
       if (error.response && error.response.data) {
