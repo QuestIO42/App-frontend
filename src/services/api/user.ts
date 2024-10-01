@@ -10,7 +10,7 @@ async function getUser(token: string) {
 }
 
 async function signIn() {
-  const response = await api.post('/auth/signin')
+  const response = await api.post('/auth/login')
   return response.data
 }
 

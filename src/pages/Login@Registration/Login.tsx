@@ -6,6 +6,7 @@ import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 
 export default function Login() {
+  console.log(import.meta.env.VITE_API_URL) 
   return (
     <div className="min-w-screen relative flex min-h-screen items-center justify-center">
       <Logo

@@ -4,7 +4,7 @@ import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
 
 async function signInUser({ email, password }: SignInCredentials) {
   try {
-    const response = await api.post('/auth/signin', { email, password })
+    const response = await api.post('/auth/login', { email, password })
     return response.data
   } catch (error) {
     console.error(error)

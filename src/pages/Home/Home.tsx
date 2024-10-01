@@ -17,6 +17,8 @@ import { useEffect } from 'react'
 export default function Home() {
   const { user } = useAuth()
 
+  console.log(import.meta.env.VITE_API_URL) 
+  
   useEffect(() => {
     const token = localStorage.getItem('token')
 
