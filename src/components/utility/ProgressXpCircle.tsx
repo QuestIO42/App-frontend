@@ -50,7 +50,8 @@ export default function ProgressXpCircle({
           y="50%"
           dy=".3em"
           textAnchor="middle"
-          className="text-2xl text-black"
+          className="text-2xl font-bold"
+          fill="#454545"
         >
           <tspan x="50%" dy="0em">
             level

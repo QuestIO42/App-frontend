@@ -16,11 +16,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'border-roxo-300 shadow-default-roxo-300 hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
+          'border-roxo-300 shadow-default-roxo-300 text-cinza hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
         secondary:
-          'border-verde-300 text-verde-300 shadow-default-verde-300 hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
+          'border-verde-300 text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
-          'border-laranja bg-white text-laranja-300 shadow-default-laranja hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
+          'border-laranja bg-white text-laranja-300 shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
       },
       size: {
         small: 'text-lg',
