@@ -16,6 +16,7 @@ import { User } from '@/interfaces/User'
 import { mockUser } from '@/utils/mockUser'
 import { jwtDecode } from 'jwt-decode'
 
+
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
   signOut(): void
@@ -82,17 +83,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
             if (error.response.data.message === 'Token expired.') {
               if (!isRefreshing) {
                 isRefreshing = true
+                const refreshToken = Cookies.get('refreshToken')
                 api
-                  .patch('/auth/token/refresh', {}, { withCredentials: true })
+                  .post('/auth/token/refresh', {refreshToken}, { withCredentials: true })
                   .then((response) => {
-                    const { token } = response.data
-                    setToken(token)
-                    Cookies.set('token', token)
+                    const { accessToken } = response.data
+                    setToken(accessToken)
+                    Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
                     api.defaults.headers['Authorization'] = `Bearer ${token}`
 
                     failedRequestQueue.forEach((request) =>
-                      request.onSuccess(token)
+                      request.onSuccess(accessToken)
                     )
                     failedRequestQueue = []
                   })
@@ -142,15 +144,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         navigate('/home')
       } else {
         const response = await AuthApi.signInUser({ email, password })
-        const token1 = response.access;
-        const token2 = response.refresh;
-        setToken(token1)
-        setToken(token2)
-        const decoded = jwtDecode(token1)
+        const accessToken = response.access;
+        setToken(accessToken)
+        const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('token', token1)
-        Cookies.set('refreshToken', token2)
-        fetchPerson(token1)
+        Cookies.set('accessToken', accessToken)
+        fetchPerson(accessToken)
         navigate('/home')
         console.log('Login realizado com sucesso')
       }
