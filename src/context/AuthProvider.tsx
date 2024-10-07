@@ -14,6 +14,7 @@ import AuthApi from '@/services/api/auth'
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
 import { mockUser } from '@/utils/mockUser'
+import { jwtDecode } from 'jwt-decode'
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>
@@ -87,7 +88,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
                     const { token } = response.data
                     setToken(token)
                     Cookies.set('token', token)
-
                     // Atualiza o header Authorization com o novo token de acesso
                     api.defaults.headers['Authorization'] = `Bearer ${token}`
 
@@ -142,11 +142,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
         navigate('/home')
       } else {
         const response = await AuthApi.signInUser({ email, password })
-        const { token } = response
-        setToken(token)
-        Cookies.set('token', token)
-        fetchPerson(token)
+        const token1 = response.access;
+        const token2 = response.refresh;
+        setToken(token1)
+        setToken(token2)
+        const decoded = jwtDecode(token1)
+        console.log(decoded)
+        Cookies.set('token', token1)
+        Cookies.set('refreshToken', token2)
+        fetchPerson(token1)
         navigate('/home')
+        console.log('Login realizado com sucesso')
       }
     } catch (error) {
       console.error('Erro no login:', error)

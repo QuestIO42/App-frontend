@@ -12,20 +12,37 @@ import { mockUsers } from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
 
 export default function Home() {
-  const { user } = useAuth()
-
-  console.log(import.meta.env.VITE_API_URL) 
-  
+ const { user } = useAuth()
+ const token = Cookies.get('token')
+  /*const [user,setUser] = useState<{ username: string } | null>(null);
+  console.log(import.meta.env.VITE_API_URL)
+  if (token) {
+    try {
+      const { user_id } = jwtDecode(token) as { user_id: string }
+      const id = user_id
+      api
+        .get(`/user/${id}`)
+        .then((response) => {
+          console.log(response)
+          setUser(response.data)
+        })
+        .catch((error) => {
+          console.error('Erro ao obter usuário:', error)
+        })
+    } catch (error) {console.log("Que resposta é essa?")
+      console.error('Token inválido:', error)
+    }
+  }*/
   useEffect(() => {
-    const token = localStorage.getItem('token')
 
     if (token) {
       try {
-        const { sub } = jwtDecode(token) as { sub: string }
-        const id = Number(sub)
+        const { user_id } = jwtDecode(token) as { user_id: string }
+        const id = user_id
         api
           .get(`/user/${id}`)
           .then((response) => {
@@ -38,7 +55,7 @@ export default function Home() {
         console.error('Token inválido:', error)
       }
     }
-  }, [])
+  }, [token])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />

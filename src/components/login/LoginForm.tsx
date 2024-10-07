@@ -14,9 +14,6 @@ const LoginFormSchema = z.object({
   email: z
     .string({
       required_error: 'O campo de e-mail é obrigatório',
-    })
-    .email({
-      message: 'O e-mail digitado não é válido',
     }),
   password: z
     .string({
