@@ -88,7 +88,7 @@ export default function LoginForm() {
             disabled={isSubmitting}
             type="submit"
             className="mt-4"
-            text="Login"
+            text="login"
           />
           <Cadastration />
         </form>

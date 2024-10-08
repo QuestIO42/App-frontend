@@ -28,5 +28,6 @@ export default function RankingItem({ users }: UserListProps) {
         </div>
       ))}
     </>
+    /* Falta adicionar a posição do usuário logado */
   )
 }

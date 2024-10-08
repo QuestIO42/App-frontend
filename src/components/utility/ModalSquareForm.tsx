@@ -2,8 +2,8 @@ import React from 'react'
 
 interface ModalSquareFormProps {
   children: React.ReactNode
-  courseName: string
-  courseTeacher: string
+  courseName?: string
+  courseTeacher?: string
 }
 
 export default function ModalSquareForm({ children, courseName, courseTeacher }: ModalSquareFormProps) {

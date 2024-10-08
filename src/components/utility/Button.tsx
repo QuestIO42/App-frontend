@@ -23,8 +23,8 @@ const buttonVariants = cva(
           'border-laranja bg-white text-laranja-300 shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
       },
       size: {
-        small: 'text-lg',
-        medium: 'text-2xl',
+        small: 'text-base',
+        medium: 'text-xl',
         large: 'text-3xl',
       },
       buttonDisabled: {
