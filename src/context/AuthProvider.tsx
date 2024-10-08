@@ -41,7 +41,7 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(() => {
-    return Cookies.get('token') || null
+    return Cookies.get('accessToken') || null
   })
   const navigate = useNavigate()
   const isAuthenticated =
@@ -83,9 +83,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             if (error.response.data.message === 'Token expired.') {
               if (!isRefreshing) {
                 isRefreshing = true
-                const refreshToken = Cookies.get('refreshToken')
                 api
-                  .post('/auth/token/refresh', {refreshToken}, { withCredentials: true })
+                  .post('/auth/token/refresh', {}, { withCredentials: true })
                   .then((response) => {
                     const { accessToken } = response.data
                     setToken(accessToken)
@@ -111,8 +110,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
               return new Promise((resolve, reject) => {
                 failedRequestQueue.push({
-                  onSuccess: (token: string) => {
-                    originalRequest.headers['Authorization'] = `Bearer ${token}`
+                  onSuccess: (accessToken: string) => {
+                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
 
                     resolve(api(originalRequest))
                   },
@@ -144,11 +143,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         navigate('/home')
       } else {
         const response = await AuthApi.signInUser({ email, password })
-        const accessToken = response.access;
+        const accessToken = response.access; //Django retornando 2 tokens. Precisa especificar que é o access
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('accessToken', accessToken)
+        Cookies.set('accessToken', accessToken, { sameSite: 'strict' })
         fetchPerson(accessToken)
         navigate('/home')
         console.log('Login realizado com sucesso')
@@ -159,9 +158,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function fetchPerson(token: string) {
+  async function fetchPerson(accessToken: string) {
     try {
-      const response = await UserApi.getUser(token)
+      const response = await UserApi.getUser(accessToken)
       setUser(response)
     } catch (error) {
       console.error(error)
@@ -175,7 +174,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Em desenvolvimento, limpa a simulação de autenticação
         setToken(null)
         setUser(null)
-        Cookies.remove('token')
+        Cookies.remove('accessToken')
         navigate('/')
       } else {
         await AuthApi.clearCookies()
@@ -183,7 +182,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setToken(null)
       setUser(null)
-      Cookies.remove('token')
+      Cookies.remove('accessToken')
       navigate('/')
     }
   }

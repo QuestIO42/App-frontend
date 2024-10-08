@@ -10,11 +10,42 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
 import { useAuth } from '@/context/AuthProvider'
 
+const emailSchema = z
+  .string()
+  .min(1, "O campo de identficação é obrigatório")
+  .email("O e-mail digitado não é válido")
+const usernameSchema =z
+  .string()
+  .min(1, {
+  message: 'O campo de identificação é obrigatório' })
+  const credentialsSchema = z
+  .string()
+  .min(1, "O campo de identificação é obrigatório")
+  .superRefine((value, ctx) => {
+    if (value.includes('@') || value.includes('.')) {
+      // Verificar como email se o input contiver '@' ou '.'
+      try {
+        emailSchema.parse(value);
+      } catch (e) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "O e-mail digitado não é válido",
+        });
+      }
+    } else {
+      // Verificar como username se não contiver '@' ou o '.'
+      try {
+        usernameSchema.parse(value);
+      } catch (e) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "O username é inválido. Deve ter pelo menos 3 caracteres.",
+        });
+      }
+    }
+  });
 const LoginFormSchema = z.object({
-  email: z
-    .string({
-      required_error: 'O campo de e-mail é obrigatório',
-    }),
+  credentials: credentialsSchema,
   password: z
     .string({
       required_error: 'O campo de senha é obrigatório',
@@ -37,7 +68,7 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
-  async function handleLogin({ email, password }: LoginFormValues) {
+  async function handleLogin({ credentials : email, password }: LoginFormValues) {
     try {
       await signIn({ email, password })
     } catch (error: any) {
@@ -59,11 +90,11 @@ export default function LoginForm() {
         >
           <div className="flex flex-col items-start">
             <FormInput
-              registerProps={register('email')}
+              registerProps={register('credentials')}
               type="text"
               label="usuário ou e-mail"
             />
-            {errors.email && <ErrorMessage error={errors.email.message} />}
+            {errors.credentials && <ErrorMessage error={errors.credentials.message} />}
           </div>
           <div className="flex flex-col items-start">
             <FormInput

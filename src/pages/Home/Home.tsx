@@ -15,34 +15,22 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 
+
 export default function Home() {
- const { user } = useAuth()
- const token = Cookies.get('token')
-  /*const [user,setUser] = useState<{ username: string } | null>(null);
-  console.log(import.meta.env.VITE_API_URL)
-  if (token) {
-    try {
-      const { user_id } = jwtDecode(token) as { user_id: string }
-      const id = user_id
-      api
-        .get(`/user/${id}`)
-        .then((response) => {
-          console.log(response)
-          setUser(response.data)
-        })
-        .catch((error) => {
-          console.error('Erro ao obter usuário:', error)
-        })
-    } catch (error) {console.log("Que resposta é essa?")
-      console.error('Token inválido:', error)
-    }
-  }*/
+  const { user } = useAuth()
+  const [token, setToken] = useState<string | null>(() => {
+    return Cookies.get('accessToken') || null
+  })
   useEffect(() => {
+    if (import.meta.env.VITE_APP_ENV === 'development') {
+      setToken(localStorage.getItem('token'))
+    }
 
     if (token) {
       try {
-        const { user_id } = jwtDecode(token) as { user_id: string }
-        const id = user_id
+        const { sub } = jwtDecode(token) as { sub: string }
+        const id = Number(sub)
+        console.log(id)
         api
           .get(`/user/${id}`)
           .then((response) => {
