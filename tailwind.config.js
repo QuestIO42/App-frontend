@@ -22,7 +22,10 @@ export default {
           900: 'var(--roxo-900)',
         },
         amarelo: 'var(--amarelo)',
-        vermelho: 'var(--vermelho)',
+        vermelho: {
+          300: 'var(--vermelho-300)',
+          900: 'ver(--vermelho-900)',
+        },
         verde: {
           300: 'var(--verde-300)',
           900: 'var(--verde-900)',
@@ -45,6 +48,8 @@ export default {
         'default-verde-900': '0 0 0 0px #FFFFFF, 8px 8px #5D9D7E',
         'default-preto': '0 0 0 0px #FFFFFF, 8px 8px #1E1E1E',
         'default-laranja': '0 0 0 0px #FFFFFF, 8px 8px #97581F',
+        'default-vermelho-300': '0 0 0 0px #FFFFFF, 8px 8px #F2543F',
+        'default-vermelho-900': '0 0 0 0px #FFFFFF, 8px 8px #752c22',
       },
       backgroundImage: {
         'grid-pattern': 'url(/grid.svg)',
