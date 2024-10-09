@@ -2,10 +2,9 @@ import { jwtDecode } from 'jwt-decode'
 import { api } from './api'
 
 async function getUser(token: string) {
-  const { sub } = jwtDecode<{ sub: string }>(token)
-  const id = sub
-  console.log('id', id)
-  const userResponse = await api.get(`/user/${id}`)
+  const { user_id } = jwtDecode<{ user_id: string }>(token)
+  console.log('id', user_id)
+  const userResponse = await api.get(`/user/${user_id}`)
   return userResponse.data
 }
 

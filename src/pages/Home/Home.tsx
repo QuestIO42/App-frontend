@@ -12,20 +12,25 @@ import { mockUsers } from '@/utils/mocks/mockUsers'
 import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
+
 
 export default function Home() {
   const { user } = useAuth()
-
-  console.log(import.meta.env.VITE_API_URL) 
-  
+  const [token, setToken] = useState<string | null>(() => {
+    return Cookies.get('accessToken') || null
+  })
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    if (import.meta.env.VITE_APP_ENV === 'development') {
+      setToken(localStorage.getItem('token'))
+    }
 
     if (token) {
       try {
         const { sub } = jwtDecode(token) as { sub: string }
         const id = Number(sub)
+        console.log(id)
         api
           .get(`/user/${id}`)
           .then((response) => {
@@ -38,7 +43,7 @@ export default function Home() {
         console.error('Token inválido:', error)
       }
     }
-  }, [])
+  }, [token])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
