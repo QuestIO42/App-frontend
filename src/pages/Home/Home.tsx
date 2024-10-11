@@ -18,7 +18,7 @@ import Cookies from 'js-cookie'
 
 export default function Home() {
   const { user } = useAuth()
-  const [token, setToken] = useState<string | null>(() => {
+  const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
   useEffect(() => {
@@ -26,10 +26,10 @@ export default function Home() {
       setToken(localStorage.getItem('token'))
     }
 
-    if (token) {
+    if (accessToken) {
       try {
-        const { sub } = jwtDecode(token) as { sub: string }
-        const id = Number(sub)
+        const { sub } = jwtDecode(accessToken) as { sub: string }
+        const id = sub
         console.log(id)
         api
           .get(`/user/${id}`)
@@ -43,7 +43,7 @@ export default function Home() {
         console.error('Token inválido:', error)
       }
     }
-  }, [token])
+  }, [accessToken])
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />

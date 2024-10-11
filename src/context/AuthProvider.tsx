@@ -29,7 +29,7 @@ type AuthProviderProps = {
 }
 
 interface FailedRequest {
-  onSuccess: (token: string) => void
+  onSuccess: (accessToken: string) => void
   onFailure: (error: AxiosError) => void
 }
 
@@ -40,27 +40,27 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(() => {
+  const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
   const navigate = useNavigate()
   const isAuthenticated =
-    import.meta.env.VITE_APP_ENV == 'development' ? true : !!token
+    import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
 
   useEffect(() => {
-    if (token && import.meta.env.VITE_APP_ENV !== 'development') {
-      fetchPerson(token)
+    if (accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
+      fetchPerson(accessToken)
     } else {
       setUser(mockUser)
     }
-  }, [token])
+  }, [accessToken])
 
   useLayoutEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
       const authInterceptor = api.interceptors.request.use(
         (config) => {
-          if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+          if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`
           }
           return config
         },
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.interceptors.request.eject(authInterceptor)
       }
     }
-  }, [token])
+  }, [accessToken])
 
   useLayoutEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
@@ -84,13 +84,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
               if (!isRefreshing) {
                 isRefreshing = true
                 api
-                  .post('/auth/token/refresh', {}, { withCredentials: true })
+                  .patch('/auth/token/refresh', {}, { withCredentials: true })
                   .then((response) => {
                     const { accessToken } = response.data
                     setToken(accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
-                    api.defaults.headers['Authorization'] = `Bearer ${token}`
+                    api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
 
                     failedRequestQueue.forEach((request) =>
                       request.onSuccess(accessToken)
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.interceptors.response.eject(refreshInterceptor)
       }
     }
-  }, [token])
+  }, [accessToken])
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
@@ -139,11 +139,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Em desenvolvimento, simula um usuário autenticado
         setToken('fake-token')
         setUser(mockUser)
-        Cookies.set('token', 'fake-token')
+        Cookies.set('accessToken', 'fake-token')
         navigate('/home')
       } else {
         const response = await AuthApi.signInUser({ email, password })
-        const accessToken = response.access; //Django retornando 2 tokens. Precisa especificar que é o access
+        const {accessToken} = response; //Django retornando 2 tokens. Precisa especificar que é o access
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
