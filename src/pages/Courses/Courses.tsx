@@ -8,7 +8,7 @@ export default function Courses() {
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
       <div className="col-span-full flex flex-col items-center">
-        <CourseIcon height={150} width={150}/>
+        <CourseIcon height={180} width={180}/> {/* tamanho total do svg*/}
         <h1 className="text-6xl font-bold text-cinza">Meus Cursos</h1>
       </div>
       <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 mx-5 content-center justify-items-center">
