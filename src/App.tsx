@@ -14,7 +14,7 @@ import ProfileScreen from './pages/ProfileScreen/ProfileScreen'
 import Login from './pages/Login@Registration/Login'
 import Register from './pages/Login@Registration/Register'
 import Course from './pages/Course/Course'
-import Courses from './pages/NotReady/Courses'
+import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
 import Teste from './pages/testPage/index'
 

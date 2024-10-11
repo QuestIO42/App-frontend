@@ -2,14 +2,16 @@ import React from 'react'
 
 interface CourseIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string
+  width?: number;
+  height?: number
 }
 
-const CourseIcon: React.FC<CourseIconProps> = ({ className }) => {
+const CourseIcon: React.FC<CourseIconProps> = ({ className, width, height }) => {
   return (
     <svg
       className={className}
-      width="48"
-      height="48"
+      width={width}
+      height={height}
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
