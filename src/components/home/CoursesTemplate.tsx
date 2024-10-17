@@ -11,7 +11,7 @@ export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <div className="ml-14 mr-auto flex items-center justify-center gap-3">
-        <Icon></Icon>
+        <Icon width="48" height="48"></Icon>
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
 

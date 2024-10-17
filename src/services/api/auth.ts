@@ -3,8 +3,9 @@ import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
 
 async function signInUser({ email, password }: SignInCredentials) {
+  const username = email
   try {
-    const response = await api.post('/auth/login', { email, password })
+    const response = await api.post('/auth/login', { username, password })
     return response.data
   } catch (error) {
     console.error(error)
@@ -12,7 +13,8 @@ async function signInUser({ email, password }: SignInCredentials) {
 }
 
 async function clearCookies() {
-  const response = await api.post('/auth/clear-cookie')
+  const response = await api.get('/auth/clear-cookies/')
+  console.log(response.data)
   return response.data
 }
 
