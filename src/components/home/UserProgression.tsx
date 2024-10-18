@@ -17,7 +17,6 @@ interface UserProgressionProps {
 };*/
 
 export default function UserProgression({ username }: UserProgressionProps) {
-  username = 'Samuel Medeiros'
   return (
     <div className="grid min-h-[193px] min-w-[558px] grid-cols-2 border-4 border-preto-default bg-branco pt-4 pb-3 pl-12 pr-0 shadow-default-preto">
       <div className="flex flex-col">   {/* Talvez seja necessário aumentar/diminuir o gap caso o nome do usuário não caiba no espaço atual disponível */}
