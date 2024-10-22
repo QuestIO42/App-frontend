@@ -60,10 +60,12 @@ export default function Home() {
           <CoursesTemplate
             Icon={CourseIcon}
             title="Meus Cursos"
+            IsRectangle= {false}
           ></CoursesTemplate>
           <CoursesTemplate
             Icon={LabIcon}
             title="Laboratórios virtuais"
+            IsRectangle={true}
           ></CoursesTemplate>
         </div>
 
