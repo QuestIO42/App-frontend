@@ -7,7 +7,7 @@ interface RadioButtonGroupProps {
 }
 
 export default function RadioButtonGroup ( {values, name}: RadioButtonGroupProps ) {
-  const labels = ['a','b','c','d','e'];
+  const labels = ['a','b','c','d','e','f','g']
 
   const [selectedValue, setSelectedValue] = useState('');
 

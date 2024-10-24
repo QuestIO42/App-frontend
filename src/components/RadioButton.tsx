@@ -28,7 +28,7 @@ export default function RadioButton ({
   onChange
 }: RadioButtonProps) {
   return (
-    <label className='flex items-center cursor-pointer m-[20px]'>
+    <label className='flex text-xl items-center cursor-pointer m-[20px]'>
       <input
         type="radio"
         name={name}
