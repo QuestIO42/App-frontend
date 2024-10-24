@@ -61,9 +61,10 @@ export default function Home() {
             Icon={CourseIcon}
             title="Meus Cursos"
           ></CoursesTemplate>
+          {/*Falta modificar para o padrão de vídeo -> criar componente do quadrado no formato do retângulo*/}
           <CoursesTemplate
             Icon={LabIcon}
-            title="Laboratórios virtuais"
+            title="Laboratórios virtuais" 
           ></CoursesTemplate>
         </div>
 

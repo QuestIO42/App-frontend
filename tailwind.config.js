@@ -31,6 +31,7 @@ export default {
           900: 'var(--verde-900)',
         },
         cinza: 'var(--cinza)',
+        cinzaClaro: 'var(--cinzaClaro)',
         preto: {
           texto: 'var(--preto-texto)',
           default: 'var(--preto)',
@@ -39,7 +40,7 @@ export default {
         laranja: 'var(--laranja)',
       },
       fontFamily: {
-        spaceMono: ['"Space Mono"', 'monospace'],
+        spaceMono: ["Space Mono", 'monospace'],
       },
       boxShadow: {
         'default-roxo-300': '0 0 0 0px #FFFFFF, 8px 8px #5A4AC2',
