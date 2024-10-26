@@ -2,8 +2,7 @@ import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
 
-async function signInUser({ email, password }: SignInCredentials) {
-  const username = email
+async function signInUser({ username, password }: SignInCredentials) {
   try {
     const response = await api.post('/auth/login', { username, password })
     return response.data
@@ -13,7 +12,7 @@ async function signInUser({ email, password }: SignInCredentials) {
 }
 
 async function clearCookies() {
-  const response = await api.get('/auth/clear-cookies/')
+  const response = await api.patch('/auth/clear-cookies')
   console.log(response.data)
   return response.data
 }
