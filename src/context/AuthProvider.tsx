@@ -133,7 +133,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [token])
 
-  async function signIn({ email, password }: SignInCredentials) {
+  async function signIn({ username, password }: SignInCredentials) {
     try {
       if (import.meta.env.VITE_APP_ENV === 'development') {
         // Em desenvolvimento, simula um usuário autenticado
@@ -142,8 +142,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.set('token', 'fake-token')
         navigate('/home')
       } else {
-        const response = await AuthApi.signInUser({ email, password })
-        const accessToken = response.access; //Django retornando 2 tokens. Precisa especificar que é o access
+        const response = await AuthApi.signInUser({ username, password })
+        const accessToken = response.data
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
