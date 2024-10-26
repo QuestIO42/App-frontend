@@ -14,7 +14,7 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   return (
     <div className="mb-4">
-      <label className="mb-2 block font-mono text-sm font-semibold text-preto-texto sm:text-base md:text-lg lg:text-xl">
+      <label className="mb-2 block font-mono text-sm font-semibold text-preto-texto sm:text-[12px] md:text-base lg:text-base">
         {label}
       </label>
       <input
