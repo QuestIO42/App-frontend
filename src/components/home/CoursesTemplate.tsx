@@ -5,9 +5,10 @@ import ModalSquareForm from '../utility/ModalSquareForm'
 interface CoursesTemplateProps {
   title: string
   Icon: ElementType
+  IsRectangle: boolean
 }
 
-export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
+export default function CoursesTemplate({ title, Icon, IsRectangle }: CoursesTemplateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <div className="ml-14 mr-auto flex items-center justify-center gap-3">
@@ -17,8 +18,9 @@ export default function CoursesTemplate({ title, Icon }: CoursesTemplateProps) {
 
       <div className="ml-12 flex flex-wrap justify-center gap-16">
         {[...Array(3)].map((_, index) => (
-          <ModalSquareForm key={index} courseName="Portas Lógicas" courseTeacher="Ricardo Menotti">
-            <div className="h-[240px] w-[240px] bg-red-700"></div>
+          <ModalSquareForm key={index}>
+            <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]': 'h-[220px] w-[220px]' }`}></div>
+
           </ModalSquareForm>
         ))}
       </div>
