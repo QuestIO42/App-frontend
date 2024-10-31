@@ -8,15 +8,15 @@ export default function UserProfile() {
   return (
     <section className="relative flex flex-col items-center justify-center gap-4 lg:max-w-[27rem]">
       <Button
-        className="absolute right-0 top-0"
+        className="absolute right-0 bg-white top-0"
         text="editar"
         size="small"
         variant="secondary"
       ></Button>
-      <ProfileIcon className="mt-10 h-40 w-40 text-verde-300"></ProfileIcon>
-      <h2 className="text-6xl font-bold">{user?.username}</h2>
+      <ProfileIcon className="mt-10 h-[160px] w-[160px] text-verde-300"></ProfileIcon>
+      <h2 className="text-5xl font-bold text-cinza">{user?.username}</h2>
       <StudentInformation />
-      <Button className="text-roxo-300" text={'minhas turmas'}></Button>
+      <Button className="text-cinza bg-white" text={'minhas turmas'}></Button>
     </section>
   )
 }

@@ -3,7 +3,7 @@ import BuildingIcon from '../svgComponents/icons/BuildingIcon'
 
 export default function StudentInformation() {
   return (
-    <ul className="mr-auto flex flex-col items-center gap-4 text-lg font-bold">
+    <ul className="mr-auto flex flex-col items-center gap-6 text-xl font-bold text-cinza">
       <li className="mr-auto flex gap-2">
         <BuildingIcon></BuildingIcon>
         <p className="">Universidade Federal de São Carlos</p>
