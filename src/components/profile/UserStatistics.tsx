@@ -8,12 +8,12 @@ import UserRank from './UserRank'
 
 export default function UserStatistics() {
   return (
-    <aside className="flex h-auto flex-col items-center justify-center border-4 border-preto-default bg-branco p-4 shadow-default-preto md:min-w-[25rem]">
-      <h2 className="center text-2xl font-bold">estatísticas</h2>
+    <aside className="flex h-auto flex-col items-center justify-center border-4 border-preto-default bg-branco p-4 shadow-default-preto md:min-w-[25rem] gap-3">
+      <h2 className="center text-4xl font-bold text-cinza">estatísticas</h2>
 
-      <div className="flex  w-2/3 mt-4 flex-col justify-center">
+      <div className="flex  w-2/3 mt-4 flex-col justify-center gap-3">
         <ProgressXpCircle level={1} progress={70}></ProgressXpCircle>
-        <ProgressXpBar value={75}></ProgressXpBar>
+        <ProgressXpBar text="xp" value={75}></ProgressXpBar>
         <UserRank></UserRank>
       </div>
     </aside>

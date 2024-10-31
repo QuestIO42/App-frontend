@@ -13,10 +13,10 @@ export default function UserProfile() {
         size="small"
         variant="secondary"
       ></Button>
-      <ProfileIcon className="mt-10 h-40 w-40 text-verde-300"></ProfileIcon>
-      <h2 className="text-6xl font-bold">{user?.username}</h2>
+      <ProfileIcon className="mt-10 h-[160px] w-[160px] text-verde-300"></ProfileIcon>
+      <h2 className="text-5xl font-bold text-cinza">{user?.username}</h2>
       <StudentInformation />
-      <Button className="text-roxo-300" text={'minhas turmas'}></Button>
+      <Button className="text-cinza" text={'minhas turmas'}></Button>
     </section>
   )
 }
