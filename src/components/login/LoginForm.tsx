@@ -72,7 +72,7 @@ export default function LoginForm() {
     try {
       await signIn({ username, password })
     } catch (error: any) {
-      console.error(error, 'dsfds')
+      console.error(error)
       setError('root', {
         type: 'manual',
         message: 'Usuário ou senha inválidos',

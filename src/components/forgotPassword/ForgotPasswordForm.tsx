@@ -12,7 +12,7 @@ export default function ForgotPasswordForm() {
         <Information></Information>
         <form className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16">
           <FormInput type="text" label="usuário ou e-mail"></FormInput>
-          <Button className="mt-4" text="Login"></Button>
+          <Button className="mt-4" text="Enviar"></Button>
         </form>
       </div>
     </ModalSquareForm>

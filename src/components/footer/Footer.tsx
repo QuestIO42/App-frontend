@@ -8,7 +8,7 @@ export default function Footer() {
           <p className="text-2xl font-bold text-amarelo">Contato</p>
           <div className="flex items-center justify-center gap-2">
             <EmailIcon></EmailIcon>
-            <p>menotti@ufscar.br</p>
+            <p>questio@ufscar.br</p>
           </div>
         </div>
 
@@ -22,9 +22,9 @@ export default function Footer() {
 
       <div className="flex flex-col items-center justify-center">
         <p className="text-center text-xs font-semibold">
-          - 2024 | questI0.dc.ufcar.br -
+          - 2024 | <a href="https://questio42.github.io/">questio42.github.io</a> -
         </p>
-        <p className="text-center text-[0.63rem]">by questI0 lab</p>
+        <p className="text-center text-[0.63rem]">by QuestI0 Lab</p>
       </div>
     </footer>
   )
