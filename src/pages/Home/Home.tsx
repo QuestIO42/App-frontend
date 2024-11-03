@@ -15,6 +15,8 @@ import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 
+//getCourse
+
 
 export default function Home() {
   const { user } = useAuth()
@@ -35,15 +37,20 @@ export default function Home() {
           .get(`/user/${id}`)
           .then((response) => {
             console.log(response)
+            return api.get(`/course/`) //algo assim, talvez?
+          })
+          .then((cursosResponse) => {
+            console.log(cursosResponse)
           })
           .catch((error) => {
-            console.error('Erro ao obter usuário:', error)
+            console.error('Erro ao obter usuário ou cursos:', error)
           })
       } catch (error) {
         console.error('Token inválido:', error)
       }
     }
   }, [token])
+
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />

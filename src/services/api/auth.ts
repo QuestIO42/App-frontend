@@ -2,9 +2,9 @@ import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
 
-async function signInUser({ username, password }: SignInCredentials) {
+async function signInUser({ login, password }: SignInCredentials) {
   try {
-    const response = await api.post('/auth/login', { username, password })
+    const response = await api.post('/auth/login', { login, password })
     return response.data
   } catch (error) {
     console.error(error)
@@ -21,15 +21,13 @@ async function registerUser({
   username,
   email,
   password,
-  confirm_password,
 }: RegisterCredentials) {
-  const response = await api.post('/auth/register', {
-    fullname: username,
-    college_register: 'test',
-    username,
+  const response = await api.post('/auth/register',{
     email,
+    fullname: username,
+    username,
     password,
-    confirm_password,
+    college_register: 'test',
   })
   return response.data
 }

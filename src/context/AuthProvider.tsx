@@ -133,7 +133,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [token])
 
-  async function signIn({ username, password }: SignInCredentials) {
+  async function signIn({ login, password }: SignInCredentials) {
     try {
       if (import.meta.env.VITE_APP_ENV === 'development') {
         // Em desenvolvimento, simula um usuário autenticado
@@ -142,8 +142,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.set('token', 'fake-token')
         navigate('/home')
       } else {
-        const response = await AuthApi.signInUser({ username, password })
-        const accessToken = response.data
+        const response = await AuthApi.signInUser({ login, password })
+        console.log(response)
+        const accessToken = response.access
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)

@@ -1,7 +1,7 @@
 import Button from '@/components/utility/Button'
 export default function Forum() {
   return (
-  <div className=" min-h-[271px] max-w-[23em] min-w-[300px] mt-10 min-w-[23.2rem] items-center justify-center bg-laranja shadow-default-laranja">
+  <div className=" min-h-[271px] max-w-[312px] min-w-[300px] mt-10 items-center justify-center bg-laranja shadow-default-laranja">
         <p className="mr-2 text-center items-center mt-6 text-3xl font-bold text-gray-800">
           fórum
         </p>

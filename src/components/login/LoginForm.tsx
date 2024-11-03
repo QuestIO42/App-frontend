@@ -68,9 +68,9 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
-  async function handleLogin({ credentials : username, password }: LoginFormValues) {
+  async function handleLogin({ credentials : login, password }: LoginFormValues) {
     try {
-      await signIn({ username, password })
+      await signIn({ login, password })
     } catch (error: any) {
       console.error(error)
       setError('root', {
