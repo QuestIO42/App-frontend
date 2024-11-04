@@ -13,4 +13,4 @@ async function signIn() {
   return response.data
 }
 
-export default { getUser, signIn }
+export default { getUser, signIn}

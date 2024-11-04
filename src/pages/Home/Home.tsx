@@ -18,14 +18,14 @@ import Cookies from 'js-cookie'
 
 export default function Home() {
   const { user } = useAuth()
+  const [courses, setCourses] = useState([])
   const [token, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
   useEffect(() => {
     if (import.meta.env.VITE_APP_ENV === 'development') {
-      setToken(localStorage.getItem('token'))
+      setToken(localStorage.getItem('accessToken'))
     }
-
     if (token) {
       try {
         const { sub } = jwtDecode(token) as { sub: string }
@@ -44,6 +44,29 @@ export default function Home() {
       }
     }
   }, [token])
+
+  useEffect(() => {
+    if(token){
+      try{
+      api
+      .get('/course/')
+      .then((response) => {
+        console.log(response.data)
+        setCourses(response.data)
+      })
+      .catch((error) => {
+        console.error('Erro ao obter cursos:', error)
+    })
+  }   catch (error) {
+        console.error('Token inválido:', error)
+  }
+  }
+}, [token])
+
+useEffect(() => {
+  console.log("Updated courses state:", courses[0]);
+}, [courses]);
+
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
@@ -61,12 +84,14 @@ export default function Home() {
             Icon={CourseIcon}
             title="Meus Cursos"
             IsRectangle= {false}
+            Courses={courses}
           ></CoursesTemplate>
           {/*Falta modificar para o padrão de vídeo -> criar componente do quadrado no formato do retângulo*/}
           <CoursesTemplate
             Icon={LabIcon}
             title="Laboratórios virtuais"
             IsRectangle={true}
+            Courses={courses}
           ></CoursesTemplate>
         </div>
 

@@ -5,7 +5,6 @@ interface ModalSquareFormProps {
   courseName?: string
   courseTeacher?: string
   IsRectangle?: boolean
-
 }
 
 export default function ModalSquareForm({ children, courseName, courseTeacher, IsRectangle }: ModalSquareFormProps) {
