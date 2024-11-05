@@ -143,13 +143,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         navigate('/home')
       } else {
         const response = await AuthApi.signInUser({ login, password })
-        console.log(response)
-        const accessToken = response
+        console.log("response",response)
+        let accessToken;
+        if (typeof response === 'string') {
+          accessToken = response;
+        } else if (typeof response === 'object') {
+          accessToken = response.accessToken;
+        }
         console.log(accessToken)
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('accessToken', accessToken, { sameSite: 'strict' })
+        Cookies.set('accessToken', accessToken, {sameSite: 'strict'})
         fetchPerson(accessToken)
         navigate('/home')
         console.log('Login realizado com sucesso')
