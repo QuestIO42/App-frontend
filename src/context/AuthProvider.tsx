@@ -144,7 +144,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } else {
         const response = await AuthApi.signInUser({ login, password })
         console.log(response)
-        const accessToken = response.access
+        const accessToken = response
+        console.log(accessToken)
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
