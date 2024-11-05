@@ -85,8 +85,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
               if (!isRefreshing) {
                 isRefreshing = true
                 api
-                  .post('/auth/token/refresh', {}, { withCredentials: true })
+                  .patch('/auth/token/refresh', {}, { withCredentials: true })
                   .then((response) => {
+                    console.log("response", response.data)
                     const {accessToken}= response.data
                     setToken(accessToken)
                     Cookies.set('accessToken', accessToken)
@@ -151,7 +152,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } else if (typeof response === 'object') {
           accessToken = response.accessToken;
         }
-        console.log("acesso ou objeto? :",accessToken)
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
