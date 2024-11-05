@@ -80,13 +80,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const originalRequest = error.config
 
           if (error.response.status === 401) {
-            if (error.response.data.message === 'Token expired.') {
+            console.log("mensagem::" ,error.response)
+            if (error.response.data.code === 'token_not_valid' || error.response.data.message ==='Token expired.'){
               if (!isRefreshing) {
                 isRefreshing = true
                 api
                   .post('/auth/token/refresh', {}, { withCredentials: true })
                   .then((response) => {
-                    const { accessToken } = response.data
+                    const {accessToken}= response.data
                     setToken(accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
@@ -150,11 +151,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } else if (typeof response === 'object') {
           accessToken = response.accessToken;
         }
-        console.log(accessToken)
+        console.log("acesso ou objeto? :",accessToken)
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('accessToken', accessToken, {sameSite: 'strict'})
+        Cookies.set('accessToken', accessToken, {sameSite: 'none', secure: true})
+        api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
         fetchPerson(accessToken)
         navigate('/home')
         console.log('Login realizado com sucesso')

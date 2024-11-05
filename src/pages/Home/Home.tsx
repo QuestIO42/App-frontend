@@ -31,14 +31,20 @@ export default function Home() {
         const { sub } = jwtDecode(token) as { sub: string }
         const id = Number(sub)
         console.log(id)
+        if(id){
         api
-          .get(`/user/${id}`)
+          .get(`/user/${id}`, {
+            headers: {
+              accept: 'application/json',
+            },
+          }
+          )
           .then((response) => {
             console.log(response)
           })
           .catch((error) => {
             console.error('Erro ao obter usuário:', error)
-          })
+              })}
       } catch (error) {
         console.error('Token inválido:', error)
       }
@@ -49,7 +55,7 @@ export default function Home() {
     if(token){
       try{
       api
-      .get('/course/')
+      .get('/course')
       .then((response) => {
         console.log(response.data)
         setCourses(response.data)

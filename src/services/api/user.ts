@@ -4,7 +4,12 @@ import { api } from './api'
 async function getUser(accessToken: string) {
   const { sub } = jwtDecode<{ sub: string }>(accessToken)
   console.log('id', sub)
-  const userResponse = await api.get(`/user/${sub}`)
+  const userResponse = await api.get(`/user/${sub}`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json'
+    }
+  });
   return userResponse.data
 }
 
