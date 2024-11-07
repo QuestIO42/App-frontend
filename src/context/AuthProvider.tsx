@@ -15,6 +15,7 @@ import { mockUser } from '@/utils/mockUser'
 import { jwtDecode } from 'jwt-decode'
 import {signInUser, clearCookies, registerUser} from '@/services/api/auth'
 import { getUser } from '@/services/api/user'
+import { access } from 'fs'
 
 
 type AuthContextData = {
@@ -146,16 +147,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } else {
         const response = await signInUser({ login, password })
         console.log("response",response)
-        let accessToken;
-        if (typeof response === 'string') {
-          accessToken = response;
-        } else if (typeof response === 'object') {
-          accessToken = response.accessToken;
-        }
+        const accessToken  = response.accessToken
+        const refreshToken = response.refreshToken
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
         Cookies.set('accessToken', accessToken, {sameSite: 'Lax', secure: true})
+        Cookies.set('refreshToken', refreshToken, {sameSite: 'Lax', secure: true})
         api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
         fetchPerson(accessToken)
         navigate('/home')
