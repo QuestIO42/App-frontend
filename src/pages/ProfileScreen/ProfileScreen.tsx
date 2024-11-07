@@ -7,13 +7,13 @@ import Button from '@/components/utility/Button'
 import Cookies from 'js-cookie'
 import {useState} from 'react'
 import {logout} from '@/services/api/auth'
-import { useAuth } from '@/context/AuthProvider'
 
 export default function ProfileScreen() {
 
   const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
+
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -22,6 +22,7 @@ export default function ProfileScreen() {
       console.log(response)
       setToken(null)
       Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
       window.location.href = '/';
   };
   }

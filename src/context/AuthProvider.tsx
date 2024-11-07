@@ -44,6 +44,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
+  const [refreshToken, setRToken] = useState<string | null>(() => {
+    return Cookies.get('refreshToken') || null
+  }
+)
   const navigate = useNavigate()
   const isAuthenticated =
     import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
@@ -86,7 +90,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
               if (!isRefreshing) {
                 isRefreshing = true
                 api
-                  .patch('/auth/token/refresh', {}, { withCredentials: true })
+                  .post('/auth/token/refresh', { refresh: refreshToken }, { withCredentials: true })
                   .then((response) => {
                     console.log("response", response.data)
                     const {accessToken}= response.data
