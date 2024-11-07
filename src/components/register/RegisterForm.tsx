@@ -8,7 +8,7 @@ import AlreadyHasAAccount from './AlreadyHasAAcconunt'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
-import AuthApi from '@/services/api/auth'
+import {registerUser} from '@/services/api/auth'
 import { useNavigate } from 'react-router-dom'
 
 const RegisterFormSchema = z.object({
@@ -57,7 +57,7 @@ export default function RegisterForm() {
     confirmPassword: confirm_password,
   }: RegisterFormValues) {
     try {
-      await AuthApi.registerUser({username, email, password, confirm_password })
+      await registerUser({username, email, password, confirm_password })
       navigate('/')
     } catch (error: any) {
       if (error.response && error.response.data) {

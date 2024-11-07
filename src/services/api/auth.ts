@@ -32,5 +32,19 @@ async function registerUser({
   })
   return response.data
 }
+type Logout = {
+  accessToken : string
+} | null
 
-export default { signInUser, clearCookies, registerUser }
+async function logout(data: Logout ){
+  const logoutResponse = await api.post(`auth/logout`, { access:data?.accessToken }, {
+    headers: {
+      'Authorization': `Bearer ${data?.accessToken}`,
+    }
+  });
+  return logoutResponse.data
+
+}
+
+
+export  { signInUser, clearCookies, registerUser, logout}

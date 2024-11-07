@@ -2,8 +2,17 @@ import ForgotPasswordForm from '@/components/forgotPassword/ForgotPasswordForm'
 import Logo from '@/components/svgComponents/Logo'
 import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
 import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
+import {RegisterCredentials} from '@/interfaces/RegisterCredentials'
+import {api} from '@/services/api/api'
 
-export default function ForgotPasswordPage() {
+export default function ForgotPassword(){
+
+//export default async function recoverPassword({email}: RegisterCredentials){
+ // const response = await api.post('/auth/forgot-password-request',{
+   // email
+  //})
+//}
+
   return (
     <div className="min-w-screen flex min-h-screen items-center justify-center">
       <Logo
@@ -16,3 +25,4 @@ export default function ForgotPasswordPage() {
     </div>
   )
 }
+

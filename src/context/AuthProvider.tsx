@@ -9,12 +9,12 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-import UserApi from '@/services/api/user'
-import AuthApi from '@/services/api/auth'
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
 import { mockUser } from '@/utils/mockUser'
 import { jwtDecode } from 'jwt-decode'
+import {signInUser, clearCookies, registerUser} from '@/services/api/auth'
+import { getUser } from '@/services/api/user'
 
 
 type AuthContextData = {
@@ -144,7 +144,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.set('token', 'fake-token')
         navigate('/home')
       } else {
-        const response = await AuthApi.signInUser({ login, password })
+        const response = await signInUser({ login, password })
         console.log("response",response)
         let accessToken;
         if (typeof response === 'string') {
@@ -155,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('accessToken', accessToken, {sameSite: 'none', secure: true})
+        Cookies.set('accessToken', accessToken, {sameSite: 'Lax', secure: true})
         api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
         fetchPerson(accessToken)
         navigate('/home')
@@ -169,7 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function fetchPerson(accessToken: string) {
     try {
-      const response = await UserApi.getUser(accessToken)
+      const response = await getUser(accessToken)
       setUser(response)
     } catch (error) {
       console.error(error)
@@ -186,7 +186,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.remove('accessToken')
         navigate('/')
       } else {
-        await AuthApi.clearCookies()
+        await clearCookies()
       }
     } finally {
       setToken(null)
