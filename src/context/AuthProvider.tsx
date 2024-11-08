@@ -93,7 +93,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                   .post('/auth/token/refresh', { refresh: refreshToken }, { withCredentials: true })
                   .then((response) => {
                     console.log("response", response.data)
-                    const {accessToken}= response.data
+                    const {accessToken}= response.data.access
                     setToken(accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
