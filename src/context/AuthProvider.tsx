@@ -150,9 +150,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         navigate('/home')
       } else {
         const response = await signInUser({ login, password })
-        console.log("response",response)
-        const accessToken  = response.accessToken
-        const refreshToken = response.refreshToken
+        console.log("response",response.access)
+        const accessToken  = response.access
+        const refreshToken = response.refresh
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
