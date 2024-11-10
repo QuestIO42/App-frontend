@@ -19,13 +19,14 @@ async function clearCookies() {
 
 async function registerUser({
   username,
+  full_name,
   email,
   password,
 }: RegisterCredentials) {
-  const response = await api.post('/auth/register',{
+  const response = await api.post('/auth/self-register',{
     email,
-    fullname: username,
     username,
+    full_name,
     password,
     college_register: 'test',
     confirm_password: password

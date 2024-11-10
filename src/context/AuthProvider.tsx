@@ -85,16 +85,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const originalRequest = error.config
 
           if (error.response.status === 401) {
-            console.log("mensagem::" ,error.response)
             if (error.response.data.code === 'token_not_valid' || error.response.data.message ==='Token expired.'){
               if (!isRefreshing) {
                 isRefreshing = true
                 api
                   .post('/auth/token/refresh', { refresh: refreshToken }, { withCredentials: true })
                   .then((response) => {
-                    console.log("response", response.data)
-                    const {accessToken}= response.data.access
+                    const { access: accessToken } = response.data
                     setToken(accessToken)
+                    console.log("accessToken", accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
                     api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
@@ -104,6 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                     )
                     failedRequestQueue = []
                   })
+
                   .catch((err) => {
                     failedRequestQueue.forEach((request) =>
                       request.onFailure(err)
@@ -118,9 +118,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
               return new Promise((resolve, reject) => {
                 failedRequestQueue.push({
                   onSuccess: (accessToken: string) => {
-                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
-
-                    resolve(api(originalRequest))
+                    if (accessToken) {
+                      originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
+                      resolve(api(originalRequest))
+                    } else {
+                      console.error("Access token is null")
+                      reject(new Error("Access token is null"))
+                    }
                   },
                   onFailure: (err: AxiosError) => {
                     reject(err)

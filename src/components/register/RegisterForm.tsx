@@ -15,6 +15,9 @@ const RegisterFormSchema = z.object({
   username: z
     .string()
     .min(1, { message: 'O campo de nome de usuário é obrigatório' }),
+  full_name: z
+    .string()
+    .min(1, { message: 'O campo de nome completo é obrigatório' }),
   email: z
     .string()
     .min(1, { message: 'O campo de e-mail é obrigatório' })
@@ -52,12 +55,13 @@ export default function RegisterForm() {
 
   async function handleRegister({
     username,
+    full_name,
     email,
     password,
     confirmPassword: confirm_password,
   }: RegisterFormValues) {
     try {
-      await registerUser({username, email, password, confirm_password })
+      await registerUser({username, full_name, email, password, confirm_password })
       navigate('/')
     } catch (error: any) {
       if (error.response && error.response.data) {
@@ -104,6 +108,12 @@ export default function RegisterForm() {
           />
           {errors.username && <ErrorMessage error={errors.username.message} />}
 
+          <FormInput
+            registerProps={register('full_name')}
+            type="text"
+            label="nome completo"
+          />
+          {errors.full_name && <ErrorMessage error={errors.full_name.message} />}
           <FormInput
             registerProps={register('email')}
             type="text"

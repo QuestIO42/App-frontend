@@ -34,9 +34,6 @@ export default function Home() {
         if(id){
         api
           .get(`/user/${id}`, {
-            headers: {
-              accept: 'application/json',
-            },
           }
           )
           .then((response) => {
