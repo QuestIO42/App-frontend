@@ -17,7 +17,7 @@ import Course from './pages/Course/Course'
 import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
 import Teste from './pages/testPage/index'
-
+import Exercises from './pages/Exercises/Exercises'
 
 export default function App() {
   return (
@@ -39,6 +39,7 @@ export default function App() {
             <Route path="/course" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
             <Route path="/test" element={<Teste />} />
+            <Route path="/exercises" element={<Exercises/>} />
           </Route>
         </Routes>
       </AuthProvider>
