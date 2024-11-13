@@ -28,7 +28,6 @@ async function registerUser({
     username,
     full_name,
     password,
-    college_register: 'test',
     confirm_password: password
   })
   return response.data

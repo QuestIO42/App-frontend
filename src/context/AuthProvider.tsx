@@ -13,7 +13,7 @@ import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
 import { mockUser } from '@/utils/mockUser'
 import { jwtDecode } from 'jwt-decode'
-import {signInUser, clearCookies, registerUser} from '@/services/api/auth'
+import {signInUser, clearCookies, registerUser, logout} from '@/services/api/auth'
 import { getUser } from '@/services/api/user'
 import { access } from 'fs'
 
@@ -190,14 +190,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(null)
         setUser(null)
         Cookies.remove('accessToken')
+        Cookies.remove('refreshToken')
         navigate('/')
       } else {
-        await clearCookies()
+        if(accessToken){
+        await logout({accessToken})
+        }
       }
     } finally {
       setToken(null)
       setUser(null)
       Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
       navigate('/')
     }
   }
