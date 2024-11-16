@@ -1,13 +1,15 @@
 import { ButtonHTMLAttributes } from 'react'
+import { Link } from 'react-router-dom';
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string
-  className?: string
-  variant?: 'primary' | 'secondary' |'tertiary' |'quaternary'
-  buttonDisabled?: 'active' | 'disactive'
-  size?: 'small' | 'medium' | 'large'
+  text: string;
+  className?: string;
+  variant?: 'primary' | 'secondary' |'tertiary' |'quaternary';
+  buttonDisabled?: 'active' | 'disactive';
+  size?: 'small' | 'medium' | 'large';
+  to?: string
 }
 
 const buttonVariants = cva(
@@ -50,21 +52,38 @@ export default function Button({
   variant,
   buttonDisabled,
   size,
+  to,
   ...rest
+
 }: ButtonProps) {
+  const isDisabled = rest.disabled;
+
+  const classes = cn(
+    buttonVariants({
+      variant,
+      buttonDisabled: isDisabled ? 'active' : 'disactive',
+      size,
+    }),
+    className
+  );
+
+  // Renderiza um Link se "to" estiver presente
+  if (to) {
+    return (
+      <Link to={to} className={classes} {...rest}>
+        {text}
+      </Link>
+    );
+  }
+
+  // Renderiza um botão padrão caso contrário
   return (
     <button
-      className={cn(
-        buttonVariants({
-          variant,
-          buttonDisabled: rest.disabled ? 'active' : 'disactive',
-          size,
-        }),
-        className
-      )}
+      className={classes}
+      disabled={isDisabled}
       {...rest}
     >
       {text}
     </button>
-  )
+  );
 }

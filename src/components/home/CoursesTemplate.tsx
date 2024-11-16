@@ -18,8 +18,8 @@ export default function CoursesTemplate({ title, Icon, IsRectangle }: CoursesTem
 
       <div className="ml-12 flex flex-wrap justify-center gap-16">
         {[...Array(3)].map((_, index) => (
-                    <ModalSquareForm  IsRectangle={IsRectangle} key={index} courseName="Portas Lógicas" courseTeacher="Ricardo Menotti" >
-                    <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px] ': 'h-[240px] w-[240px]' }`}></div>
+                  <ModalSquareForm  IsRectangle={IsRectangle} key={index} courseName="Portas Lógicas" courseTeacher="Ricardo Menotti">
+                    <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]': 'h-[240px] w-[240px]' }`}></div>
                   </ModalSquareForm>
         ))}
       </div>

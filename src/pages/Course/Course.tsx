@@ -56,7 +56,7 @@ export default function Course() {
         </div>
 
         <div className="flex h-20 w-16 mr-5 mt-10 font-size-1 justify-end">
-          <Button className='bg-white mr-[90px] text-2xl' text="lista de exercícios" size="small"></Button></div>
+          <Button to="/exercises" className='bg-white mr-[90px] text-2xl' text="lista de exercícios" size="small"></Button></div>
       </div>
 
       <div className="relative col-span-full row-auto flex items-start justify-between ">

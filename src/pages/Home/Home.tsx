@@ -52,7 +52,7 @@ export default function Home() {
           <UserProgression username={user?.username} />
         </div>
         <div className="flex items-center justify-end">
-          <CircuitTopRight />
+          <CircuitTopRight/>
         </div>
       </div>
       <div className="relative col-span-full row-auto flex items-start justify-around">
@@ -62,7 +62,7 @@ export default function Home() {
             title="Meus Cursos"
             IsRectangle= {false}
           ></CoursesTemplate>
-          {/*Falta modificar para o padrão de vídeo -> criar componente do quadrado no formato do retângulo*/}
+          {/*Falta alinhar a versão retangular com a margem da página*/}
           <CoursesTemplate
             Icon={LabIcon}
             title="Laboratórios virtuais"

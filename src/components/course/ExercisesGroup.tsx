@@ -1,7 +1,7 @@
 import { ElementType } from "react"
 import ExerciseTemplate from "../utility/ExerciseTemplate"
 import LockIcon from "../svgComponents/icons/LockIcon"
-
+import UnlockIcon from "../svgComponents/icons/UnlockIcon"
 
 interface ExercisesGroupProps{
     title : string,
@@ -21,7 +21,7 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
 
             <div className="flex flex-col ml-10 gap-8">
                 {itens.map((content) => (
-                    <ExerciseTemplate text={content} Icon={LockIcon} size="medium"/>
+                    <ExerciseTemplate text={content} Icon={UnlockIcon} size="medium"/>
                 ))}
             </div>
         </div>
