@@ -1,4 +1,4 @@
 export interface SignInCredentials {
-  username: string
+  login: string
   password: string
 }

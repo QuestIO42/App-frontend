@@ -1,14 +1,16 @@
 import { ElementType } from 'react'
 import Button from '../utility/Button'
 import ModalSquareForm from '../utility/ModalSquareForm'
+import {Course} from '@/interfaces/Course'
 
 interface CoursesTemplateProps {
   title: string
   Icon: ElementType
   IsRectangle: boolean
+  Courses: Course[]
 }
 
-export default function CoursesTemplate({ title, Icon, IsRectangle }: CoursesTemplateProps) {
+export default function CoursesTemplate({ title, Icon, IsRectangle, Courses }: CoursesTemplateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <div className={`mr-auto flex items-center justify-center gap-3 ${IsRectangle ? 'ml-20' : 'ml-8'}`} >

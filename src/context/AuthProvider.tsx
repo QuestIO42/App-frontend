@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-import UserApi from '@/services/api/user'
-import AuthApi from '@/services/api/auth'
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { User } from '@/interfaces/User'
 import { mockUser } from '@/utils/mockUser'
 import { jwtDecode } from 'jwt-decode'
+import {signInUser, clearCookies, registerUser, logout} from '@/services/api/auth'
+import { getUser } from '@/services/api/user'
+import { access } from 'fs'
 
 
 type AuthContextData = {
@@ -29,7 +30,7 @@ type AuthProviderProps = {
 }
 
 interface FailedRequest {
-  onSuccess: (token: string) => void
+  onSuccess: (accessToken: string) => void
   onFailure: (error: AxiosError) => void
 }
 
@@ -40,27 +41,31 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(() => {
+  const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
+  const [refreshToken, setRToken] = useState<string | null>(() => {
+    return Cookies.get('refreshToken') || null
+  }
+)
   const navigate = useNavigate()
   const isAuthenticated =
-    import.meta.env.VITE_APP_ENV == 'development' ? true : !!token
+    import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
 
   useEffect(() => {
-    if (token && import.meta.env.VITE_APP_ENV !== 'development') {
-      fetchPerson(token)
+    if (accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
+      fetchPerson(accessToken)
     } else {
       setUser(mockUser)
     }
-  }, [token])
+  }, [accessToken])
 
   useLayoutEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
       const authInterceptor = api.interceptors.request.use(
         (config) => {
-          if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+          if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`
           }
           return config
         },
@@ -70,7 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.interceptors.request.eject(authInterceptor)
       }
     }
-  }, [token])
+  }, [accessToken])
 
   useLayoutEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
@@ -80,23 +85,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const originalRequest = error.config
 
           if (error.response.status === 401) {
-            if (error.response.data.message === 'Token expired.') {
+            if (error.response.data.code === 'token_not_valid' || error.response.data.message ==='Token expired.'){
               if (!isRefreshing) {
                 isRefreshing = true
                 api
-                  .post('/auth/token/refresh', {}, { withCredentials: true })
+                  .post('/auth/token/refresh', { refresh: refreshToken }, { withCredentials: true })
                   .then((response) => {
-                    const { accessToken } = response.data
+                    const { access: accessToken } = response.data
                     setToken(accessToken)
+                    console.log("accessToken", accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
-                    api.defaults.headers['Authorization'] = `Bearer ${token}`
+                    api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
 
                     failedRequestQueue.forEach((request) =>
                       request.onSuccess(accessToken)
                     )
                     failedRequestQueue = []
                   })
+
                   .catch((err) => {
                     failedRequestQueue.forEach((request) =>
                       request.onFailure(err)
@@ -111,9 +118,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
               return new Promise((resolve, reject) => {
                 failedRequestQueue.push({
                   onSuccess: (accessToken: string) => {
-                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
-
-                    resolve(api(originalRequest))
+                    if (accessToken) {
+                      originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
+                      resolve(api(originalRequest))
+                    } else {
+                      console.error("Access token is null")
+                      reject(new Error("Access token is null"))
+                    }
                   },
                   onFailure: (err: AxiosError) => {
                     reject(err)
@@ -131,9 +142,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.interceptors.response.eject(refreshInterceptor)
       }
     }
-  }, [token])
+  }, [accessToken])
 
-  async function signIn({ username, password }: SignInCredentials) {
+  async function signIn({ login, password }: SignInCredentials) {
     try {
       if (import.meta.env.VITE_APP_ENV === 'development') {
         // Em desenvolvimento, simula um usuário autenticado
@@ -142,12 +153,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.set('token', 'fake-token')
         navigate('/home')
       } else {
-        const response = await AuthApi.signInUser({ username, password })
-        const accessToken = response.data
+        const response = await signInUser({ login, password })
+        console.log("response",response.access)
+        const accessToken  = response.access
+        const refreshToken = response.refresh
         setToken(accessToken)
         const decoded = jwtDecode(accessToken)
         console.log(decoded)
-        Cookies.set('accessToken', accessToken, { sameSite: 'strict' })
+        Cookies.set('accessToken', accessToken, {sameSite: 'Lax', secure: true})
+        Cookies.set('refreshToken', refreshToken, {sameSite: 'Lax', secure: true})
+        api.defaults.headers['Authorization'] = `Bearer ${accessToken}`
         fetchPerson(accessToken)
         navigate('/home')
         console.log('Login realizado com sucesso')
@@ -160,7 +175,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function fetchPerson(accessToken: string) {
     try {
-      const response = await UserApi.getUser(accessToken)
+      const response = await getUser(accessToken)
       setUser(response)
     } catch (error) {
       console.error(error)
@@ -175,14 +190,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(null)
         setUser(null)
         Cookies.remove('accessToken')
+        Cookies.remove('refreshToken')
         navigate('/')
       } else {
-        await AuthApi.clearCookies()
+        if(accessToken){
+        await logout({accessToken})
+        }
       }
     } finally {
       setToken(null)
       setUser(null)
       Cookies.remove('accessToken')
+      Cookies.remove('refreshToken')
       navigate('/')
     }
   }
