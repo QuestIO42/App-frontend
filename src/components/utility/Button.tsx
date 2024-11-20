@@ -67,13 +67,12 @@ export default function Button({
     className
   );
 
-  // Renderiza um Link se "to" estiver presente
   if (to) {
     return (
-      <Link to={to} className={classes} {...rest}>
+      <Link to={to as string | undefined} className={classes} {...rest as any}>
         {text}
       </Link>
-    );
+    )
   }
 
   // Renderiza um botão padrão caso contrário
