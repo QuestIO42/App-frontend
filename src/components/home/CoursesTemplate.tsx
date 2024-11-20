@@ -18,12 +18,12 @@ export default function CoursesTemplate({ title, Icon, IsRectangle, Courses }: C
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
 
-    <div className="ml-12 flex flex-wrap justify-center gap-16">
-      {[...Array(3)].map((_, index) => (
-                  <ModalSquareForm  IsRectangle={IsRectangle} key={index} courseName={Courses[index]?.name} courseTeacher="Ricardo Menotti" >
-                  <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px] ': 'h-[240px] w-[240px]' }`}></div>
-                </ModalSquareForm>
-      ))}
+      <div className="ml-12 flex flex-wrap justify-center gap-16">
+        {[...Array(3)].map((_, index) => (
+                  <ModalSquareForm  IsRectangle={IsRectangle} key={index} courseName="Portas Lógicas" courseTeacher="Ricardo Menotti">
+                    <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]': 'h-[240px] w-[240px]' }`}></div>
+                  </ModalSquareForm>
+        ))}
       </div>
       <Button text="ver mais"></Button>
     </div>

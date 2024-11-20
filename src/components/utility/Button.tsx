@@ -1,13 +1,15 @@
 import { ButtonHTMLAttributes } from 'react'
+import { Link } from 'react-router-dom';
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string
-  className?: string
-  variant?: 'primary' | 'secondary' |'tertiary' |'quaternary'
-  buttonDisabled?: 'active' | 'disactive'
-  size?: 'small' | 'medium' | 'large'
+  text: string;
+  className?: string;
+  variant?: 'primary' | 'secondary' |'tertiary' |'quaternary';
+  buttonDisabled?: 'active' | 'disactive';
+  size?: 'small' | 'medium' | 'large';
+  to?: string
 }
 
 const buttonVariants = cva(
@@ -20,7 +22,7 @@ const buttonVariants = cva(
         secondary:
           'border-verde-300 text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
-          'border-laranja bg-white text-laranja-300 shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
+          'border-[#97581F] bg-white text-cinza shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
         quaternary:
           'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
 
@@ -50,21 +52,38 @@ export default function Button({
   variant,
   buttonDisabled,
   size,
+  to,
   ...rest
+
 }: ButtonProps) {
+  const isDisabled = rest.disabled;
+
+  const classes = cn(
+    buttonVariants({
+      variant,
+      buttonDisabled: isDisabled ? 'active' : 'disactive',
+      size,
+    }),
+    className
+  );
+
+  // Renderiza um Link se "to" estiver presente
+  if (to) {
+    return (
+      <Link to={to} className={classes} {...rest}>
+        {text}
+      </Link>
+    );
+  }
+
+  // Renderiza um botão padrão caso contrário
   return (
     <button
-      className={cn(
-        buttonVariants({
-          variant,
-          buttonDisabled: rest.disabled ? 'active' : 'disactive',
-          size,
-        }),
-        className
-      )}
+      className={classes}
+      disabled={isDisabled}
       {...rest}
     >
       {text}
     </button>
-  )
+  );
 }

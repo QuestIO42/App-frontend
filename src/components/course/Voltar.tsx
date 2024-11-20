@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function Voltar() {
+  const navigate = useNavigate();
+
   return (
-    <div className="">
-      <Link to="/home" className="">
-        <p className="text-lg hover:underline font-bold text-gray-600 "> &lt; voltar</p>
-      </Link>
+    <div>
+      <button
+        onClick={() => navigate(-1)}
+        className="text-2xl hover:underline font-bold text-cinzaClaro"
+      >&lt; voltar
+      </button>
     </div>
-  )
+  );
 }
