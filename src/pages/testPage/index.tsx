@@ -1,8 +1,7 @@
-import ExercisesGroup from '@/components/course/ExercisesGroup'
-import LampIcon from '@/components/svgComponents/icons/LampIcon'
+import OpenAnswer from "@/components/quiz/OpenAnswer"
 
 export default function Test() {
   return(
-<ExercisesGroup title='circuitos lógicos' Icon={LampIcon}/>
+    <OpenAnswer title="Q1" description="loremhjdhasjkdhajksdhajshdkjas dahsjkdhasjkdhasjkdhkjashdjk hakjshdjkashdkjahsdkjhaskjdhaskj"/>
   )
 }
