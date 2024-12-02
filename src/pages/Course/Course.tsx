@@ -16,11 +16,26 @@ import { useAuth } from '@/context/AuthProvider'
 import { api } from '@/services/api/api'
 import { jwtDecode } from 'jwt-decode'
 import { useEffect } from 'react'
+import { RankingItemProps } from '@/interfaces/User'
 
 
 export default function Course() {
     const { user } = useAuth()
     const subjects = ["Iniciando circuitos", "Circuitos Combinacionais", "Circuitos sequênciais", "Vetores"]
+
+    const person1 = {
+      name: "Alice Johnson",
+      college: "University of Columbia",
+      rating: 1,
+    };
+    
+    const person2 = {
+      name: "Bob Smith",
+      college: "Universidade Federal de São Carlos",
+      rating: 2,
+    };
+
+    const people: RankingItemProps[] = [person1, person2];
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -66,7 +81,7 @@ export default function Course() {
         </div>
         <div className="flex mr-4 flex-col">
         <Ranking>
-          <RankingItem users={mockUsers.users}/>
+          <RankingItem users={people}/>
         </Ranking>
         <Forum/>
         </div>

@@ -12,7 +12,7 @@ export interface User{
 
 export interface RankingItemProps {
   name: string
-  profilePicture: ElementType
+  profilePicture?: ElementType
   college: string
   rating: number
 }
