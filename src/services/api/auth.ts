@@ -1,7 +1,7 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
-
+import { ChangePasswordValues } from '@/interfaces/ChangePasswordValues'
 async function signInUser({ login, password }: SignInCredentials) {
   try {
     const response = await api.post('/auth/login', { login, password })
@@ -32,6 +32,18 @@ async function registerUser({
   })
   return response.data
 }
+
+async function changePassword({
+  password,
+  confirmPassword,
+}: ChangePasswordValues) {
+  const response = await api.put('user', {
+    password,
+    confirmPassword,
+  })
+  return response.data
+}
+
 type Logout = {
   accessToken : string
 } | null
@@ -47,4 +59,4 @@ async function logout(data: Logout ){
 }
 
 
-export  { signInUser, clearCookies, registerUser, logout}
+export  { signInUser, clearCookies, registerUser, logout, changePassword}

@@ -18,6 +18,9 @@ import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
 import Teste from './pages/testPage/index'
 import Exercises from './pages/Exercises/Exercises'
+import ChangePassword from './pages/Login@Registration/ChangePassword'
+import ConfigPass from './pages/Login@Registration/ConfigPass'
+
 
 export default function App() {
   return (
@@ -28,12 +31,13 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-
+            <Route path="/config-pass/:verificationCode" element={<ConfigPass />} />
           </Route>
           <Route path="/not_found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not_found" />} />
 
           <Route element={<ProtectedRoutes />}>
+            <Route path="/change-password/" element={<ChangePassword />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />
