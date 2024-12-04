@@ -5,6 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
+
 import Home from './pages/Home/Home'
 import { AuthProvider } from './context/AuthProvider'
 import NotFound from './pages/NotFound/NotFound'

@@ -73,7 +73,6 @@ useEffect(() => {
 
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
-      <CodeSpace />
       <Header />
       <div className="col-span-full grid grid-cols-2">
         <div className="flex items-center justify-center">
