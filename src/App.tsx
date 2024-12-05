@@ -37,7 +37,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/not_found" />} />
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/change-password/" element={<ChangePassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/home" element={<Home />} />
             <Route path="/course" element={<Course />} />

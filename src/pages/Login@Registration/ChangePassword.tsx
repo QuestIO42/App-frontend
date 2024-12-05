@@ -1,4 +1,4 @@
-import { changePassword } from '@/services/api/auth'
+import { updateUser } from '@/services/api/user'
 import Logo from '@/components/svgComponents/Logo'
 import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
 import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
@@ -13,6 +13,9 @@ import { ChangePasswordValues } from '@/interfaces/ChangePasswordValues'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
+import Cookies from 'js-cookie'
+import {jwtDecode} from 'jwt-decode'
+import { UserUpdateProps } from '@/interfaces/User'
 
 const ChangePasswordSchema = z.object({
   password: z
@@ -29,6 +32,9 @@ type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>
 
 export default function ChangePasswordForm() {
   const navigate = useNavigate()
+  const [accessToken, setToken] = useState<string>(() => {
+    return Cookies.get('accessToken') ?? ''
+  })
   const {
     handleSubmit,
     setError,
@@ -41,9 +47,9 @@ export default function ChangePasswordForm() {
   async function handlePassword({
     password,
     confirmPassword,
-  }: ChangePasswordFormValues) {
+  }: Partial <UserUpdateProps>  ) {
     try {
-      await changePassword({ password, confirmPassword });
+      await updateUser(accessToken, {password, confirmPassword});
       navigate('/');
     } catch (error: any) {
       if (error.response && error.response.data) {
