@@ -20,3 +20,12 @@ export interface RankingItemProps {
 export interface UserListProps{
   users: RankingItemProps[]
 }
+
+export interface UserUpdateProps{
+  id: string
+  full_name: string
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+}

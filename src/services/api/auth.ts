@@ -1,6 +1,7 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
+import { ChangePasswordValues } from '@/interfaces/ChangePasswordValues'
 
 async function signInUser({ login, password }: SignInCredentials) {
   try {
@@ -32,6 +33,8 @@ async function registerUser({
   })
   return response.data
 }
+
+
 type Logout = {
   accessToken : string
 } | null
