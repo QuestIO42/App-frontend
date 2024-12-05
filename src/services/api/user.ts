@@ -28,7 +28,7 @@ async function updateUser(accessToken: string, newValues: Partial<UserUpdateProp
 
   const dataToSend: Partial<UserUpdateProps> = {
     full_name: newValues.full_name || currentUser.full_name,
-    username: newValues.username || "testedoput",
+    username: newValues.username || currentUser.username,
     email: newValues.email || currentUser.email,
     password: newValues.password || currentUser.password,
     confirmPassword: newValues.confirmPassword || currentUser.confirmPassword,
