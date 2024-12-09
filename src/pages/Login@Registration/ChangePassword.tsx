@@ -5,16 +5,12 @@ import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import FormTitle from '@/components/form/FormTitle'
 import ModalSquareForm from '@/components/utility/ModalSquareForm'
 import { useNavigate } from 'react-router-dom'
-import { ChangePasswordValues } from '@/interfaces/ChangePasswordValues'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
-import Cookies from 'js-cookie'
-import {jwtDecode} from 'jwt-decode'
 import { UserUpdateProps } from '@/interfaces/User'
 
 const ChangePasswordSchema = z.object({
@@ -32,9 +28,7 @@ type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>
 
 export default function ChangePasswordForm() {
   const navigate = useNavigate()
-  const [accessToken, setToken] = useState<string>(() => {
-    return Cookies.get('accessToken') ?? ''
-  })
+
   const {
     handleSubmit,
     setError,
@@ -44,23 +38,23 @@ export default function ChangePasswordForm() {
     resolver: zodResolver(ChangePasswordSchema),
   })
 
-  async function handlePassword({
+  /*   async function handlePassword({
     password,
     confirmPassword,
-  }: Partial <UserUpdateProps>  ) {
+  }: Partial<UserUpdateProps>) {
     try {
-      await updateUser(accessToken, {password, confirmPassword});
-      navigate('/');
+      await updateUser({ password, confirmPassword })
+      navigate('/')
     } catch (error: any) {
       if (error.response && error.response.data) {
         setError('root', {
           type: 'manual',
           message:
             'Ocorreu um erro ao tentar recuperar a senha. Tente novamente mais tarde.',
-        });
+        })
       }
     }
-  }
+  } */
 
   return (
     <div className="min-w-screen flex min-h-screen items-center justify-center">
@@ -69,33 +63,39 @@ export default function ChangePasswordForm() {
         className="absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-900"
       />
       <div className="mb-14 mt-14">
-      <ModalSquareForm>
-      <div className="relative flex flex-col items-center justify-center p-10 md:px-10 md:py-5 xl:min-w-[32rem]">
-        <FormTitle title="Redefinir senha" />
-        <form
-          onSubmit={handleSubmit(handlePassword)}
-          className="mt-12 flex flex-col items-center justify-center"
-        >
-          <FormInput
-            registerProps={register('password')}
-            type="password"
-            label="senha"
-          />
+        <ModalSquareForm>
+          <div className="relative flex flex-col items-center justify-center p-10 md:px-10 md:py-5 xl:min-w-[32rem]">
+            <FormTitle title="Redefinir senha" />
+            <form
+              /*  onSubmit={handleSubmit(handlePassword)} */
+              className="mt-12 flex flex-col items-center justify-center"
+            >
+              <FormInput
+                registerProps={register('password')}
+                type="password"
+                label="senha"
+              />
 
-          {errors.password && <ErrorMessage error={errors.password.message} />}
-          <FormInput
-            registerProps={register('confirmPassword')}
-            type="password"
-            label="confirmar senha"
-          />
-          {errors.confirmPassword && (
-            <ErrorMessage error={errors.confirmPassword.message} />
-          )}
-          {errors.root && <ErrorMessage error={errors.root.message} />}
-          <Button disabled={isSubmitting} className="mt-4" text="Alterar Senha" />
-        </form>
-      </div>
-    </ModalSquareForm>
+              {errors.password && (
+                <ErrorMessage error={errors.password.message} />
+              )}
+              <FormInput
+                registerProps={register('confirmPassword')}
+                type="password"
+                label="confirmar senha"
+              />
+              {errors.confirmPassword && (
+                <ErrorMessage error={errors.confirmPassword.message} />
+              )}
+              {errors.root && <ErrorMessage error={errors.root.message} />}
+              <Button
+                disabled={isSubmitting}
+                className="mt-4"
+                text="Alterar Senha"
+              />
+            </form>
+          </div>
+        </ModalSquareForm>
       </div>
 
       <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
@@ -103,4 +103,3 @@ export default function ChangePasswordForm() {
     </div>
   )
 }
-
