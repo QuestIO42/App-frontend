@@ -1,27 +1,18 @@
-import { useEffect } from "react"
-import { useParams } from "react-router-dom"
-import { useAuth } from "@/context/AuthProvider"
-
+import { useAuth } from '@/hooks/useAuth'
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
 export default function ConfigPass() {
-  const {verificationCode} = useParams()
-  console.log("CODIGO DE VERIFICAÇÃO", verificationCode)
+  const { verificationCode } = useParams()
+  console.log('CODIGO DE VERIFICAÇÃO', verificationCode)
 
-  const {configPass} = useAuth();
+  const { configPass } = useAuth()
 
   useEffect(() => {
     if (verificationCode) {
-      configPass(verificationCode).then(() => {
-      })
+      configPass(verificationCode).then(() => {})
     }
   })
 
-
-
-  return (
-    <div>
-
-    </div>
-  )
-
+  return <div></div>
 }

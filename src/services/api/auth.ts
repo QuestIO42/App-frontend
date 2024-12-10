@@ -1,20 +1,15 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
-import { ChangePasswordValues } from '@/interfaces/ChangePasswordValues'
+import Cookies from 'js-cookie'
 
 async function signInUser({ login, password }: SignInCredentials) {
-  try {
-    const response = await api.post('/auth/login', { login, password })
-    return response.data
-  } catch (error) {
-    console.error(error)
-  }
+  const response = await api.post('/auth/login', { login, password })
+  return response.data
 }
 
 async function clearCookies() {
   const response = await api.patch('/auth/clear-cookies')
-  console.log(response.data)
   return response.data
 }
 
@@ -24,30 +19,21 @@ async function registerUser({
   email,
   password,
 }: RegisterCredentials) {
-  const response = await api.post('/auth/self-register',{
+  const response = await api.post('/auth/self-register', {
     email,
     username,
     full_name,
     password,
-    confirm_password: password
+    confirm_password: password,
   })
   return response.data
 }
 
-
-type Logout = {
-  accessToken : string
-} | null
-
-async function logout(data: Logout ){
-  const logoutResponse = await api.post(`auth/logout`, { access:data?.accessToken }, {
-    headers: {
-      'Authorization': `Bearer ${data?.accessToken}`,
-    }
-  });
+async function logout() {
+  const logoutResponse = await api.post(`/auth/logout`, {
+    refresh: Cookies.get('refreshToken'),
+  })
   return logoutResponse.data
-
 }
 
-
-export  { signInUser, clearCookies, registerUser, logout}
+export { signInUser, clearCookies, registerUser, logout }
