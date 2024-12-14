@@ -19,30 +19,43 @@ import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
 import Practice from './pages/Verilog/Practice'
 import Teste from './pages/testPage/index'
-
+import Exercises from './pages/Exercises/Exercises'
+import ChangePassword from './pages/Login@Registration/ChangePassword'
+import ConfigPass from './pages/Login@Registration/ConfigPass'
 
 export default function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          {/*Fluxo de autenticação */}
           <Route element={<PublicRoute />}>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-
+            <Route
+              path="/config-pass/:verificationCode"
+              element={<ConfigPass />}
+            />
+            <Route path="/change-password" element={<ChangePassword />} />
           </Route>
-          <Route path="/not_found" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/not_found" />} />
 
+          {/*Fluxo do usuário */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="/courses" element={<Courses />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/course" element={<Course />} />
+            <Route path="/course/:userId" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
+
+            <Route path="/courses" element={<Courses />} />
             <Route path="/test" element={<Teste />} />
             <Route path="/course/:courseId/practice" element={<Practice />} />
+            <Route path="/exercises" element={<Exercises />} />
+
           </Route>
+
+          {/*Rotas de redirecionamento */}
+          <Route path="/not_found" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/not_found" />} />
         </Routes>
       </AuthProvider>
     </Router>

@@ -1,15 +1,8 @@
-import { jwtDecode } from 'jwt-decode'
 import { api } from './api'
+import { UserUpdateProps } from '@/interfaces/User'
 
-async function getUser(accessToken: string) {
-  const { sub } = jwtDecode<{ sub: string }>(accessToken)
-  console.log('id', sub)
-  const userResponse = await api.get(`/user/${sub}`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/json'
-    }
-  });
+async function getUser(id: string) {
+  const userResponse = await api.get(`/user/${id}`)
   return userResponse.data
 }
 
@@ -18,4 +11,15 @@ async function signIn() {
   return response.data
 }
 
-export  { getUser, signIn}
+async function updateUser({
+  id,
+  updateUser,
+}: {
+  id: string
+  updateUser: Partial<UserUpdateProps>
+}) {
+  const response = await api.put(`/user/${id}`, updateUser)
+  return response.data
+}
+
+export { getUser, signIn, updateUser }
