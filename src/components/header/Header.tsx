@@ -4,7 +4,7 @@ import NotificationIcon from '../svgComponents/icons/NotificationIcon'
 
 import ProfileIcon from '../svgComponents/icons/ProfileIcon'
 import SearchBar from './SearchBar'
-import { useAuth } from '@/context/AuthProvider'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Header() {
   const { user } = useAuth()
