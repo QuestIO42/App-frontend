@@ -7,6 +7,8 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
+import RecoveryLink from '../login/RecoveryLink'
+import { useState } from 'react'
 
 const EmailSchema = z.object({
   email: z
@@ -18,7 +20,7 @@ const EmailSchema = z.object({
 type EmailSchemaType = z.infer<typeof EmailSchema>;
 
 export default function ForgotPasswordForm() {
-
+  const [showRecoveryLink, setShowRecoveryLink] = useState(false);
   const {
     register,
     handleSubmit,
@@ -31,6 +33,7 @@ export default function ForgotPasswordForm() {
     try {
       const response = await forgotPassword(data.email)
       console.log(response)
+      setShowRecoveryLink(true);
     }
     catch(error: any) {
       console.log(error)
@@ -44,12 +47,19 @@ export default function ForgotPasswordForm() {
   // }
 
   return (
+    <>
+   <div className="relative flex flex-col gap-16 mt-14 items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
+    <div className="absolute top-[-63px]">
+    {showRecoveryLink && <RecoveryLink
+      text="Link de Recuperação enviado"
+       />}
+       </div>
     <ModalSquareForm>
       <div className="relative flex flex-col items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
         <FormTitle title="Recuperar senha"></FormTitle>
         <Information></Information>
 
-        <form className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16" onSubmit={handleSubmit(handleClick)}>
+        <form className="mt-4 flex flex-col items-center justify-center sm:mt-10 md:mt-8" onSubmit={handleSubmit(handleClick)}>
           <div className="mb-4">
             <label className="mb-2 block font-mono text-sm font-semibold text-preto-texto sm:text-[12px] md:text-base lg:text-base">
               {"email"}
@@ -59,11 +69,11 @@ export default function ForgotPasswordForm() {
               {...register('email', {
                 required: 'O campo do e-mail é obrigatório'
               })}
-              className={`border-2 border-roxo-300 px-2 py-1 text-base font-semibold text-preto-texto shadow-default-roxo-300 focus:border-roxo-900 focus:shadow-roxo-900 sm:border-[2.5px] sm:px-3 sm:text-lg md:border-4 md:px-4 md:text-xl lg:text-2xl`}
+              className={`border-2 border-roxo-300 px-2 py-1  text-base font-semibold text-preto-texto shadow-default-roxo-300 focus:border-roxo-900 focus:shadow-roxo-900 sm:border-[2.5px] sm:px-3 sm:text-lg md:border-4 md:px-4 md:text-xl lg:text-2xl`}
               type="text"
             />
 
-            <div className="ml-auto mr-auto">
+            <div className="ml-auto mt-4 mr-auto">
               {errors.email &&  <ErrorMessage error={errors.email.message}/>}
             </div>
 
@@ -72,5 +82,7 @@ export default function ForgotPasswordForm() {
         </form>
       </div>
     </ModalSquareForm>
+    </div>
+    </>
   )
 }
