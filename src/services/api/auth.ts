@@ -1,7 +1,9 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
+import { error } from 'console'
 import Cookies from 'js-cookie'
+
 
 async function signInUser({ login, password }: SignInCredentials) {
   const response = await api.post('/auth/login', { login, password })
@@ -36,4 +38,14 @@ async function logout() {
   return logoutResponse.data
 }
 
-export { signInUser, clearCookies, registerUser, logout }
+  async function forgotPassword(email: string) {
+    try {
+      const response = await api.post(`auth/forgot-password-request`, {email})
+      return response.data
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+export  { signInUser, clearCookies, registerUser, logout, forgotPassword}
+
