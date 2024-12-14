@@ -17,6 +17,7 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/Course/Course'
 import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import Practice from './pages/Verilog/Practice'
 import Teste from './pages/testPage/index'
 
 
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/course" element={<Course />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
             <Route path="/test" element={<Teste />} />
+            <Route path="/course/:courseId/practice" element={<Practice />} />
           </Route>
         </Routes>
       </AuthProvider>
