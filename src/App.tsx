@@ -5,6 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
+
 import Home from './pages/Home/Home'
 import { AuthProvider } from './context/AuthProvider'
 import NotFound from './pages/NotFound/NotFound'
@@ -16,6 +17,7 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/Course/Course'
 import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import Practice from './pages/Verilog/Practice'
 import Teste from './pages/testPage/index'
 import Exercises from './pages/Exercises/Exercises'
 import ChangePassword from './pages/Login@Registration/ChangePassword'
@@ -46,7 +48,9 @@ export default function App() {
 
             <Route path="/courses" element={<Courses />} />
             <Route path="/test" element={<Teste />} />
+            <Route path="/course/:courseId/practice" element={<Practice />} />
             <Route path="/exercises" element={<Exercises />} />
+
           </Route>
 
           {/*Rotas de redirecionamento */}
