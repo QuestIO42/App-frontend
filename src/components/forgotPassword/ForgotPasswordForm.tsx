@@ -51,7 +51,7 @@ export default function ForgotPasswordForm() {
    <div className="relative flex flex-col gap-16 mt-14 items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
     <div className="absolute top-[-63px]">
     {showRecoveryLink && <RecoveryLink
-      text="Link de Recuperação enviado"
+      text="Se o usuário está cadastrado, será enviado o e-mail"
        />}
        </div>
     <ModalSquareForm>
