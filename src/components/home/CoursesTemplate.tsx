@@ -2,6 +2,8 @@ import { ElementType } from 'react'
 import Button from '../utility/Button'
 import ModalSquareForm from '../utility/ModalSquareForm'
 import { Course } from '@/interfaces/Course'
+import { fetchAllQuizes } from '@/services/api/quiz'
+import { useNavigate } from 'react-router-dom'
 
 interface CoursesTemplateProps {
   title: string
@@ -17,7 +19,13 @@ export default function CoursesTemplate({
   courses,
 }: CoursesTemplateProps) {
   const hasCourses = courses && courses.length > 0
+  const navigate = useNavigate()
+  const handleClick = (id: string) => {
+    //alert(id);
+    navigate(`/Course/${id}`)
+   //getQuiz()
 
+  }
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <div
@@ -30,6 +38,11 @@ export default function CoursesTemplate({
       <div className="ml-12 flex flex-wrap justify-center gap-16">
         {hasCourses
           ? courses.slice(0, 3).map((course) => (
+            <div
+            key={course.id}
+            onClick={() => handleClick(course.id)}
+            className="cursor-pointer"
+            >
               <ModalSquareForm
                 IsRectangle={IsRectangle}
                 key={course.id}
@@ -40,8 +53,10 @@ export default function CoursesTemplate({
                   className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
                 ></div>
               </ModalSquareForm>
+              </div>
             ))
           : [...Array(3)].map((_, index) => (
+
               <ModalSquareForm
                 IsRectangle={IsRectangle}
                 key={index}
@@ -52,6 +67,7 @@ export default function CoursesTemplate({
                   className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
                 ></div>
               </ModalSquareForm>
+
             ))}
       </div>
       <Button text="ver mais"></Button>

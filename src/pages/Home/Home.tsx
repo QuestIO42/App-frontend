@@ -10,7 +10,6 @@ import LabIcon from '@/components/svgComponents/icons/LabIcon'
 import RankingItem from '@/components/home/RankingItem'
 import { mockUsers } from '@/utils/mocks/mockUsers'
 import { useEffect, useState } from 'react'
-import CodeSpace from '@/components/verilogIDE/CodeSpace'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchAllCourses } from '@/services/api/course'
 

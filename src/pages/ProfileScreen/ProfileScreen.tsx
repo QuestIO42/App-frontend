@@ -41,7 +41,7 @@ export default function ProfileScreen() {
   }
 
   return (
-    <div className="bzg-grid-pattern">
+    <div className="bg-grid-pattern">
       <Header></Header>
       <main className="flex flex-col items-center justify-center gap-20 md:mb-28 md:mt-16">
         <div className="relative flex items-center justify-center gap-24">
