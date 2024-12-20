@@ -10,4 +10,5 @@ const fetchAllUserCourses = async (id: string) => {
   return response.data
 }
 
+
 export { fetchAllCourses, fetchAllUserCourses }
