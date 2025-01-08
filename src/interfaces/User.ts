@@ -7,6 +7,7 @@ export interface User{
   email: string
   college_register: string
   xp_count?: number
+  xp_main: number
 }
 
 

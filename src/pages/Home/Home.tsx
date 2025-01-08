@@ -37,7 +37,7 @@ export default function Home() {
       <Header />
       <div className="col-span-full grid grid-cols-2">
         <div className="flex items-center justify-center">
-          <UserProgression username={user?.username} />
+          <UserProgression username={user?.username} xp_main={user?.xp_main} />
         </div>
         <div className="flex items-center justify-end">
           <CircuitTopRight />
