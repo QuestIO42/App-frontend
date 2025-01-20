@@ -2,7 +2,8 @@ import { api } from './api'
 
 const fetchAllCourses = async () => {
   const response = await api.get('/course')
-  return response.data
+
+  return response
 }
 
 const fetchAllUserCourses = async (id: string) => {
