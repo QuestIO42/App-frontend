@@ -70,7 +70,7 @@ export default function CoursesTemplate({
 
             ))}
       </div>
-      <Button text="ver mais"></Button>
+      <Button onClick={() => navigate('/courses')} text="ver mais"></Button>
     </div>
   )
 }
