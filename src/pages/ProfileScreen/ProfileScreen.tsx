@@ -4,31 +4,44 @@ import UserCourses from '@/components/profile/UserCourses'
 import UserProfile from '@/components/profile/UserProfile'
 import UserStatistics from '@/components/profile/UserStatistics'
 import Button from '@/components/utility/Button'
-import Cookies from 'js-cookie'
-import {useState} from 'react'
-import {logout} from '@/services/api/auth'
+import { useAuth } from '@/hooks/useAuth'
+import { Course } from '@/interfaces/Course'
+import { fetchAllUserCourses } from '@/services/api/course'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 export default function ProfileScreen() {
+  const { signOut } = useAuth()
+  const { userId } = useParams<{ userId: string }>()
+  const [userCourses, setUserCourses] = useState<Course[]>([])
 
-  const [accessToken, setToken] = useState<string | null>(() => {
-    return Cookies.get('accessToken') || null
-  })
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+      if (userId) {
+        try {
+          console.log('useEffect chamado')
+          const userCourses = await fetchAllUserCourses(userId)
+          setUserCourses(userCourses)
+          console.log('Cursos do usuário:', userCourses)
+        } catch (error) {
+          console.error('Erro ao obter cursos do usuário:', error)
+        }
+      }
+    }
 
+    fetchUserCourses()
+  }, [])
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if(accessToken !== null){
-      const response = logout({accessToken})
-      console.log(response)
-      setToken(null)
-      Cookies.remove('accessToken')
-      Cookies.remove('refreshToken')
-      window.location.href = '/';
-  };
+  const handleClick = async () => {
+    try {
+      signOut()
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error)
+    }
   }
 
   return (
-    <div className="bzg-grid-pattern">
+    <div className="bg-grid-pattern">
       <Header></Header>
       <main className="flex flex-col items-center justify-center gap-20 md:mb-28 md:mt-16">
         <div className="relative flex items-center justify-center gap-24">
@@ -36,16 +49,15 @@ export default function ProfileScreen() {
           <UserStatistics></UserStatistics>
 
           <Button
-            className='absolute -right-40 top-0'
+            className="absolute -right-40 top-0"
             text="logout"
-            size='small'
-            variant='quaternary'
+            size="small"
+            variant="quaternary"
             onClick={handleClick}
           ></Button>
-
         </div>
         <div className="w-[90%]">
-          <UserCourses></UserCourses>
+          <UserCourses courses={userCourses}></UserCourses>
         </div>
       </main>
       <Footer></Footer>

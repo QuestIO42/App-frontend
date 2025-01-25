@@ -8,42 +8,41 @@ import Cadastration from './Cadastration'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
-import { useAuth } from '@/context/AuthProvider'
+import { useAuth } from '@/hooks/useAuth'
 
 const emailSchema = z
   .string()
-  .min(1, "O campo de identficação é obrigatório")
-  .email("O e-mail digitado não é válido")
-const usernameSchema =z
+  .min(1, 'O campo de identficação é obrigatório')
+  .email('O e-mail digitado não é válido')
+const usernameSchema = z.string().min(1, {
+  message: 'O campo de identificação é obrigatório',
+})
+const credentialsSchema = z
   .string()
-  .min(1, {
-  message: 'O campo de identificação é obrigatório' })
-  const credentialsSchema = z
-  .string()
-  .min(1, "O campo de identificação é obrigatório")
+  .min(1, 'O campo de identificação é obrigatório')
   .superRefine((value, ctx) => {
     if (value.includes('@') || value.includes('.')) {
       // Verificar como email se o input contiver '@' ou '.'
       try {
-        emailSchema.parse(value);
+        emailSchema.parse(value)
       } catch (e) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "O e-mail digitado não é válido",
-        });
+          message: 'O e-mail digitado não é válido',
+        })
       }
     } else {
       // Verificar como username se não contiver '@' ou o '.'
       try {
-        usernameSchema.parse(value);
+        usernameSchema.parse(value)
       } catch (e) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "O username é inválido. Deve ter pelo menos 3 caracteres.",
-        });
+          message: 'O username é inválido. Deve ter pelo menos 3 caracteres.',
+        })
       }
     }
-  });
+  })
 const LoginFormSchema = z.object({
   credentials: credentialsSchema,
   password: z
@@ -68,7 +67,10 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(LoginFormSchema) })
 
-  async function handleLogin({ credentials : login, password }: LoginFormValues) {
+  async function handleLogin({
+    credentials: login,
+    password,
+  }: LoginFormValues) {
     try {
       await signIn({ login, password })
     } catch (error: any) {
@@ -94,7 +96,9 @@ export default function LoginForm() {
               type="text"
               label="usuário ou e-mail"
             />
-            {errors.credentials && <ErrorMessage error={errors.credentials.message} />}
+            {errors.credentials && (
+              <ErrorMessage error={errors.credentials.message} />
+            )}
           </div>
           <div className="flex flex-col items-start">
             <FormInput

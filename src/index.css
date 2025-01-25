@@ -38,3 +38,4 @@ body {
 .btn_disable {
   @apply cursor-not-allowed items-center justify-center border-[3px] border-roxo-300 bg-roxo-300 px-6 py-1 text-center font-bold text-branco opacity-50 shadow-default-roxo-500;
 }
+

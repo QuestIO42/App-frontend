@@ -5,6 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
+
 import Home from './pages/Home/Home'
 import { AuthProvider } from './context/AuthProvider'
 import NotFound from './pages/NotFound/NotFound'
@@ -16,31 +17,47 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/Course/Course'
 import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
+import Practice from './pages/Verilog/Practice'
 import Teste from './pages/testPage/index'
-import Exercises from './pages/Exercises/Exercises'
+import Exercises from './pages/Quizzes/Exercises'
+import ChangePassword from './pages/Login@Registration/ChangePassword'
+import ConfigPass from './pages/Login@Registration/ConfigPass'
+import Quiz from './pages/Quizzes/Quiz'
 
 export default function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          {/*Fluxo de autenticação */}
           <Route element={<PublicRoute />}>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+            <Route
+              path="/config-pass/:verificationCode"
+              element={<ConfigPass />}
+            />
+            <Route path="/change-password" element={<ChangePassword />} />
+          </Route>
+
+          {/*Fluxo do usuário */}
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/profile/:userId" element={<ProfileScreen />} />
+
+            <Route path="/course/:courseId" element={<Course />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/course/:courseId/practice" element={<Practice />} />
+            <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
+            <Route path="/test" element={<Teste />} />
+            <Route path="/exercises" element={<Exercises />} />
 
           </Route>
+
+          {/*Rotas de redirecionamento */}
           <Route path="/not_found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not_found" />} />
-
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/course" element={<Course />} />
-            <Route path="/profile/:userId" element={<ProfileScreen />} />
-            <Route path="/test" element={<Teste />} />
-            <Route path="/exercises" element={<Exercises/>} />
-          </Route>
         </Routes>
       </AuthProvider>
     </Router>
