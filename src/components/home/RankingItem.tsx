@@ -14,7 +14,7 @@ export default function RankingItem({ users }: UserListProps) {
   return (
     <>
       {users.slice(0, 10).map((user) => (
-        <div key={user.name} className="flex items-center gap-5 pl-2">
+        <div key={user.name + user.rating} className="flex items-center gap-5 pl-2">
           <div className="flex gap-20 w-[25px] items-center font-bold text-gray-800 text-xl">
             {user.rating}º
           </div>

@@ -24,7 +24,6 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
     const handleClick = (quiz: Quiz) => {
       localStorage.setItem("quizName", quiz.name)
       navigate(location.pathname + "/quiz/" + quiz.id)
-
     }
 
     return(
@@ -35,11 +34,12 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
             </div>
 
             <div className="flex flex-col ml-10 gap-8">
-                {itens.map((content) => (
+                {itens.map((content,index) => (
                       <ExerciseTemplate text={content.name}
                       Icon={stateIcons[1]}
                       size="medium"
-                      onClick={() => handleClick(content)}/>
+                      onClick={() => handleClick(content)}
+                      key={`${content.name}-${index}`}/>
                 ))}
             </div>
         </div>

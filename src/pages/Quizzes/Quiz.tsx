@@ -24,12 +24,12 @@ export default function Quiz() {
   const [Answers, setAnswers] = useState<string[]>([]) //Vai guardar as respostas do usuario
   const [description, setDescription] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k')  //Vai guardar a descrição do quiz
   const [options, setOptions] = useState<string[]>(["opção1","opção2"]) //Vai guardar as opções de resposta
+  const nome = localStorage.getItem('quizName');
 
   useEffect(() => {
-    const name = localStorage.getItem('quizName');
     const originalTitle = document.title;
-    if (name) {
-      document.title = `${document.title} - ${name}`;
+    if (nome) {
+      document.title = `${document.title} - ${nome}`;
     }
     return () => {
       document.title = originalTitle;
@@ -46,7 +46,7 @@ export default function Quiz() {
           console.log("questionIds", questionIds)
           const questions = await fetchQuestion(questionIds);
           console.log("A questão é essa:", questions)
-          //setQuestions(questions);
+          setQuestions(questions);
           //setDescription(response.description);
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
@@ -60,7 +60,7 @@ export default function Quiz() {
 
 const groupQuestions = (Questions: Question[]) => {
   return (
-    <QuestionBox>
+    <QuestionBox key={Questions[0].id_category}>
       {Questions.map((question, index) => (
         <div key={index} className="flex items-start">
           {JSON.stringify(question.type) === '1' && (
@@ -90,7 +90,7 @@ const renderQuestions = (questions: Question[]) => {
   const groups: JSX.Element[] = [];
   let currentGroup: Question[] = [];
 
-  questions.forEach((question) => {
+  questions.forEach((question,index) => {
     if (JSON.stringify(question.type) === '1' || question.type=== 1 || JSON.stringify(question.type) === '2' || question.type === 2) {
       currentGroup.push(question);
     } else {
@@ -102,7 +102,8 @@ const renderQuestions = (questions: Question[]) => {
       switch (JSON.stringify(question.type)) {
         case '0':
           groups.push(
-            <Paragraph title={question.name} text={question.content} />
+            <Paragraph key={question.name + "-" + index} title={question.name} text={question.content} />
+
           );
           break;
         default:
@@ -132,7 +133,7 @@ const renderQuestions = (questions: Question[]) => {
 
         <div className="col-span-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-bold text-[#454545]">NOME DO QUIZ</h1>
+            <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
           <div className="flex mt-5 mb-20 justify-center">
             <Description text={description} variant={'purple'} />
         </div>
