@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { fetchAllQuizes } from '@/services/api/quiz'
 import { useParams } from 'react-router-dom'
 import { Quiz } from '@/interfaces/Quiz'
+
 export default function Course() {
   const [Quizes, setQuizes] =  useState<Quiz[]>([])
   const {courseId} = useParams()
@@ -26,6 +27,7 @@ export default function Course() {
       try {
         if(courseId) {
         const quizes = await fetchAllQuizes(courseId)
+        console.log("quiz",quizes)
         setQuizes(quizes)}
       } catch (error) {
         console.error(error)
@@ -33,6 +35,7 @@ export default function Course() {
     }
     fetchQuizes()
   }, [])
+
 
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">

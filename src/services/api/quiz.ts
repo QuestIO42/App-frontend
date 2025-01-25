@@ -10,4 +10,10 @@ const fetchQuizQuestion = async (id: string) => {
   return response.data
 }
 
-export {fetchAllQuizes, fetchQuizQuestion}
+const fetchQuestion = async (id: string[]) => {
+  const iterators = id.map(id => api.get(`/question/${id}`));
+  const responses = await Promise.all(iterators);
+  return responses.map(response => response.data);
+}
+
+export {fetchAllQuizes, fetchQuizQuestion, fetchQuestion}

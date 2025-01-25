@@ -2,7 +2,7 @@
 export interface Question{
   name: string
   content: string
-  type: string
+  type: number
   responsible: boolean
   id_category: string
 }
