@@ -1,19 +1,16 @@
-import CodeSpace from '@/components/verilogIDE/CodeSpace'
-import ResponseBox from '@/components/verilogIDE/ResponseBox'
+import OpenAnswer from "@/components/quiz/OpenAnswer"
+
 import { useState } from 'react';
+
 export default function Test() {
 
     const [verilogLang, setVerilog] = useState("module top(input a, input b, output c); assign c =a&b; endmodule;");
   return(
-    <div>
-        <div className="flex flex-row w-[100%] h-[100%]">
-        <CodeSpace verilogLang={verilogLang} setVerilog={setVerilog} />
-        </div>
-
-      <div className="flex flex-row w-[100%] h-[100%]">
-
-          </div>
-
-    </div>
+      <div className="px-4">
+        <OpenAnswer
+          title="Título do Componente"
+          description="Uma descrição que não deve ultrapassar o limite do contêiner pai.skjkdjakjdkasjdkajsdkajsdkajsdkjaskdjaksjdakjsdkajsdjasjdkasdkajskdaksjdkasjdaskdaksdjaksjdkasjdkajsdkjaskdjaskjdksajdkajsdkajsdkjaskdjaksjdkasjdkajsdkjaskdjkasjdkajsdk"
+        />
+      </div>
   )
 }
