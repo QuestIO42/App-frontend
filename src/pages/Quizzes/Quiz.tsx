@@ -9,7 +9,7 @@ import Paragraph from '@/components/quiz/Paragraph'
 import Description from '@/components/quiz/Description'
 import RadioButtonGroup from '@/components/quiz/RadioButtonGroup'
 import QuestionBox from '@/components/quiz/QuestionBox'
-import { group } from 'console'
+import OpenAnswer from '@/components/quiz/OpenAnswer'
 
 const mockQuestions: Question[] = [
   {  name: 'Question 1', type: 0, content: 'Content for question 1,Content for question 1,Content for question 1,Content for question 1,Content for question 1,Content for question 1,Content for question 1,Content for question 1,', responsible: false, id_category: '' },
@@ -46,7 +46,7 @@ export default function Quiz() {
           console.log("questionIds", questionIds)
           const questions = await fetchQuestion(questionIds);
           console.log("A questão é essa:", questions)
-          setQuestions(questions);
+          //setQuestions(questions);
           //setDescription(response.description);
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
@@ -75,7 +75,10 @@ const groupQuestions = (Questions: Question[]) => {
             </>
           )}
           {JSON.stringify(question.type) === '2' && (
+            <div className="flex flex-col gap-4 w-full">
             <Paragraph title={question.name} text={question.content} />
+            <OpenAnswer/>
+            </div>
           )}
         </div>
       ))}
