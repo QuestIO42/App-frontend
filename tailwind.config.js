@@ -45,9 +45,11 @@ export default {
       boxShadow: {
         'default-roxo-300': '0 0 0 0px #FFFFFF, 8px 8px #5A4AC2',
         'default-roxo-500': '0 0 0 0px #FFFFFF, 8px 8px #3E347B',
+        'default-roxo-description': '0 0 0 0px #FFFFFF, 16px 16px #3E347B',
         'default-verde-300': '0 0 0 0px #FFFFFF, 8px 8px #3FF29B',
         'default-verde-900': '0 0 0 0px #FFFFFF, 8px 8px #5D9D7E',
         'default-preto': '0 0 0 0px #FFFFFF, 8px 8px #1E1E1E',
+        'default-preto-900': '0 0 0 0px #FFFFFF, 8px 8px #000000',
         'default-laranja': '0 0 0 0px #FFFFFF, 8px 8px #97581F',
         'default-vermelho-300': '0 0 0 0px #FFFFFF, 8px 8px #F2543F',
         'default-vermelho-900': '0 0 0 0px #FFFFFF, 8px 8px #752c22',

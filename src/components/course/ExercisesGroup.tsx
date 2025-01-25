@@ -21,8 +21,9 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
     /*Aqui há os números que representam o estado de cada exercício representados estaticamente. Para que a atribuição seja feita dinamicamente com base no banco dados, pode ser necessário alterar isso. */
     const navigate = useNavigate()
     const location = useLocation()
-    const handleClick = (quizId : string) => {
-      navigate(location.pathname + "/quiz/" + quizId)
+    const handleClick = (quiz: Quiz) => {
+      localStorage.setItem("quizName", quiz.name)
+      navigate(location.pathname + "/quiz/" + quiz.id)
 
     }
 
@@ -38,7 +39,7 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
                       <ExerciseTemplate text={content.name}
                       Icon={stateIcons[1]}
                       size="medium"
-                      onClick={() => handleClick(content.id)}/>
+                      onClick={() => handleClick(content)}/>
                 ))}
             </div>
         </div>

@@ -22,7 +22,9 @@ export default function Home() {
     async function fetchCourses() {
       try {
         const courses = await fetchAllCourses()
-        setCourses(courses)
+        console.log("Curso:", courses)
+        console.log("Data:" ,courses.data)
+        setCourses(courses.data)
       } catch (error) {
         console.error(error)
       }
