@@ -58,16 +58,7 @@ export default function Exercises() {
 
       <div className="relative col-span-full row-auto flex items-start justify-between">
         <div className="mb-4 ml-8 ml-[90px] flex min-w-[500px] flex-col gap-10">
-          <ExercisesGroup
-            title="Portas Lógicas"
-            Icon={LampIcon}
-            itens={lista_exercicios}
-          ></ExercisesGroup>
-          <ExercisesGroup
-            title="Circuitos Lógicos"
-            Icon={LampIcon}
-            itens={lista_exercicios}
-          ></ExercisesGroup>
+
         </div>
         <div className="mr-4 flex flex-col">
           <Ranking>

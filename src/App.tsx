@@ -52,6 +52,7 @@ export default function App() {
             <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
             <Route path="/test" element={<Teste />} />
             <Route path="/exercises" element={<Exercises />} />
+            <Route path="/exercises/:quizId" element={<Practice />} />
 
           </Route>
 

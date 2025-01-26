@@ -3,6 +3,8 @@ import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import  Header  from "@/components/header/Header";
 import { useState, useRef, useEffect } from 'react';
 import Footer from "@/components/footer/Footer";
+import IconGroup from "@/components/verilogIDE/IconGroup";
+
 
 interface Size{
   width: string;
@@ -38,20 +40,38 @@ export default function Practice() {
     };
   }, []);
 
+  const handleIconClick = (value: string) => {
+    switch(value){
+      case 'waveform':
+        console.log('waaaave') //As funções podem ser inseridas aqui
+        break;
+      case 'save':
+        console.log('saaave')
+        break;
+      case 'play':
+        console.log('plllaayy')
+        break;
+      default:
+        console.log("oh no")
+    }
+  }
   return(
     <div>
-       <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
+       <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-16 bg-grid-pattern">
         <Header />
-
             <div className="flex justify-start ml-14 ">
-              <div className="bg-[#F2953F] px-6 py-3 font-bold border-preto-default shadow-default-laranja text-cinza">
+              <div className="bg-[#F2953F] px-6 py-2 font-bold border-preto-default shadow-default-laranja text-cinza">
                 <p className="text-left text-2xl">Solucao</p>
               </div>
             </div>
+
         <div className="col-span-4 flex flex-col items-center justify-center">
         <div className="flex justify-start">
           <div className="flex flex-col gap-12  bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
-              <div className="flex flex-row sm:w-[550px] md:w-[720px] lg:w-[1200px] h-[100%]" ref={divRef}>
+              <div className="flex flex-col sm:w-[550px] md:w-[720px] lg:w-[1200px] h-[100%]" ref={divRef}>
+                <div className="flex flex-row mt-4 justify-end">
+                <IconGroup onIconClick={handleIconClick}></IconGroup>
+                </div>
                 <CodeSpace verilogLang={verilogLang} setVerilog={setVerilog} width={size.width} height="500px" />
               </div>
           </div>
