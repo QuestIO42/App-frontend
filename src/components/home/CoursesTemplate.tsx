@@ -4,12 +4,14 @@ import ModalSquareForm from '../utility/ModalSquareForm'
 import { Course } from '@/interfaces/Course'
 import { fetchAllQuizes } from '@/services/api/quiz'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
 
 interface CoursesTemplateProps {
   title: string
   Icon: ElementType
   IsRectangle: boolean
   courses: Course[]
+  creationTag?: string
 }
 
 export default function CoursesTemplate({
@@ -17,7 +19,10 @@ export default function CoursesTemplate({
   Icon,
   IsRectangle,
   courses,
+  creationTag,
+
 }: CoursesTemplateProps) {
+  const { user } = useAuth()
   const hasCourses = courses && courses.length > 0
   const navigate = useNavigate()
   const handleClick = (id: string) => {
@@ -33,6 +38,8 @@ export default function CoursesTemplate({
       >
         <Icon width="48" height="48"></Icon>
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
+        {1 == 1 && creationTag? (
+          <Button onClick={() => navigate('/courses')} text={creationTag} variant="secondary"></Button>) : null}
       </div>
 
       <div className="ml-12 flex flex-wrap justify-center gap-16">

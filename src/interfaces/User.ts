@@ -5,6 +5,7 @@ export interface User{
   fullname: string
   username: string
   email: string
+  user_role: number
   college_register: string
   xp_count?: number
 }

@@ -48,9 +48,10 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center gap-20">
           <CoursesTemplate
             Icon={CourseIcon}
-            title="Meus Cursos"
+            title={1 == 1 ? "Cursos" : "Meus Cursos"}
             IsRectangle={false}
             courses={courses}
+            creationTag = {1 == 1 ? "criar novo curso" : undefined}
           ></CoursesTemplate>
           {/*Falta alinhar a versão retangular com a margem da página*/}
           <CoursesTemplate
@@ -58,6 +59,7 @@ export default function Home() {
             title="Laboratórios virtuais"
             IsRectangle={true}
             courses={courses}
+            creationTag = {1 == 1 ? "criar novo lab" : undefined}
           ></CoursesTemplate>
         </div>
 
