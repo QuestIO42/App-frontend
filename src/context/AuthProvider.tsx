@@ -229,7 +229,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           sameSite: 'Lax',
           secure: true,
         })
-
         setToken(accessToken)
         navigate('/change-password')
       })
