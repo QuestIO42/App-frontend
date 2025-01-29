@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    allowedHosts: ['front-django.vlab.dc.ufscar.br, front-fastify.vlab.dc.ufscar.br, front-spring.vlab.dc.ufscar.br'],
   },
   plugins: [react()],
   resolve: {
