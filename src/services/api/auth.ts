@@ -1,8 +1,9 @@
 import { SignInCredentials } from '@/interfaces/SignInCredentials'
 import { api } from './api'
 import { RegisterCredentials } from '@/interfaces/RegisterCredentials'
-import { error } from 'console'
+// import { error } from 'console'
 import Cookies from 'js-cookie'
+import { Course } from '@/interfaces/Course'
 
 
 async function signInUser({ login, password }: SignInCredentials) {
@@ -47,5 +48,16 @@ async function logout() {
     }
   }
 
-export  { signInUser, clearCookies, registerUser, logout, forgotPassword}
+  async function createCourse({name, description} : Course) {
+    try {
+      const response = await api.post(`auth/course`, {
+        name, description,
+      })
+      return response.data
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+export  { signInUser, clearCookies, registerUser, logout, forgotPassword, createCourse}
 
