@@ -23,6 +23,7 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
     const location = useLocation()
     const handleClick = (quiz: Quiz) => {
       localStorage.setItem("quizName", quiz.name)
+      localStorage.setItem("quizDesc",quiz.description)
       navigate(location.pathname + "/quiz/" + quiz.id)
     }
 

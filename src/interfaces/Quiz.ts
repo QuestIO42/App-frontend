@@ -5,6 +5,8 @@ export interface Question{
   type: number
   responsible: boolean
   id_category: string
+  id:string
+  verified: boolean //Just for Frontend
 }
 
 export interface Quiz{
@@ -12,5 +14,6 @@ export interface Quiz{
   name: string
   id_course: string
   questions: Question[]
+  description:string
 }
 
