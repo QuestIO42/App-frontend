@@ -1,41 +1,50 @@
-import Footer from '@/components/footer/Footer'
-import Header from '@/components/header/Header'
-import Ranking from '@/components/home/Ranking'
-import ProgressXpBar from '@/components/utility/ProgressXpBar'
-import Voltar from '@/components/course/Voltar'
-import Button from '@/components/utility/Button'
-import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse'
-import LampIcon from '@/components/svgComponents/icons/LampIcon'
-import ExercisesGroup from '@/components/course/ExercisesGroup'
-import RankingItem from '@/components/home/RankingItem'
-import Forum from '@/components/course/Forum'
-import { mockUsers } from '@/utils/mocks/mockUsers'
-import { api } from '@/services/api/api'
-import { jwtDecode } from 'jwt-decode'
-import { useEffect, useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
-import { fetchAllQuizes } from '@/services/api/quiz'
-import { useParams } from 'react-router-dom'
-import { Quiz } from '@/interfaces/Quiz'
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Footer from '@/components/footer/Footer';
+import Header from '@/components/header/Header';
+import Ranking from '@/components/home/Ranking';
+import ProgressXpBar from '@/components/utility/ProgressXpBar';
+import Voltar from '@/components/course/Voltar';
+import Button from '@/components/utility/Button';
+import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
+import LampIcon from '@/components/svgComponents/icons/LampIcon';
+import ExercisesGroup from '@/components/course/ExercisesGroup';
+import RankingItem from '@/components/home/RankingItem';
+import Forum from '@/components/course/Forum';
+import { mockUsers } from '@/utils/mocks/mockUsers';
+import { fetchAllQuizes } from '@/services/api/quiz';
+import { Quiz } from '@/interfaces/Quiz';
 
 export default function Course() {
-  const [Quizes, setQuizes] =  useState<Quiz[]>([])
-  const {courseId} = useParams()
+  const [Quizes, setQuizes] = useState<Quiz[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const { courseId } = useParams();
 
   useEffect(() => {
     async function fetchQuizes() {
       try {
-        if(courseId) {
-        const quizes = await fetchAllQuizes(courseId)
-        console.log("quiz",quizes)
-        setQuizes(quizes)}
+        if (courseId) {
+          const quizes = await fetchAllQuizes(courseId);
+          console.log('quiz', quizes);
+          setQuizes(quizes);
+        }
       } catch (error) {
-        console.error(error)
+        console.error(error);
+      } finally {
+        setIsLoading(false); // Set loading to false after fetch
       }
     }
-    fetchQuizes()
-  }, [])
+    fetchQuizes();
+  }, [courseId]);
 
+  if (isLoading) {
+    // Show a loading spinner or placeholder while fetching
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
@@ -88,5 +97,5 @@ export default function Course() {
       </div>
       <Footer></Footer>
     </div>
-  )
+  );
 }

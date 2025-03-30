@@ -47,6 +47,7 @@ export default function Quiz() {
   const [Answers, setAnswers] = useState<Answer[][]>([]);
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [description, setDescription] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const nome = localStorage.getItem('quizName');
 
   useEffect(() => {
@@ -77,10 +78,21 @@ export default function Quiz() {
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
         }
+        finally {
+          setIsLoading(false); // Set loading to false after fetch
+        }
       };
       fetchQuestions();
     }
   }, [quizId]);
+  if (isLoading) {
+    // Show a loading spinner or placeholder while fetching
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const handleAnswer = (id_question: string, answer: string, score: number, type: number) => {
     setUserAnswers(prevAnswers => {

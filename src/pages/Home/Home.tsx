@@ -1,37 +1,48 @@
-import Footer from '@/components/footer/Footer'
-import Header from '@/components/header/Header'
-import CoursesTemplate from '@/components/home/CoursesTemplate'
-import Ranking from '@/components/home/Ranking'
-import UserProgression from '@/components/home/UserProgression'
-import CircuitHome from '@/components/svgComponents/circuit/CircuitHome'
-import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
-import CourseIcon from '@/components/svgComponents/icons/CourseIcon'
-import LabIcon from '@/components/svgComponents/icons/LabIcon'
-import RankingItem from '@/components/home/RankingItem'
-import { mockUsers } from '@/utils/mocks/mockUsers'
-import { useEffect, useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
-import { fetchAllCourses } from '@/services/api/course'
-
+import Footer from '@/components/footer/Footer';
+import Header from '@/components/header/Header';
+import CoursesTemplate from '@/components/home/CoursesTemplate';
+import Ranking from '@/components/home/Ranking';
+import UserProgression from '@/components/home/UserProgression';
+import CircuitHome from '@/components/svgComponents/circuit/CircuitHome';
+import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight';
+import CourseIcon from '@/components/svgComponents/icons/CourseIcon';
+import LabIcon from '@/components/svgComponents/icons/LabIcon';
+import RankingItem from '@/components/home/RankingItem';
+import { mockUsers } from '@/utils/mocks/mockUsers';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { fetchAllCourses } from '@/services/api/course';
 
 export default function Home() {
-  const { user } = useAuth()
-  const [courses, setCourses] = useState([])
+  const { user } = useAuth();
+  const [courses, setCourses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     async function fetchCourses() {
       try {
-        const courses = await fetchAllCourses()
-        console.log("Curso:", courses)
-        console.log("Data:" ,courses.data)
-        setCourses(courses.data)
+        const courses = await fetchAllCourses();
+        console.log('Curso:', courses);
+        console.log('Data:', courses.data);
+        setCourses(courses.data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
+      } finally {
+        setIsLoading(false); // Set loading to false after fetch
       }
     }
 
-    fetchCourses()
-  }, [])
+    fetchCourses();
+  }, []);
+
+  if (isLoading) {
+    // Show a loading spinner or placeholder while fetching
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
@@ -69,5 +80,5 @@ export default function Home() {
       </div>
       <Footer></Footer>
     </div>
-  )
+  );
 }
