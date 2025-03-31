@@ -6,7 +6,9 @@ const fetchAllQuizes = async (id: string) => {
 }
 
 const fetchQuizQuestion = async (id: string) => {
-  const response = await api.get(`/question/quiz/${id}`)
+  // Essa rota já retorna um QuizQuestion, não sendo necessário chamar
+  // a rota /quizquestion/{idQuiz}/{idQuestion}
+  const response = await api.get(`/question/quiz/${id}`) //Retorna todas questões de um quiz
   return response.data
 }
 
