@@ -16,4 +16,4 @@ jobs:
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           assignees: alrettondini, enzomurayama
-          numOfAssignee: 1
+          numOfAssignee: 2
