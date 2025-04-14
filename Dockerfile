@@ -5,7 +5,9 @@ COPY package.json .
 RUN npm i
 COPY . .
 
-RUN npm run build
+# questio.vlab.dc.ufscar.br
+RUN npm run build 
 
+# dev.vlab.dc.ufscar.br
 EXPOSE 3000
 CMD ["npm", "run", "start"]
