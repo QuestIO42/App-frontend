@@ -8,9 +8,10 @@ import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 import CourseIcon from '@/components/svgComponents/icons/CourseIcon';
 import LabIcon from '@/components/svgComponents/icons/LabIcon';
 import RankingItem from '@/components/home/RankingItem';
-import { mockUsers } from '@/utils/mocks/mockUsers';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { mockUsers } from '@/utils/mocks/mockUsers';
+import { mockVirtualLabs } from '@/utils/mocks/mockVirtualLabs';
 import { fetchAllCourses } from '@/services/api/course';
 
 export default function Home() {
@@ -68,7 +69,7 @@ export default function Home() {
             Icon={LabIcon}
             title="Laboratórios virtuais"
             IsRectangle={true}
-            courses={courses}
+            courses={mockVirtualLabs}
           ></CoursesTemplate>
         </div>
 
