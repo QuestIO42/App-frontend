@@ -2,7 +2,11 @@ import { api } from './api'
 
 const fetchAllCourses = async () => {
   const response = await api.get('/course')
+  return response
+}
 
+const fetchCourse = async (id: string) => {
+  const response = await api.get(`/course/${id}`)
   return response
 }
 
@@ -12,4 +16,4 @@ const fetchAllUserCourses = async (id: string) => {
 }
 
 
-export { fetchAllCourses, fetchAllUserCourses }
+export { fetchAllCourses, fetchCourse, fetchAllUserCourses }
