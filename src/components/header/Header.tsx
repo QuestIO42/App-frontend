@@ -3,7 +3,7 @@ import Logo from '../svgComponents/Logo'
 import NotificationIcon from '../svgComponents/icons/NotificationIcon'
 
 import ProfileIcon from '../svgComponents/icons/ProfileIcon'
-import SearchBar from './SearchBar'
+// import SearchBar from './SearchBar'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function Header() {
@@ -17,9 +17,9 @@ export default function Header() {
         ></Logo>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
+      {/* <div className="flex flex-1 items-center justify-center">
         <SearchBar></SearchBar>
-      </div>
+      </div> */}
 
       <div className="flex flex-1 items-center justify-end gap-3">
         <Link to={`/profile/${user?.id}`} className="group">

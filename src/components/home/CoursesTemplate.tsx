@@ -1,8 +1,8 @@
 import { ElementType } from 'react'
-import Button from '../utility/Button'
+// import Button from '../utility/Button'
 import ModalSquareForm from '../utility/ModalSquareForm'
 import { Course } from '@/interfaces/Course'
-import { fetchAllQuizes } from '@/services/api/quiz'
+// import { fetchAllQuizes } from '@/services/api/quiz'
 import { useNavigate } from 'react-router-dom'
 
 interface CoursesTemplateProps {
@@ -23,7 +23,7 @@ export default function CoursesTemplate({
   const handleClick = (id: string) => {
     //alert(id);
     navigate(`/Course/${id}`)
-   //getQuiz()
+    //getQuiz()
 
   }
   return (
@@ -39,9 +39,9 @@ export default function CoursesTemplate({
         {hasCourses
           ? courses.slice(0, 3).map((course) => (
             <div
-            key={course.id}
-            onClick={() => handleClick(course.id)}
-            className="cursor-pointer"
+              key={course.id}
+              onClick={() => handleClick(course.id)}
+              className="cursor-pointer"
             >
               <ModalSquareForm
                 IsRectangle={IsRectangle}
@@ -53,24 +53,24 @@ export default function CoursesTemplate({
                   className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
                 ></div>
               </ModalSquareForm>
-              </div>
-            ))
+            </div>
+          ))
           : [...Array(3)].map((_, index) => (
 
-              <ModalSquareForm
-                IsRectangle={IsRectangle}
-                key={index}
-                courseName="Portas Lógicas"
-                courseTeacher="Ricardo Menotti"
-              >
-                <div
-                  className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
-                ></div>
-              </ModalSquareForm>
+            <ModalSquareForm
+              IsRectangle={IsRectangle}
+              key={index}
+              courseName="Portas Lógicas"
+              courseTeacher="Ricardo Menotti"
+            >
+              <div
+                className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
+              ></div>
+            </ModalSquareForm>
 
-            ))}
+          ))}
       </div>
-      <Button onClick={() => navigate('/courses')} text="ver mais"></Button>
+      {/* <Button onClick={() => navigate('/courses')} text="ver mais"></Button> */}
     </div>
   )
 }

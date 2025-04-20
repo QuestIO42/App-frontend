@@ -47,36 +47,39 @@ export default function Course() {
   }
 
   return (
-    <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
+    <div className="grid gap-6 bg-grid-pattern">
       <Header />
-      <div className="col-span-full flex justify-between">
-        <div className="w-30 flex flex-col justify-start">
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col justify-start">
           <div className="w-30 ml-6">
-            <Voltar></Voltar>
+            <Voltar />
           </div>
           <div className="w-8">
             <CircuitCourse />
           </div>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center mx-auto">
           <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
             Portas Lógicas
           </h2>
-          <ProgressXpBar text="seu progresso" value={75}></ProgressXpBar>
+          <ProgressXpBar text="seu progresso" value={75} />
         </div>
 
-        <div className="font-size-1 mr-5 mt-10 flex h-20 w-16 justify-end">
+        <div className="font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
+          {/* Ainda falta implementar a funcionalidade desse botão e garantir que ele só apareça para o professor */}
           <Button
-            to="/exercises"
-            className="mr-[90px] bg-white text-2xl"
-            text="lista de exercícios"
+            to=""
+            variant='secondary'
+            className="mr-[90px] bg-white text-xl"
+            text="importar alunos"
             size="small"
           ></Button>
         </div>
+
       </div>
 
-      <div className="relative col-span-full row-auto flex items-start justify-between">
-        <div className="mb-4 ml-8 ml-[90px] flex min-w-[500px] flex-col gap-10">
+      <div className="flex items-start justify-between">
+        <div className="mb-4 ml-[90px] flex min-w-[500px] flex-col gap-10">
           <ExercisesGroup
             title="Portas Lógicas"
             Icon={LampIcon}
@@ -95,7 +98,7 @@ export default function Course() {
           <Forum />
         </div>
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }
