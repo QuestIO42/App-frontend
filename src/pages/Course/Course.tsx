@@ -13,13 +13,10 @@ import RankingItem from '@/components/home/RankingItem';
 import Forum from '@/components/course/Forum';
 import { mockUsers } from '@/utils/mocks/mockUsers';
 import { fetchAllQuizes } from '@/services/api/quiz';
-import { fetchCourse } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
-import { Course as CourseData } from '@/interfaces/Course';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
-  const [Course, setCourse] = useState<CourseData | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const { courseId } = useParams();
 
@@ -28,11 +25,8 @@ export default function Course() {
       try {
         if (courseId) {
           const quizes = await fetchAllQuizes(courseId);
-          const courseInfo = await fetchCourse(courseId);
           console.log('quiz', quizes);
-          console.log('course', courseInfo);
           setQuizes(quizes);
-          setCourse(courseInfo.data);
         }
       } catch (error) {
         console.error(error);
@@ -64,18 +58,15 @@ export default function Course() {
             <CircuitCourse />
           </div>
         </div>
-
-        {Course && (
-          <div className="flex flex-col justify-center mx-auto">
-            <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
-              {Course.name}
-            </h2>
-            <ProgressXpBar text="seu progresso" value={75} />
-          </div>
-        )}
+        <div className="flex flex-col justify-center mx-auto">
+          <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
+            Portas Lógicas
+          </h2>
+          <ProgressXpBar text="seu progresso" value={75} />
+        </div>
 
         <div className="font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
-        {/* Ainda falta implementar a funcionalidade desse botão e garantir que ele só apareça para o professor */}
+          {/* Ainda falta implementar a funcionalidade desse botão e garantir que ele só apareça para o professor */}
           <Button
             to=""
             variant='secondary'
