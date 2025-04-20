@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import Button from '../utility/Button'
-import ForgotPassword from '../form/ForgotPassword'
 import FormInput from '../form/FormInput'
 import FormTitle from '../form/FormTitle'
 import ModalSquareForm from '../utility/ModalSquareForm'
