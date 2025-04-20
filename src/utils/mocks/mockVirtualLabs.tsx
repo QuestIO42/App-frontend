@@ -2,7 +2,7 @@ import { Course } from '@/interfaces/Course'
 
 export const mockVirtualLabs: Course[] = [
   {
-    id: "vlab",
+    id: "notready",
     name: "Em criação...",
     description: "Laboratório em construção. Aguarde seu lançamento.",
     image: "",

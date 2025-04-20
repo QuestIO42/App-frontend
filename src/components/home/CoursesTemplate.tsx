@@ -22,10 +22,11 @@ export default function CoursesTemplate({
   const navigate = useNavigate()
   const handleClick = (id: string) => {
     //alert(id);
-    navigate(`/Course/${id}`)
+    if (id != "notready")
+      navigate(`/Course/${id}`)
     //getQuiz()
-
   }
+
   return (
     <div className="flex flex-col items-center justify-center gap-10">
       <div
