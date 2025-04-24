@@ -65,6 +65,8 @@ export default function Home() {
             courses={courses}
           ></CoursesTemplate>
           {/*Falta alinhar a versão retangular com a margem da página*/}
+
+          {/* Os laboratórios estão utilizando o template de cursos, a diferença é o id na hora de abrir a página*/}
           <CoursesTemplate
             Icon={LabIcon}
             title="Laboratórios virtuais"

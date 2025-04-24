@@ -20,11 +20,15 @@ export default function CoursesTemplate({
 }: CoursesTemplateProps) {
   const hasCourses = courses && courses.length > 0
   const navigate = useNavigate()
-  const handleClick = (id: string) => {
-    //alert(id);
-    if (id != "notready")
+  const handleClick = (id: string, description: string) => {
+    // alert(id);
+    if (description == "Laboratório"){
+      window.open(id, '_blank');
+    }
+    else{
       navigate(`/Course/${id}`)
-    //getQuiz()
+    }
+    // getQuiz()
   }
 
   return (
@@ -41,7 +45,7 @@ export default function CoursesTemplate({
           ? courses.slice(0, 3).map((course) => (
             <div
               key={course.id}
-              onClick={() => handleClick(course.id)}
+              onClick={() => handleClick(course.id, course.description)}
               className="cursor-pointer"
             >
               <ModalSquareForm
