@@ -32,15 +32,15 @@ export default function CoursesTemplate({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
+    <div className="flex flex-col items-start justify-start gap-10">
       <div
-        className={`mr-auto flex items-center justify-center gap-3 ${IsRectangle ? 'ml-20' : 'ml-8'}`}
+        className={`mr-auto flex items-center justify-center gap-3`}
       >
         <Icon width="48" height="48"></Icon>
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
 
-      <div className="ml-12 flex flex-wrap justify-center gap-16">
+      <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
         {hasCourses
           ? courses.slice(0, 3).map((course) => (
             <div

@@ -48,36 +48,41 @@ export default function Home() {
   return (
     <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
       <Header />
-      <div className="col-span-full grid grid-cols-2">
-        <div className="flex items-center justify-center">
-          <UserProgression username={user?.username} />
-        </div>
-        <div className="flex items-center justify-end">
-          <CircuitTopRight />
+
+      <div className="col-span-full w-full">
+        <div className="ml-10 md:ml-20 grid grid-cols-2">
+          <div className="flex items-start justify-start">
+            <UserProgression username={user?.username} />
+          </div>
+          <div className="flex items-end justify-end">
+            <CircuitTopRight />
+          </div>
         </div>
       </div>
-      <div className="relative col-span-full row-auto flex items-start justify-around">
-        <div className="flex flex-col items-center justify-center gap-20">
-          <CoursesTemplate
-            Icon={CourseIcon}
-            title="Meus Cursos"
-            IsRectangle={false}
-            courses={courses}
-          ></CoursesTemplate>
-          {/*Falta alinhar a versão retangular com a margem da página*/}
 
-          {/* Os laboratórios estão utilizando o template de cursos, a diferença é o id na hora de abrir a página*/}
-          <CoursesTemplate
-            Icon={LabIcon}
-            title="Laboratórios virtuais"
-            IsRectangle={true}
-            courses={mockVirtualLabs}
-          ></CoursesTemplate>
+      <div className="relative col-span-full row-auto w-full">
+        <div className="ml-10 md:ml-20 flex items-start justify-between">
+          <div className="mr-10 flex flex-col items-start justify-start gap-20">
+            <CoursesTemplate
+              Icon={CourseIcon}
+              title="Meus Cursos"
+              IsRectangle={false}
+              courses={courses}
+            ></CoursesTemplate>
+
+            {/* Os laboratórios estão utilizando o template de cursos, a diferença é o id na hora de abrir a página*/}
+            <CoursesTemplate
+              Icon={LabIcon}
+              title="Laboratórios virtuais"
+              IsRectangle={true}
+              courses={mockVirtualLabs}
+            ></CoursesTemplate>
+          </div>
+
+          <Ranking>
+            <RankingItem users={mockUsers.users} />
+          </Ranking>
         </div>
-
-        <Ranking>
-          <RankingItem users={mockUsers.users} />
-        </Ranking>
 
         <CircuitHome className="absolute bottom-0 right-0"></CircuitHome>
       </div>
