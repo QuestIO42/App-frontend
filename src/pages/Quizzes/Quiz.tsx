@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
@@ -6,7 +6,7 @@ import Voltar from '@/components/course/Voltar';
 
 import { fetchQuizQuestion, fetchQuestion } from '@/services/api/quiz';
 import { getAllAnswers, postUserAnswer } from '@/services/api/answer';
-import { getUserAnswer } from '@/services/api/userAnswer';
+// import { getUserAnswer } from '@/services/api/userAnswer';
 
 import { Question } from '@/interfaces/Quiz';
 import Paragraph from '@/components/quiz/Paragraph';
@@ -17,10 +17,10 @@ import OpenAnswer from '@/components/quiz/OpenAnswer';
 import { useAuth } from '@/hooks/useAuth';
 
 const mockQuestions: Question[] = [
-  { name: 'Question 1', type: 0, content: 'Content for question 1', responsible: false, id_category: '', id: '1' , verified: false},
-  { name: 'Question 2', type: 1, content: 'Content for question 2', responsible: true, id_category: '', id: '2' , verified: false},
-  { name: 'Question 3', type: 2, content: 'Content for question 3', responsible: true, id_category: '', id: '3' ,verified: false},
-  { name: 'Question 4', type: 0, content: 'Content for question 4', responsible: false, id_category: '', id: '4' ,verified: false},
+  { name: 'Question 1', type: 0, content: 'Content for question 1', responsible: false, id_category: '', id: '1', verified: false },
+  { name: 'Question 2', type: 1, content: 'Content for question 2', responsible: true, id_category: '', id: '2', verified: false },
+  { name: 'Question 3', type: 2, content: 'Content for question 3', responsible: true, id_category: '', id: '3', verified: false },
+  { name: 'Question 4', type: 0, content: 'Content for question 4', responsible: false, id_category: '', id: '4', verified: false },
 ];
 
 interface Answer {
@@ -46,7 +46,8 @@ export default function Quiz() {
   const [Questions, setQuestions] = useState<Question[]>(mockQuestions);
   const [Answers, setAnswers] = useState<Answer[][]>([]);
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
-  const [description, setDescription] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
+  const [verifiedValues, setVerifiedValues] = useState<Record<string, string>>({});
+  const [description] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const nome = localStorage.getItem('quizName');
 
@@ -112,7 +113,7 @@ export default function Quiz() {
 
   function publishAnswers() {
     UserAnswers.forEach(userAnswer => {
-      postUserAnswer(userId, quizId || '', userAnswer.id_question,Answers[1][0].id , userAnswer.answer , userAnswer.value);
+      postUserAnswer(userId, quizId || '', userAnswer.id_question, Answers[1][0].id, userAnswer.answer, userAnswer.value);
     }
     );
   }
@@ -135,11 +136,16 @@ export default function Quiz() {
 
     setUserAnswers(updatedUserAnswers);
     console.log("teste respostas", updatedUserAnswers);
-    questionsToCheck.forEach(question => {
-      const userAnswer = updatedUserAnswers.find(ans => ans.id_question === question.id);
-      if (userAnswer) {
-        question.verified = true;
-      }
+    setVerifiedValues(prev => {
+      const next = { ...prev };
+      questionsToCheck.forEach(question => {
+        const updatedAnswer = updatedUserAnswers.find(ans => ans.id_question === question.id);
+        if (updatedAnswer) {
+          next[question.id] = updatedAnswer.answer;
+          question.verified = true;
+        }
+      });
+      return next;
     });
     publishAnswers();
 
@@ -150,7 +156,7 @@ export default function Quiz() {
   const groupQuestions = (Questions: Question[], boxIndex: number) => {
     return (
       <QuestionBox handlePrint={() => checkAnswers(Questions)} key={`question-box-${boxIndex}`}>
-        {Questions.map((question, index) => {
+        {Questions.map((question) => {
           // Encontre as respostas corretas para a pergunta atual
           const answerArray = Answers.find(ans => ans[0]?.id_question === question.id) || [];
           const descriptions = answerArray.map(item => item.description);
@@ -166,7 +172,8 @@ export default function Quiz() {
                       values={descriptions} // Pass answer values
                       name={`question-${question.id}`} // Use question.id for unique name
                       verified={question.verified}
-                      correct={UserAnswers.find(userAnswer => question.id === userAnswer.id_question && userAnswer.correct) ? true : false}
+                      correct={!!UserAnswers.find(ua => ua.id_question === question.id && ua.correct)}
+                      verifiedValue={verifiedValues[question.id]}
                     />
 
 
