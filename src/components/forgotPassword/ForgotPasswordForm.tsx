@@ -1,7 +1,7 @@
 import Button from '../utility/Button'
 import ModalSquareForm from '../utility/ModalSquareForm'
 import FormTitle from '../form/FormTitle'
-import Information from './Infomation'
+import Information from './Information'
 import { forgotPassword } from '@/services/api/auth'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'

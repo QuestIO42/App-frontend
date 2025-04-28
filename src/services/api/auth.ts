@@ -38,14 +38,14 @@ async function logout() {
   return logoutResponse.data
 }
 
-  async function forgotPassword(email: string) {
-    try {
-      const response = await api.post(`auth/forgot-password-request`, {email})
-      return response.data
-    } catch(error) {
-      console.log(error)
-    }
+async function forgotPassword(email: string) {
+  try {
+    const response = await api.post(`auth/forgot-password-request`, {email})
+    return response.data
+  } catch(error) {
+    console.log(error)
   }
+}
 
 export  { signInUser, clearCookies, registerUser, logout, forgotPassword}
 
