@@ -65,7 +65,7 @@ export default function Home() {
           <div className="mr-10 flex flex-col items-start justify-start gap-20">
             <CoursesTemplate
               Icon={CourseIcon}
-              title="Meus Cursos"
+              title="Cursos disponíveis"
               IsRectangle={false}
               courses={courses}
             ></CoursesTemplate>
