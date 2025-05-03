@@ -1,4 +1,5 @@
-import { ButtonHTMLAttributes } from 'react'
+import { useState, useRef, ChangeEvent, MouseEvent, ButtonHTMLAttributes } from 'react'
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
@@ -10,6 +11,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonDisabled?: 'active' | 'disactive';
   size?: 'small' | 'medium' | 'large';
   to?: string
+
+  // Upload de arquivos
+  upload?: boolean;
+  uploadUrl?: string;
+  fieldName?: string;
+  onUploadSuccess?: (response: any) => void;
+  onUploadError?: (error: any) => void;
 }
 
 const buttonVariants = cva(
@@ -53,9 +61,17 @@ export default function Button({
   buttonDisabled,
   size,
   to,
+  upload,
+  uploadUrl,
+  fieldName = 'file',
+  onUploadSuccess,
+  onUploadError,
   ...rest
 
 }: ButtonProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   const isDisabled = rest.disabled;
 
   const classes = cn(
@@ -66,6 +82,56 @@ export default function Button({
     }),
     className
   );
+
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !uploadUrl) return;
+    const formData = new FormData();
+    formData.append(fieldName, file);
+    try {
+      setIsUploading(true);
+      const response = await axios.post(uploadUrl, formData, {
+        headers: {},
+      });
+      onUploadSuccess?.(response);
+    } catch (error) {
+      onUploadError?.(error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    if(upload) {
+      event.preventDefault();
+      fileInputRef.current?.click();
+    } else if (rest.onClick) {
+      rest.onClick(event as any);
+    }
+  };
+
+  // Renderiza input oculto para upload
+  if (upload) {
+    return (
+      <>
+        <input
+          type="file"
+          accept=".csv"
+          style={{ display: 'none' }}
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
+        <button
+          className={classes}
+          disabled={isDisabled}
+          onClick={handleClick}
+          {...rest}
+        >
+          {isUploading ? 'Enviando...' : text}
+        </button>
+      </>
+    );
+  }
 
   if (to) {
     return (
@@ -80,6 +146,7 @@ export default function Button({
     <button
       className={classes}
       disabled={isDisabled}
+      onClick={handleClick}
       {...rest}
     >
       {text}

@@ -2,6 +2,7 @@ import {api} from './api'
 
 const getAnswer = async (idQuestion: string) => {
   const response = await api.get(`/answer/question/${idQuestion}`) //Obtem todas as respsotas de uma questao
+  console.log("resposta individual: ", response.data)
   return response.data
 }
 
@@ -31,7 +32,6 @@ const postUserAnswer = async (
   })
   return response.data
 }
-
 
 export {getAnswer, getAllAnswers,postUserAnswer}
 
