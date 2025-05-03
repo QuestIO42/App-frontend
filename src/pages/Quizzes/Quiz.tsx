@@ -4,7 +4,7 @@ import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
 
-import { fetchQuizQuestion, fetchQuestion } from '@/services/api/quiz';
+import { fetchQuizQuestion } from '@/services/api/quiz';
 import { getAllAnswers, postUserAnswer } from '@/services/api/answer';
 // import { getUserAnswer } from '@/services/api/userAnswer';
 
@@ -67,14 +67,12 @@ export default function Quiz() {
         try {
           const response = await fetchQuizQuestion(quizId);
           console.log("resposta:", response);
-          const questionIds = response.map((question: any) => question.id_question);
+          const questionIds = response.map((question: any) => question.id);
           console.log("questionIds", questionIds);
-          const questions = await fetchQuestion(questionIds);
-          console.log("A questão é essa:", questions);
           const answers = await getAllAnswers(questionIds);
           console.log("as respostas são essas:", answers);
           //const userAnswers = await getUserAnswer(userId);
-          setQuestions(questions);
+          setQuestions(response);
           setAnswers(answers);
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
