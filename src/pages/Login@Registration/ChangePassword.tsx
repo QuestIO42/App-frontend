@@ -11,23 +11,30 @@ import { useNavigate } from 'react-router-dom'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
-import { UserUpdateProps } from '@/interfaces/User'
+import { useAuth } from '@/hooks/useAuth'
 
-const ChangePasswordSchema = z.object({
-  password: z
-    .string()
-    .min(1, { message: 'O campo de senha é obrigatório' })
-    .min(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
-    .max(20, { message: 'A senha deve ter no máximo 20 caracteres' }),
-  confirmPassword: z
-    .string()
-    .min(1, { message: 'O campo de confirmação de senha é obrigatório' }),
-})
+// Verificação das condições de senha
+const ChangePasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, { message: 'O campo de senha é obrigatório' })
+      .min(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
+      .max(20, { message: 'A senha deve ter no máximo 20 caracteres' }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: 'O campo de confirmação de senha é obrigatório' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'As senhas não coincidem',
+    path: ['confirmPassword'],
+  });
 
 type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>
 
 export default function ChangePasswordForm() {
   const navigate = useNavigate()
+  const { user } = useAuth();
 
   const {
     handleSubmit,
@@ -36,25 +43,38 @@ export default function ChangePasswordForm() {
     formState: { errors, isSubmitting },
   } = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(ChangePasswordSchema),
-  })
+  });
 
-  /*   async function handlePassword({
-    password,
-    confirmPassword,
-  }: Partial<UserUpdateProps>) {
+  async function handlePassword({ password, confirmPassword }: ChangePasswordFormValues) {
     try {
-      await updateUser({ password, confirmPassword })
-      navigate('/')
-    } catch (error: any) {
-      if (error.response && error.response.data) {
+      // Verifica se user e user.id existem
+      if (!user?.id) {
         setError('root', {
           type: 'manual',
-          message:
-            'Ocorreu um erro ao tentar recuperar a senha. Tente novamente mais tarde.',
-        })
+          message: 'Usuário não autenticado. Faça login novamente.',
+        });
+        return;
       }
+
+      // Converte user.id para string explicitamente
+      const userId: string = String(user.id);
+
+      await updateUser({
+        id: userId,
+        updateUser: { password, confirmPassword },
+      });
+
+      navigate('/');
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        'Ocorreu um erro ao tentar redefinir a senha. Tente novamente mais tarde.';
+      setError('root', {
+        type: 'manual',
+        message: errorMessage,
+      });
     }
-  } */
+  }
 
   return (
     <div className="min-w-screen flex min-h-screen items-center justify-center">
@@ -67,7 +87,7 @@ export default function ChangePasswordForm() {
           <div className="relative flex flex-col items-center justify-center p-10 md:px-10 md:py-5 xl:min-w-[32rem]">
             <FormTitle title="Redefinir senha" />
             <form
-              /*  onSubmit={handleSubmit(handlePassword)} */
+              onSubmit={handleSubmit(handlePassword)}
               className="mt-12 flex flex-col items-center justify-center"
             >
               <FormInput

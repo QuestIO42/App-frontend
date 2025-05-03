@@ -2,7 +2,7 @@ import { ElementType } from 'react'
 
 export interface User{
   id: number
-  fullname: string
+  full_name: string
   username: string
   email: string
   college_register: string
