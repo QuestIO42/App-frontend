@@ -52,6 +52,16 @@ export default function Course() {
     );
   }
 
+  const handleImportSuccess = (res: any) => {
+    alert('Usuários importados com sucesso!');
+    console.log(res.data);
+  };
+
+  const handleImportError = (err: any) => {
+    alert('Falha ao importar.');
+    console.error(err);
+  };
+
   return (
     <div className="grid gap-6 bg-grid-pattern">
       <Header />
@@ -75,9 +85,13 @@ export default function Course() {
         )}
 
         <div className="font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
-          {/* Ainda falta implementar a funcionalidade desse botão e garantir que ele só apareça para o professor */}
           <Button
-            to=""
+            upload
+            // Rota
+            uploadUrl="https://django.vlab.dc.ufscar.br/user"
+            fieldName="file"
+            onUploadSuccess={handleImportSuccess}
+            onUploadError={handleImportError}
             variant='secondary'
             className="mr-[90px] bg-white text-xl"
             text="importar alunos"
