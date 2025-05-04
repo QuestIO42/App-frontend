@@ -63,6 +63,7 @@ export default function Home() {
       <div className="relative col-span-full row-auto w-full">
         <div className="ml-10 md:ml-20 flex items-start justify-between">
           <div className="mr-10 flex flex-col items-start justify-start gap-20">
+            {/* Cursos */}
             <CoursesTemplate
               Icon={CourseIcon}
               title="Cursos disponíveis"
@@ -70,12 +71,12 @@ export default function Home() {
               courses={courses}
             ></CoursesTemplate>
 
-            {/* Os laboratórios estão utilizando o template de cursos, a diferença é o id na hora de abrir a página*/}
+            {/* Laboratórios */}
             <CoursesTemplate
               Icon={LabIcon}
               title="Laboratórios virtuais"
               IsRectangle={true}
-              courses={mockVirtualLabs}
+              labs={mockVirtualLabs}
             ></CoursesTemplate>
           </div>
 
