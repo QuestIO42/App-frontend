@@ -1,8 +1,8 @@
 import { useState, useRef, ChangeEvent, MouseEvent, ButtonHTMLAttributes } from 'react'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { cva } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
+import { api } from '@/services/api/api';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
@@ -90,9 +90,7 @@ export default function Button({
     formData.append(fieldName, file);
     try {
       setIsUploading(true);
-      const response = await axios.post(uploadUrl, formData, {
-        headers: {},
-      });
+      const response = await api.post(uploadUrl, formData);
       onUploadSuccess?.(response);
     } catch (error) {
       onUploadError?.(error);
