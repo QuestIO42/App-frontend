@@ -17,6 +17,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   upload?: boolean;
   uploadUrl?: string;
   fieldName?: string;
+  courseId?: string;
   onUploadSuccess?: (response: any) => void;
   onUploadError?: (error: any) => void;
 }

@@ -93,6 +93,7 @@ export default function Course() {
             // Rota
             uploadUrl="/user"
             fieldName="file"
+            courseId={courseId!}
             onUploadSuccess={handleImportSuccess}
             onUploadError={handleImportError}
             variant='secondary'
