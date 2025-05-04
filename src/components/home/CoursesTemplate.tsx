@@ -80,7 +80,7 @@ export default function CoursesTemplate({
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
         {hasCourses ? (
-          courses!.slice(0, 3).map((course) => (
+          courses!.slice(0, 4).map((course) => (
             <div
               key={course.id}
               onClick={() => handleClick(course.id)}
