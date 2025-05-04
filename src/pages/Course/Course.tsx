@@ -91,7 +91,7 @@ export default function Course() {
           <Button
             upload
             // Rota
-            uploadUrl="https://django.vlab.dc.ufscar.br/user"
+            uploadUrl="/user"
             fieldName="file"
             onUploadSuccess={handleImportSuccess}
             onUploadError={handleImportError}
