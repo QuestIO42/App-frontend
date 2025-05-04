@@ -57,8 +57,8 @@ export default function Practice() {
   }
   return(
     <div>
-       <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-16 bg-grid-pattern">
-        <Header />
+       <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-16 bg-grid-pattern">
+        <Header/>
             <div className="flex justify-start ml-14 ">
               <div className="bg-[#F2953F] px-6 py-2 font-bold border-preto-default shadow-default-laranja text-cinza">
                 <p className="text-left text-2xl">Solucao</p>
@@ -91,7 +91,7 @@ export default function Practice() {
           </div>
           </div>
         </div>
-      <Footer></Footer>
+      <Footer/>
     </div>
   )
 }

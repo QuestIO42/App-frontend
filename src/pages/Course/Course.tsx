@@ -63,15 +63,17 @@ export default function Course() {
   };
 
   return (
-    <div className="grid gap-6 bg-grid-pattern">
-      <Header />
+    <div className="grid w-full overflow-x-hidden gap-6 bg-grid-pattern">
+      <Header/>
+
       <div className="flex justify-between items-center w-full">
         <div className="flex flex-col justify-start">
           <div className="w-30 ml-6">
-            <Voltar />
+            <Voltar/>
           </div>
+
           <div className="w-8">
-            <CircuitCourse />
+            <CircuitCourse/>
           </div>
         </div>
 
@@ -80,6 +82,7 @@ export default function Course() {
             <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
               {Course.name}
             </h2>
+
             <ProgressXpBar text="seu progresso" value={75} />
           </div>
         )}
@@ -98,7 +101,6 @@ export default function Course() {
             size="small"
           ></Button>
         </div>
-
       </div>
 
       <div className="flex items-start justify-between">
@@ -108,19 +110,23 @@ export default function Course() {
             Icon={LampIcon}
             itens={Quizes}
           ></ExercisesGroup>
+
           <ExercisesGroup
             title="Circuitos Lógicos"
             Icon={LampIcon}
             itens={Quizes}
           ></ExercisesGroup>
         </div>
+
         <div className="mr-4 flex flex-col">
           <Ranking>
             <RankingItem users={mockUsers.users} />
           </Ranking>
+
           <Forum />
         </div>
       </div>
+
       <Footer />
     </div>
   );

@@ -35,15 +35,17 @@ export default function Exercises() {
     }
   }, [])
   return (
-    <div className="grid min-h-screen w-screen grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
+    <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
       <Header />
+
       <div className="col-span-full flex justify-between">
         <div className="w-30 flex flex-col justify-start">
           <div className="w-30 ml-6">
-            <Voltar></Voltar>
+            <Voltar/>
           </div>
+
           <div className="w-8">
-            <CircuitCourse />
+            <CircuitCourse/>
           </div>
         </div>
 
@@ -58,14 +60,17 @@ export default function Exercises() {
         <div className="mb-4 ml-8 ml-[90px] flex min-w-[500px] flex-col gap-10">
 
         </div>
+
         <div className="mr-4 flex flex-col">
           <Ranking>
-            <RankingItem users={mockUsers.users} />
+            <RankingItem users={mockUsers.users}/>
           </Ranking>
-          <Forum />
+
+          <Forum/>
         </div>
       </div>
-      <Footer></Footer>
+
+      <Footer/>
     </div>
   )
 }

@@ -41,12 +41,13 @@ export default function ProfileScreen() {
   }
 
   return (
-    <div className="bg-grid-pattern">
-      <Header></Header>
+    <div className="w-full overflow-x-hidden bg-grid-pattern">
+      <Header/>
+
       <main className="flex flex-col items-center justify-center gap-20 md:mb-28 md:mt-16">
         <div className="relative flex items-center justify-center gap-24">
-          <UserProfile></UserProfile>
-          <UserStatistics></UserStatistics>
+          <UserProfile/>
+          <UserStatistics/>
 
           <Button
             className="absolute -right-40 top-0"
@@ -60,7 +61,8 @@ export default function ProfileScreen() {
           <UserCourses courses={userCourses}></UserCourses>
         </div>
       </main>
-      <Footer></Footer>
+
+      <Footer/>
     </div>
   )
 }
