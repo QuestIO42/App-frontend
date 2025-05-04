@@ -67,18 +67,18 @@ export default function Course() {
       <Header/>
 
       <div className="flex justify-between items-center w-full">
-        <div className="flex flex-col justify-start">
-          <div className="w-30 ml-6">
+        <div className="w-[25%] h-full flex flex-col justify-end gap-6">
+          <div className="ml-10 md:ml-20">
             <Voltar/>
           </div>
 
-          <div className="w-8">
+          <div className="">
             <CircuitCourse/>
           </div>
         </div>
 
         {Course && (
-          <div className="flex flex-col justify-center mx-auto">
+          <div className="flex flex-col justify-center">
             <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
               {Course.name}
             </h2>
@@ -87,7 +87,7 @@ export default function Course() {
           </div>
         )}
 
-        <div className="font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
+        <div className="w-[25%] font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
           <Button
             upload
             // Rota
@@ -104,8 +104,8 @@ export default function Course() {
         </div>
       </div>
 
-      <div className="flex items-start justify-between">
-        <div className="mb-4 ml-[90px] flex min-w-[500px] flex-col gap-10">
+      <div className="flex items-start justify-between mt-4">
+        <div className="mb-4 ml-10 md:ml-20 flex min-w-[500px] flex-col gap-10">
           <ExercisesGroup
             title="Portas Lógicas"
             Icon={LampIcon}

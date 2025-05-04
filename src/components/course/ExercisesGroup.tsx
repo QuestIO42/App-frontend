@@ -30,11 +30,11 @@ export default function ExercisesGroup({title, Icon, itens} : ExercisesGroupProp
     return(
         <div className="">
             <div className="flex justify-start items-center content-center my-8 text-2xl gap-y-3 font-bold">
-                <Icon className="h-8 w-12"/>
+                <Icon className="h-8 w-8 mr-4"/>
                 <p className="grow text-4xl text-cinza">{title}</p>
             </div>
 
-            <div className="flex flex-col ml-10 gap-8">
+            <div className="flex flex-col ml-2 gap-8">
                 {itens.map((content,index) => (
                       <ExerciseTemplate text={content.name}
                       Icon={stateIcons[1]}
