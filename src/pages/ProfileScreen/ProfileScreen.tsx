@@ -44,7 +44,7 @@ export default function ProfileScreen() {
     <div className="w-full overflow-x-hidden bg-grid-pattern">
       <Header/>
 
-      <main className="flex flex-col items-center justify-center gap-20 md:mb-28 md:mt-16">
+      <main className="flex flex-col items-center justify-center gap-20 mb-24 mt-20">
         <div className="relative flex items-center justify-center gap-24">
           <UserProfile/>
           <UserStatistics/>
@@ -57,6 +57,7 @@ export default function ProfileScreen() {
             onClick={handleClick}
           ></Button>
         </div>
+
         <div className="w-[90%]">
           <UserCourses courses={userCourses}></UserCourses>
         </div>

@@ -21,12 +21,12 @@ export default function Header() {
         <SearchBar></SearchBar>
       </div> */}
 
-      <div className="flex flex-1 items-center justify-end gap-6">
+      <div className="flex flex-1 items-center justify-end gap-4">
+        <NotificationIcon/>
+
         <Link to={`/profile/${user?.id}`} className="group">
           <ProfileIcon className="text-verde-300 transition-all duration-300 ease-in-out hover:text-verde-900 active:scale-90 active:text-verde-300"></ProfileIcon>
         </Link>
-
-        <NotificationIcon/>
       </div>
     </header>
   )

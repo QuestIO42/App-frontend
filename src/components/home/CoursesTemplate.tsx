@@ -63,17 +63,9 @@ export default function CoursesTemplate({
     }
   }, [courses])
 
-  const handleClick = (id: string) => {
-    // alert(id);
-
-    navigate(`/Course/${id}`)
-
-    // getQuiz()
-  }
-
   return (
     <div className="flex flex-col items-start justify-start gap-10">
-      <div className={`mr-auto flex items-center justify-center gap-3`}>
+      <div className="mr-auto flex items-center justify-center gap-3">
         <Icon width="48" height="48"></Icon>
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
@@ -83,7 +75,7 @@ export default function CoursesTemplate({
           courses!.slice(0, 4).map((course) => (
             <div
               key={course.id}
-              onClick={() => handleClick(course.id)}
+              onClick={() => navigate(`/Course/${course.id}`)}
               className="cursor-pointer"
             >
               <ModalSquareForm
@@ -118,18 +110,10 @@ export default function CoursesTemplate({
             </div>
           ))
         ) : (
-          [...Array(3)].map((_, index) => (
-            <ModalSquareForm
-              IsRectangle={IsRectangle}
-              key={index}
-              courseName="Portas Lógicas"
-              courseTeacher="Ricardo Menotti"
-            >
-              <div
-                className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
-              ></div>
-            </ModalSquareForm>
-          ))
+          // Caso usuário não esteja em nenhum curso
+          <p className="ml-2 text-xl text-gray-600">
+            Você ainda não está matriculado em nenhum curso
+          </p>
         )}
       </div>
       {/* <Button onClick={() => navigate('/courses')} text="ver mais"></Button> */}
