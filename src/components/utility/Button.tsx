@@ -66,6 +66,7 @@ export default function Button({
   upload,
   uploadUrl,
   fieldName = 'file',
+  courseId,
   onUploadSuccess,
   onUploadError,
   ...rest
@@ -90,6 +91,10 @@ export default function Button({
     if (!file || !uploadUrl) return;
     const formData = new FormData();
     formData.append(fieldName, file);
+    if (courseId) {                          // só faz o append se vier um courseId
+      formData.append('course_id', courseId);
+    }
+
     try {
       setIsUploading(true);
       const response = await api.post(uploadUrl, formData);
