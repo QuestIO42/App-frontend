@@ -1,15 +1,10 @@
-import { Course } from '@/interfaces/Course'
+import { Lab } from "@/interfaces/Lab"
 
-export const mockVirtualLabs: Course[] = [
+export const mockVirtualLabs: Lab[] = [
   {
-    id: "https://legacy.vlab.dc.ufscar.br/",
+    link: "https://legacy.vlab.dc.ufscar.br/",
     name: "Laboratório Remoto de Embarcados",
     description: "Laboratório",
-    image: "",
-    creation_date: "",
-    begin_date: "",
-    end_date: "",
-    open: true
+    teacher: "Ricardo Menotti",
   },
-
 ]
