@@ -2,15 +2,20 @@ import { useState, useRef, useEffect } from 'react';
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
+import { Question } from '@/interfaces/Quiz';
 
 interface Size{
   width: string;
   height: string;
 }
 
-export default function Practice() {
+interface PracticeProps {
+  question: Question;
+}
+
+export default function Practice({ question }: PracticeProps) {
   // Código padrão carregado ao abrir a página
-  const [verilogLang, setVerilog] = useState("module top(input a, input b, output c); assign c = a&b; endmodule;");
+  const [verilogLang, setVerilog] = useState("module top(\n  input a, \n  input b, \n  output c \n); \n\nassign c = a & b; \n\nendmodule;");
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
 
@@ -57,7 +62,14 @@ export default function Practice() {
   return(
     <div className="grid w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto]">
       <div className="w-[90%] mx-auto col-span-4 flex flex-col items-center justify-center">
-        <div className="w-full flex flex-col justify-start">
+        {/* Enunciado */}
+        <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
+          <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
+          <p className="text-[#454545]">{question.content}</p>
+        </div>
+
+        {/* Área de código */}
+        <div className="w-full flex flex-col justify-start mt-10">
           <div className="w-[180px] flex justify-center bg-[#F2953F] px-6 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-cinza">
             <p className="text-left text-2xl">Solução</p>
           </div>
@@ -73,11 +85,12 @@ export default function Practice() {
           </div>
         </div>
 
+        {/* Console */}
         <div className="w-full mt-6">
           <div className="flex justify-start">
-            <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
+            <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
               <div className="flex flex-row w-full h-[200px] py-4">
-                  <ResponseBox verilog_code="I give up" width={size.width}/>
+                  <ResponseBox verilog_code="..." width={size.width}/>
               </div>
             </div>
           </div>

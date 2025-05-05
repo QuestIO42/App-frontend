@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
@@ -51,19 +51,20 @@ export default function Quiz() {
   const [description] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const nome = localStorage.getItem('quizName');
-  const navigate = useNavigate();
-  const location = useLocation();
 
+  // Altera o título da aba do navegador com o nome do quiz, se disponível
   useEffect(() => {
+    if (!nome) return;
+
     const originalTitle = document.title;
-    if (nome) {
-      document.title = `${document.title} - ${nome}`;
-    }
+    document.title = `${originalTitle} - ${nome}`;
+
     return () => {
       document.title = originalTitle;
     };
   }, [nome]);
 
+  // Busca as questões e respostas do quiz a partir do ID na URL
   useEffect(() => {
     if (quizId) {
       const fetchQuestions = async () => {
@@ -77,25 +78,16 @@ export default function Quiz() {
           const answers = await getAllAnswers(questionIds);
           console.log("as respostas são essas:", answers);
 
-          //const userAnswers = await getUserAnswer(userId);
+          // const userAnswers = await getUserAnswer(userId);
 
           setQuestions(response);
           setAnswers(answers);
 
-          // Questões de Verilog
-          // Considera que um quiz com questão de Verilog apenas possui uma questão de código
-          // const questionType3 = response.find((q: any) => q.type === 3);
-          // if (questionType3) {
-          //   // Redireciona para a página de Verilog e envia a questão como estado
-          //   navigate(location.pathname + '/practice', { state: { question: questionType3 } });
-          //   console.log(location.pathname + '/practice')
-          //   return;
-          // }
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
         }
         finally {
-          setIsLoading(false); // Set loading to false after fetch
+          setIsLoading(false);
         }
       };
       fetchQuestions();
@@ -111,6 +103,7 @@ export default function Quiz() {
     );
   }
 
+  // Atualiza ou adiciona a resposta do usuário para uma pergunta
   const handleAnswer = (id_question: string, answer: string, score: number, type: number) => {
     setUserAnswers(prevAnswers => {
       // Verifica se já existe uma resposta para esta pergunta
@@ -127,6 +120,7 @@ export default function Quiz() {
     });
   };
 
+  // Envia todas as respostas do usuário para a API
   function publishAnswers() {
     UserAnswers.forEach(userAnswer => {
       postUserAnswer(userId, quizId || '', userAnswer.id_question, Answers[1][0].id, userAnswer.answer, userAnswer.value);
@@ -134,14 +128,16 @@ export default function Quiz() {
     );
   }
 
+  // Verifica se as respostas do usuário estão corretas e atualiza o estado
   function checkAnswers(questionsToCheck: Question[]) {
     console.log("Respostas", Answers);
+
     const updatedUserAnswers = UserAnswers.map(userAnswer => {
       const questionAnswers = Answers.find(ans => ans[0]?.id_question === userAnswer.id_question);
       if (questionAnswers && questionsToCheck.some(q => q.id === userAnswer.id_question)) {
         if (userAnswer.type === 1) { // Questão de alternativa
           userAnswer.correct = userAnswer.value > 0;
-        } else if (userAnswer.type === 2) { // Questão de re// Função que envia respostas pro backsposta aberta
+        } else if (userAnswer.type === 2) { // Questão de resposta aberta
           userAnswer.correct = questionAnswers.some(ans => ans && ans.description && ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase());
           if (userAnswer.correct) {
             userAnswer.value = questionAnswers.find(ans => ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase())?.value || 0;
@@ -153,6 +149,7 @@ export default function Quiz() {
 
     setUserAnswers(updatedUserAnswers);
     console.log("teste respostas", updatedUserAnswers);
+
     setVerifiedValues(prev => {
       const next = { ...prev };
       questionsToCheck.forEach(question => {
@@ -167,9 +164,10 @@ export default function Quiz() {
     publishAnswers();
 
     // Enviar respostas para o back
-    ///postUserAnswer(userId, quizId || '', 1, 1);
+    // postUserAnswer(userId, quizId || '', 1, 1);
   }
 
+  // Agrupa perguntas de múltipla escolha ou dissertativas em um "QuestionBox"
   const groupQuestions = (Questions: Question[], boxIndex: number) => {
     return (
       <QuestionBox handlePrint={() => checkAnswers(Questions)} key={`question-box-${boxIndex}`}>
@@ -215,6 +213,7 @@ export default function Quiz() {
     );
   };
 
+  // Organiza todas as perguntas e renderiza conforme o tipo (texto, múltipla escolha, aberta, código)
   const renderQuestions = (questions: Question[]) => {
     const groups: JSX.Element[] = [];
     let currentGroup: Question[] = [];
@@ -231,6 +230,7 @@ export default function Quiz() {
           boxIndex++;
         }
         switch (question.type) {
+          // Conteúdo
           case 0:
             groups.push(
               <div className='w-[90%] mx-auto'>
@@ -240,7 +240,9 @@ export default function Quiz() {
             break;
           // Exercícios de código em Verilog
           case 3:
-            groups.push(<Practice/>);
+            groups.push(
+              <Practice key={question.name + "-" + index} question={question}/>
+            );
             break;
           default:
             break;
@@ -269,7 +271,7 @@ export default function Quiz() {
 
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
-            <div className="flex mt-5 mb-20 px-10 justify-center">
+            <div className="flex mt-5 mb-16 px-10 justify-center">
               <Description text={description} variant={'purple'}/>
             </div>
           </div>

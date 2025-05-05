@@ -20,6 +20,7 @@ const ResponseBox = ({verilog_code, width, height}: ResponseBoxProps) => {
 
   return (
     <div style={{ overflow: 'auto', maxHeight: '300px' }}>
+      <p className="text-xl text-laranja font-bold mb-2">Saída</p>
       <textarea
         value={verilog_code}
         onChange={handleChange}
