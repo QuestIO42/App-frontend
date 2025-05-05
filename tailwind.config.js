@@ -55,7 +55,7 @@ export default {
         'default-vermelho-900': '0 0 0 0px #FFFFFF, 8px 8px #752c22',
       },
       backgroundImage: {
-        'grid-pattern': 'url(/grid.svg)',
+        'grid-pattern': 'url(./grid.svg)',
       },
     },
   },
