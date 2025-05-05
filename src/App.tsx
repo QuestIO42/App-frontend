@@ -32,10 +32,8 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-            <Route
-              path="/config-pass/:verificationCode"
-              element={<ConfigPass />}
-            />
+            <Route path="/change-password/:verificationCode" element={<ChangePassword />} />
+            <Route path="/config-pass/:verificationCode" element={<ConfigPass />} />
           </Route>
 
           {/*Fluxo do usuário */}
@@ -45,12 +43,12 @@ export default function App() {
 
             <Route path="/course/:courseId" element={<Course />} />
             <Route path="/courses" element={<Courses />} />
-            {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
             <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
             <Route path="/test" element={<Teste />} />
+            {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
             {/* <Route path="/exercises" element={<Exercises />} /> */}
             {/* <Route path="/exercises/:quizId" element={<Practice />} /> */}
-            <Route path="/change-password/:verificationCode" element={<ChangePassword />} />
+
 
           </Route>
 
