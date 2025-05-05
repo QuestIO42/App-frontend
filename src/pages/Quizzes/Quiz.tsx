@@ -84,6 +84,7 @@ export default function Quiz() {
       fetchQuestions();
     }
   }, [quizId]);
+
   if (isLoading) {
     // Show a loading spinner or placeholder while fetching
     return (
@@ -115,6 +116,7 @@ export default function Quiz() {
     }
     );
   }
+
   function checkAnswers(questionsToCheck: Question[]) {
     console.log("Respostas", Answers);
     const updatedUserAnswers = UserAnswers.map(userAnswer => {
@@ -237,7 +239,7 @@ export default function Quiz() {
 
         <div className="col-span-full flex justify-between">
           <div className="w-30 flex flex-col justify-start">
-            <div className="w-30 ml-6">
+            <div className="ml-10 md:ml-20 mt-10">
               <Voltar/>
             </div>
           </div>
