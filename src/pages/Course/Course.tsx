@@ -7,22 +7,18 @@ import ProgressXpBar from '@/components/utility/ProgressXpBar';
 import Voltar from '@/components/course/Voltar';
 import Button from '@/components/utility/Button';
 import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
-import LampIcon from '@/components/svgComponents/icons/LampIcon';
 import ExercisesGroup from '@/components/course/ExercisesGroup';
 import RankingItem from '@/components/home/RankingItem';
 import Forum from '@/components/course/Forum';
 import { mockUsers } from '@/utils/mocks/mockUsers';
 import { fetchAllQuizes } from '@/services/api/quiz';
 import { fetchCourse } from '@/services/api/course';
-import { getCourseCategories } from '@/services/api/category';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
-import { Category } from '@/interfaces/Category';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const { courseId } = useParams();
 
@@ -32,15 +28,12 @@ export default function Course() {
         if (courseId) {
           const quizes = await fetchAllQuizes(courseId);
           const courseInfo = await fetchCourse(courseId);
-          // const courseCategories = await getCourseCategories(courseId);
 
           console.log('quiz', quizes);
           console.log('course', courseInfo);
-          // console.log('categories', courseCategories);
 
           setQuizes(quizes);
           setCourse(courseInfo.data);
-          // setCategories(courseCategories.data);
         }
       } catch (error) {
         console.error(error);
@@ -115,19 +108,8 @@ export default function Course() {
       <div className="flex items-start justify-between my-6">
         <div className="mb-4 ml-10 md:ml-20 flex min-w-[500px] flex-col gap-10">
           <ExercisesGroup
-            title="Portas Lógicas"
-            Icon={LampIcon}
             itens={Quizes}
           />
-
-          {/* {categories.map((category) => (
-            <ExercisesGroup
-              key={category.id}
-              title={category.name}
-              Icon={LampIcon}
-              itens={Quizes}
-            />
-          ))} */}
         </div>
 
         <div className="mr-4 flex flex-col">
