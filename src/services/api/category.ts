@@ -39,8 +39,8 @@ async function deleteCategory(id: string) {
 }
 
 // Lista categorias de um curso específico
-async function getCourseCategories(idCourse: string) {
-  const response = await api.get(`/category/course/${idCourse}`)
+async function getCourseCategories(id: string) {
+  const response = await api.get(`/category/course/${id}`)
   return response.data
 }
 

@@ -14,12 +14,15 @@ import Forum from '@/components/course/Forum';
 import { mockUsers } from '@/utils/mocks/mockUsers';
 import { fetchAllQuizes } from '@/services/api/quiz';
 import { fetchCourse } from '@/services/api/course';
+import { getCourseCategories } from '@/services/api/category';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
+import { Category } from '@/interfaces/Category';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const { courseId } = useParams();
 
@@ -29,10 +32,15 @@ export default function Course() {
         if (courseId) {
           const quizes = await fetchAllQuizes(courseId);
           const courseInfo = await fetchCourse(courseId);
+          // const courseCategories = await getCourseCategories(courseId);
+
           console.log('quiz', quizes);
           console.log('course', courseInfo);
+          // console.log('categories', courseCategories);
+
           setQuizes(quizes);
           setCourse(courseInfo.data);
+          // setCategories(courseCategories.data);
         }
       } catch (error) {
         console.error(error);
@@ -110,13 +118,16 @@ export default function Course() {
             title="Portas Lógicas"
             Icon={LampIcon}
             itens={Quizes}
-          ></ExercisesGroup>
+          />
 
-          <ExercisesGroup
-            title="Circuitos Lógicos"
-            Icon={LampIcon}
-            itens={Quizes}
-          ></ExercisesGroup>
+          {/* {categories.map((category) => (
+            <ExercisesGroup
+              key={category.id}
+              title={category.name}
+              Icon={LampIcon}
+              itens={Quizes}
+            />
+          ))} */}
         </div>
 
         <div className="mr-4 flex flex-col">
