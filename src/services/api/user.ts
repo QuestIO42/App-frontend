@@ -23,13 +23,13 @@ async function signIn() {
 }
 
 async function updateUser({
-  id,
   updateUser,
+  verificationCode,
 }: {
-  id: string
   updateUser: Partial<UserUpdateProps>
+  verificationCode: string
 }) {
-  const response = await api.put(`/user/${id}`, updateUser)
+  const response = await api.post(`/auth/reset-password/${verificationCode}`, updateUser)
   return response.data
 }
 

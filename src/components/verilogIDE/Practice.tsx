@@ -21,7 +21,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
   // Código exibido em CodeSpace
-  const [verilogLang, setVerilog] = useState("module top(\n  input a, \n  input b, \n  output c \n); \n\nassign c = a & b; \n\nendmodule;");
+  const [verilogLang, setVerilog] = useState("");
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<string>("Aguardando execução...");
 
