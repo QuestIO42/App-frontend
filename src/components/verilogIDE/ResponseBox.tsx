@@ -19,17 +19,19 @@ const ResponseBox = ({verilog_code, width, height}: ResponseBoxProps) => {
   };
 
   return (
-    <div style={{ overflow: 'auto', maxHeight: '300px' }}>
+    <div>
       <p className="text-xl text-laranja font-bold mb-2">Saída</p>
-      <textarea
-        value={verilog_code}
-        onChange={handleChange}
-        style={{ width:width ||'90%', height:height || '100%', resize: 'none' }}
-      />
+
+      <div>
+        <textarea
+          value={verilog_code}
+          onChange={handleChange}
+          style={{ width:width ||'90%', height:height || '100%', resize: 'none' }}
+          className="focus:outline-none border-none p-2"
+        />
+      </div>
     </div>
   );
 };
-
-
 
 export default ResponseBox

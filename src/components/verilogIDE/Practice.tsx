@@ -90,7 +90,7 @@ export default function Practice({ question }: PracticeProps) {
           <div className="flex justify-start">
             <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
               <div className="flex flex-row w-full h-[200px] py-4">
-                  <ResponseBox verilog_code="..." width={size.width}/>
+                  <ResponseBox verilog_code="..." width={size.width} height="130px"/>
               </div>
             </div>
           </div>
