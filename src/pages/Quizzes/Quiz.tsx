@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
@@ -8,13 +8,14 @@ import { fetchQuizQuestion } from '@/services/api/quiz';
 import { getAllAnswers, postUserAnswer } from '@/services/api/answer';
 // import { getUserAnswer } from '@/services/api/userAnswer';
 
+import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
 import Paragraph from '@/components/quiz/Paragraph';
 import Description from '@/components/quiz/Description';
 import RadioButtonGroup from '@/components/quiz/RadioButtonGroup';
 import QuestionBox from '@/components/quiz/QuestionBox';
 import OpenAnswer from '@/components/quiz/OpenAnswer';
-import { useAuth } from '@/hooks/useAuth';
+import Practice from '@/components/verilogIDE/Practice';
 
 const mockQuestions: Question[] = [
   { name: 'Question 1', type: 0, content: 'Content for question 1', responsible: false, id_category: '', id: '1', verified: false },
@@ -50,6 +51,8 @@ export default function Quiz() {
   const [description] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const nome = localStorage.getItem('quizName');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const originalTitle = document.title;
@@ -67,13 +70,27 @@ export default function Quiz() {
         try {
           const response = await fetchQuizQuestion(quizId);
           console.log("resposta:", response);
+
           const questionIds = response.map((question: any) => question.id);
           console.log("questionIds", questionIds);
+
           const answers = await getAllAnswers(questionIds);
           console.log("as respostas são essas:", answers);
+
           //const userAnswers = await getUserAnswer(userId);
+
           setQuestions(response);
           setAnswers(answers);
+
+          // Questões de Verilog
+          // Considera que um quiz com questão de Verilog apenas possui uma questão de código
+          // const questionType3 = response.find((q: any) => q.type === 3);
+          // if (questionType3) {
+          //   // Redireciona para a página de Verilog e envia a questão como estado
+          //   navigate(location.pathname + '/practice', { state: { question: questionType3 } });
+          //   console.log(location.pathname + '/practice')
+          //   return;
+          // }
         } catch (error) {
           console.error('Erro ao buscar as questões:', error);
         }
@@ -216,8 +233,14 @@ export default function Quiz() {
         switch (question.type) {
           case 0:
             groups.push(
-              <Paragraph key={question.name + "-" + index} title={question.name} text={question.content} />
+              <div className='w-[90%] mx-auto'>
+                <Paragraph key={question.name + "-" + index} title={question.name} text={question.content} />
+              </div>
             );
+            break;
+          // Exercícios de código em Verilog
+          case 3:
+            groups.push(<Practice/>);
             break;
           default:
             break;
@@ -237,7 +260,7 @@ export default function Quiz() {
       <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
         <Header/>
 
-        <div className=" flex flex-col col-span-full flex justify-start gap-10">
+        <div className=" flex flex-col col-span-full flex justify-start gap-4">
           <div className="w-30 justify-start">
             <div className="ml-10 md:ml-20 mt-10">
               <Voltar/>

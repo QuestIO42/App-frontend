@@ -1,8 +1,6 @@
+import { useState, useRef, useEffect } from 'react';
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
-import  Header  from "@/components/header/Header";
-import { useState, useRef, useEffect } from 'react';
-import Footer from "@/components/footer/Footer";
 import IconGroup from "@/components/verilogIDE/IconGroup";
 
 interface Size{
@@ -57,23 +55,16 @@ export default function Practice() {
   }
 
   return(
-    <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-16 bg-grid-pattern">
-      <Header/>
-
-      {/* Colocar a descrição/enunciado do exercício */}
-      <div className="col-span-4 flex flex-col items-start justify-center ml-[10%]">
-
-      </div>
-
-      <div className="col-span-4 flex flex-col items-center justify-center">
-        <div className="flex flex-col justify-start">
+    <div className="grid w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto]">
+      <div className="w-[90%] mx-auto col-span-4 flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col justify-start">
           <div className="w-[180px] flex justify-center bg-[#F2953F] px-6 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-cinza">
             <p className="text-left text-2xl">Solução</p>
           </div>
 
-          <div className="flex flex-col gap-12  bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
-            <div className="flex flex-col sm:w-[550px] md:w-[720px] lg:w-[1000px] xl:w-[1200px] 2xl:w-[1400px] h-[100%]" ref={divRef}>
-              <div className="flex flex-row mt-4 justify-end">
+          <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
+            <div className="flex flex-col h-[100%]" ref={divRef}>
+              <div className="flex flex-row mt-4 mb-2 justify-end">
                 <IconGroup onIconClick={handleIconClick}/>
               </div>
 
@@ -82,18 +73,16 @@ export default function Practice() {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="w-full mt-6">
           <div className="flex justify-start">
             <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
-              <div className="flex flex-row sm:w-[550px] md:w-[720px] lg:w-[1000px] xl:w-[1200px] 2xl:w-[1400px] h-[200px] py-4">
+              <div className="flex flex-row w-full h-[200px] py-4">
                   <ResponseBox verilog_code="I give up" width={size.width}/>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <Footer/>
     </div>
   )
 }

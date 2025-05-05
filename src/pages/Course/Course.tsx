@@ -112,7 +112,7 @@ export default function Course() {
         </div>
       </div>
 
-      <div className="flex items-start justify-between mt-4">
+      <div className="flex items-start justify-between my-6">
         <div className="mb-4 ml-10 md:ml-20 flex min-w-[500px] flex-col gap-10">
           <ExercisesGroup
             title="Portas Lógicas"
