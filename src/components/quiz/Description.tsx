@@ -18,7 +18,7 @@ export default function Description({variant, text} : DescriptionProps) {
 }
   }
   return (
-    <div className={`flex flex-col align-center justify-center items-start gap-4 px-10 py-5 sm:w-[255px] md:w-[450px] lg:w-[766px] max-w-[766px] min-h-[120px] ${getVariant(variant)}`}>
+    <div className={`flex flex-col align-center justify-center items-start gap-4 px-10 py-5 sm:w-[380px] md:w-[480px] lg:w-[766px] max-w-[766px] min-h-[120px] ${getVariant(variant)}`}>
       <p className={`text-1xl font-bold break-words`}>{text}</p>
     </div>
   )

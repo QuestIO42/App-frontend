@@ -237,24 +237,22 @@ export default function Quiz() {
       <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
         <Header/>
 
-        <div className="col-span-full flex justify-between">
-          <div className="w-30 flex flex-col justify-start">
+        <div className=" flex flex-col col-span-full flex justify-start gap-10">
+          <div className="w-30 justify-start">
             <div className="ml-10 md:ml-20 mt-10">
               <Voltar/>
             </div>
           </div>
-        </div>
 
-        <div className="col-span-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
-            <div className="flex mt-5 mb-20 justify-center">
+            <div className="flex mt-5 mb-20 px-10 justify-center">
               <Description text={description} variant={'purple'}/>
             </div>
           </div>
         </div>
 
-        <div className="col-span-full flex flex-col gap-24 items-start mx-24 justify-start">
+        <div className="col-span-full w-full mb-16 flex flex-col gap-24 mx-auto items-center justify-center">
           {renderQuestions(Questions)}
         </div>
 
