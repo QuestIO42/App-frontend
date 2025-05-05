@@ -32,6 +32,7 @@ export default function App() {
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+            <Route path="/change-password/:verificationCode" element={<ChangePassword />} />
             <Route
               path="/config-pass/:verificationCode"
               element={<ConfigPass />}
@@ -50,7 +51,6 @@ export default function App() {
             <Route path="/test" element={<Teste />} />
             {/* <Route path="/exercises" element={<Exercises />} /> */}
             {/* <Route path="/exercises/:quizId" element={<Practice />} /> */}
-            <Route path="/change-password/:verificationCode" element={<ChangePassword />} />
 
           </Route>
 

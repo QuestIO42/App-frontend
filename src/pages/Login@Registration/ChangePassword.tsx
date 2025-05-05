@@ -34,7 +34,6 @@ type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>
 
 export default function ChangePasswordForm() {
   const navigate = useNavigate()
-  const { user } = useAuth();
   const { verificationCode } = useParams();
 
   console.log("VERIFICATION: " + verificationCode)
