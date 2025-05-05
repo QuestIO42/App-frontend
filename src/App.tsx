@@ -17,9 +17,7 @@ import Register from './pages/Login@Registration/Register'
 import Course from './pages/Course/Course'
 import Courses from './pages/Courses/Courses'
 import ForgotPasswordPage from './pages/Login@Registration/ForgotPasswordPage'
-import Practice from './pages/Verilog/Practice'
 import Teste from './pages/testPage/index'
-import Exercises from './pages/Quizzes/Exercises'
 import ChangePassword from './pages/Login@Registration/ChangePassword'
 import ConfigPass from './pages/Login@Registration/ConfigPass'
 import Quiz from './pages/Quizzes/Quiz'
@@ -47,12 +45,12 @@ export default function App() {
 
             <Route path="/course/:courseId" element={<Course />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/course/:courseId/practice" element={<Practice />} />
+            {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
             <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
             <Route path="/test" element={<Teste />} />
-            <Route path="/exercises" element={<Exercises />} />
-            <Route path="/exercises/:quizId" element={<Practice />} />
-            <Route path="/change-password" element={<ChangePassword />} />
+            {/* <Route path="/exercises" element={<Exercises />} /> */}
+            {/* <Route path="/exercises/:quizId" element={<Practice />} /> */}
+            <Route path="/change-password/:verificationCode" element={<ChangePassword />} />
 
           </Route>
 

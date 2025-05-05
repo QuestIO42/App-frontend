@@ -220,17 +220,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       api.get(`auth/reset-password/${verificationCode}`).then((response) => {
         console.log(response)
-        const accessToken = response.data.access
-        Cookies.set('accessToken', response.data.access, {
-          sameSite: 'Lax',
-          secure: true,
-        })
-        Cookies.set('refreshToken', response.data.refresh, {
-          sameSite: 'Lax',
-          secure: true,
-        })
-        setToken(accessToken)
-        navigate('/change-password')
+        navigate(`/change-password/${verificationCode}`)
       })
     } catch (error) {
       console.error('Erro no login:', error)

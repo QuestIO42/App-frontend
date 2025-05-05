@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth'
 export default function Header() {
   const { user } = useAuth()
   return (
-    <header className="col-span-full flex h-24 w-full items-center justify-between bg-roxo-900 px-10 md:px-20">
+    <header className="col-span-full flex h-[100px] w-full items-center justify-between bg-roxo-900 px-10 md:px-20">
       <div className="flex flex-1 items-center">
         <Logo
           className="text-verde-300 transition-all duration-300 ease-in-out hover:text-verde-900 active:scale-90 active:text-verde-300"

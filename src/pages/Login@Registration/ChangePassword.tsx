@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import FormTitle from '@/components/form/FormTitle'
 import ModalSquareForm from '@/components/utility/ModalSquareForm'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
@@ -35,6 +35,9 @@ type ChangePasswordFormValues = z.infer<typeof ChangePasswordSchema>
 export default function ChangePasswordForm() {
   const navigate = useNavigate()
   const { user } = useAuth();
+  const { verificationCode } = useParams();
+
+  console.log("VERIFICATION: " + verificationCode)
 
   const {
     handleSubmit,
@@ -47,21 +50,9 @@ export default function ChangePasswordForm() {
 
   async function handlePassword({ password, confirmPassword }: ChangePasswordFormValues) {
     try {
-      // Verifica se user e user.id existem
-      if (!user?.id) {
-        setError('root', {
-          type: 'manual',
-          message: 'Usuário não autenticado. Faça login novamente.',
-        });
-        return;
-      }
-
-      // Converte user.id para string explicitamente
-      const userId: string = String(user.id);
-
       await updateUser({
-        id: userId,
         updateUser: { password, confirmPassword },
+        verificationCode: verificationCode || ""
       });
 
       navigate('/');
