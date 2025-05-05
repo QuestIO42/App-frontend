@@ -33,5 +33,25 @@ const postUserAnswer = async (
   return response.data
 }
 
-export {getAnswer, getAllAnswers,postUserAnswer}
+// Criado para testar questões verilog
+const postVerilogAnswer = async (
+  id_user: string,
+  id_quiz: string,
+  id_question: string,
+  text_answer: string,
+  id_answer: string
+) => {
+  const response = await api.post(`/userquizquestionanswer`, {
+    id_user,
+    id_quiz,
+    id_question,
+    text_answer,
+    id_answer,
+    score: 0
+  });
+
+  return response.data;
+};
+
+export {getAnswer, getAllAnswers, postUserAnswer, postVerilogAnswer}
 

@@ -26,17 +26,17 @@ export default function IconGroup(IconGroup: IconGroupProps) {
   return(
     <>
       <div className="flex gap-8 flex-row">
-        <div className="cursor-pointer flex gap-2" onClick={() => handleClick('waveform')} >
+        <div className="cursor-pointer flex gap-2 transition transform duration-300 active:scale-90" onClick={() => handleClick('waveform')} >
           <WaveformIcon></WaveformIcon>
           <p>waveform</p>
         </div>
 
-        <div className="cursor-pointer flex gap-2" onClick={() => handleClick('save')} >
+        <div className="cursor-pointer flex gap-2 transition transform duration-300 active:scale-90" onClick={() => handleClick('save')} >
           <SaveIcon></SaveIcon>
           <p>salvar</p>
         </div>
 
-        <div className="cursor-pointer flex gap-2" onClick={() => handleClick('play')} >
+        <div className="cursor-pointer flex gap-2 transition transform duration-300 active:scale-90" onClick={() => handleClick('play')} >
           <PlayIcon></PlayIcon>
           <p>run</p>
         </div>

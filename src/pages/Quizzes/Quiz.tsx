@@ -241,7 +241,7 @@ export default function Quiz() {
           // Exercícios de código em Verilog
           case 3:
             groups.push(
-              <Practice key={question.name + "-" + index} question={question}/>
+              <Practice key={question.name + "-" + index} question={question} id_quiz={quizId}/>
             );
             break;
           default:

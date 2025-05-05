@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Question } from '@/interfaces/Quiz';
+import { getAllAnswers, postVerilogAnswer } from '@/services/api/answer';
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
-import { Question } from '@/interfaces/Quiz';
 
 interface Size{
   width: string;
@@ -11,13 +13,17 @@ interface Size{
 
 interface PracticeProps {
   question: Question;
+  id_quiz: string | undefined;
 }
 
-export default function Practice({ question }: PracticeProps) {
-  // Código padrão carregado ao abrir a página
-  const [verilogLang, setVerilog] = useState("module top(\n  input a, \n  input b, \n  output c \n); \n\nassign c = a & b; \n\nendmodule;");
+export default function Practice({ question, id_quiz }: PracticeProps) {
+  const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
+  // Código exibido em CodeSpace
+  const [verilogLang, setVerilog] = useState("module top(\n  input a, \n  input b, \n  output c \n); \n\nassign c = a & b; \n\nendmodule;");
+  // Feedback exibido em ResponseBox
+  const [feedback, setFeedback] = useState<string>("Aguardando execução...");
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,17 +48,48 @@ export default function Practice({ question }: PracticeProps) {
     };
   }, []);
 
+  const handleVerilogSubmit = async () => {
+    if (!question?.id || !id_quiz) {
+      setFeedback("Erro: questão ou quiz não encontrados.");
+      return;
+    }
+
+    setFeedback("Executando testes...");
+
+    const answers = await getAllAnswers([question.id]);
+    console.log("id da resposta: " + answers[0][0].id)
+
+    try {
+      const result = await postVerilogAnswer(
+        user?.id.toString() || '',
+        id_quiz,
+        question.id,
+        verilogLang,
+        answers[0][0].id
+      );
+
+      const textualFeedback = typeof result.feedback === 'string'
+        ? result.feedback
+        : Object.values(result.feedback).join('\n');
+
+      setFeedback(prev => `${prev}\n\nResultado: ${result.result}\nScore: ${result.score}\n${textualFeedback}`);
+    } catch (err) {
+      console.error("Erro ao corrigir Verilog:", err);
+      setFeedback("Erro ao conectar com o servidor ou ao corrigir.");
+    }
+  };
+
   // Funções dos ícones
   const handleIconClick = (value: string) => {
     switch(value){
       case 'waveform':
-        console.log('waaaave')
+        // Função para criar gráfico
         break;
       case 'save':
-        console.log('saaave')
+        // Função para salvar resposta
         break;
       case 'play':
-        console.log('plllaayy')
+        handleVerilogSubmit();
         break;
       default:
         console.log("oh no")
@@ -90,7 +127,7 @@ export default function Practice({ question }: PracticeProps) {
           <div className="flex justify-start">
             <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
               <div className="flex flex-row w-full h-[200px] py-4">
-                  <ResponseBox verilog_code="..." width={size.width} height="130px"/>
+                  <ResponseBox verilog_code={feedback} width={size.width} height="130px"/>
               </div>
             </div>
           </div>
