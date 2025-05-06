@@ -1,0 +1,10 @@
+FROM node:21-alpine AS build
+WORKDIR /frontend
+COPY package.json .
+RUN npm i
+COPY . .
+RUN npm run build
+
+# questio.vlab.dc.ufscar.br (prod)
+FROM nginx:latest AS production
+COPY --from=build /frontend/dist /usr/share/nginx/html
