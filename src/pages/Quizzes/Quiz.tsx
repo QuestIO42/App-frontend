@@ -5,8 +5,8 @@ import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
 
 import { fetchQuizQuestion } from '@/services/api/quiz';
-import { getAllAnswers, postUserAnswer } from '@/services/api/answer';
-// import { getUserAnswer } from '@/services/api/userAnswer';
+import { getAllAnswers } from '@/services/api/answer';
+import { getUserAnswer, postUserAnswer } from '@/services/api/userAnswer';
 
 import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
@@ -51,6 +51,9 @@ export default function Quiz() {
   const [description] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const nome = localStorage.getItem('quizName');
+
+  // marca quais questões já foram verificadas e estão desativadas
+  const [disabledQuestions, setDisabledQuestions] = useState<Record<string, boolean>>({});
 
   // Altera o título da aba do navegador com o nome do quiz, se disponível
   useEffect(() => {
@@ -132,6 +135,12 @@ export default function Quiz() {
   function checkAnswers(questionsToCheck: Question[]) {
     console.log("Respostas", Answers);
 
+    const newDisabled = { ...disabledQuestions };
+    questionsToCheck.forEach(q => {
+      newDisabled[q.id] = true;
+    });
+    setDisabledQuestions(newDisabled);
+
     const updatedUserAnswers = UserAnswers.map(userAnswer => {
       const questionAnswers = Answers.find(ans => ans[0]?.id_question === userAnswer.id_question);
       if (questionAnswers && questionsToCheck.some(q => q.id === userAnswer.id_question)) {
@@ -169,8 +178,21 @@ export default function Quiz() {
 
   // Agrupa perguntas de múltipla escolha ou dissertativas em um "QuestionBox"
   const groupQuestions = (Questions: Question[], boxIndex: number) => {
+    // verifica se o usuário respondeu alguma questão deste grupo
+    const hasAnyAnswer = Questions.some(q => {
+      const ua = UserAnswers.find(ans => ans.id_question === q.id);
+      return ua !== undefined && ua.answer.trim() !== '';
+    });
+
+    // desabilita se já foi verificado ou se não há nenhuma resposta
+    const isVerifyDisabled = Questions.every(q => disabledQuestions[q.id]) || !hasAnyAnswer;
+
     return (
-      <QuestionBox handlePrint={() => checkAnswers(Questions)} key={`question-box-${boxIndex}`}>
+
+      <QuestionBox 
+        handlePrint={() => checkAnswers(Questions)}
+        disabled={isVerifyDisabled}
+        key={`question-box-${boxIndex}`}>
         {Questions.map((question) => {
           // Encontre as respostas corretas para a pergunta atual
           const answerArray = Answers.find(ans => ans[0]?.id_question === question.id) || [];
@@ -189,6 +211,7 @@ export default function Quiz() {
                       verified={question.verified}
                       correct={!!UserAnswers.find(ua => ua.id_question === question.id && ua.correct)}
                       verifiedValue={verifiedValues[question.id]}
+                      disabled={!!disabledQuestions[question.id]}
                     />
 
 
@@ -203,6 +226,7 @@ export default function Quiz() {
                     handleAnswer={(value: string) => handleAnswer(question.id, value, 0, question.type)}
                     verified={question.verified}
                     correct={UserAnswers.find(userAnswer => question.id === userAnswer.id_question && userAnswer.correct) ? true : false}
+                    disabled={!!disabledQuestions[question.id]}
                   />
                 </div>
               )}

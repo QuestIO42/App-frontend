@@ -6,6 +6,7 @@ interface RadioButtonProps {
   value: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 const squareStyles = cva(
@@ -25,7 +26,8 @@ export default function RadioButton ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  disabled = false,
 }: RadioButtonProps) {
   return (
     <label className='flex text-xl items-center cursor-pointer m-[20px]'>
@@ -35,6 +37,7 @@ export default function RadioButton ({
         value={value}
         checked={checked}
         onChange={onChange}
+        disabled={disabled}
         className="hidden"
       />
 

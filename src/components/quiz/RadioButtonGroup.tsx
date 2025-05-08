@@ -10,9 +10,10 @@ interface RadioButtonGroupProps {
   correct: boolean;
   handleAnswer: (value: string) => void;
   verifiedValue?: string;
+  disabled?: boolean;
 }
 
-export default function RadioButtonGroup({ values, name, handleAnswer, correct, verified, verifiedValue }: RadioButtonGroupProps) {
+export default function RadioButtonGroup({ values, name, handleAnswer, correct, verified, verifiedValue, disabled = false }: RadioButtonGroupProps) {
   const labels = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
   console.log("alternativas", values);
 
@@ -34,6 +35,7 @@ export default function RadioButtonGroup({ values, name, handleAnswer, correct, 
             value={value}
             checked={selectedValue === value}
             onChange={handleChange}
+            disabled={disabled}
           />
           {verified && value === verifiedValue && (
             <div className="ml-2">
