@@ -2,9 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
 import { getAllAnswers, postVerilogAnswer } from '@/services/api/answer';
+import ReactMarkdown from 'react-markdown'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
+
 
 interface Size{
   width: string;
@@ -20,6 +22,8 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
+  // Enunciado sem o código base
+  const [questionContent, setQuestionContent] = useState<string>("");
   // Código exibido em CodeSpace
   const [verilogLang, setVerilog] = useState("");
   // Feedback exibido em ResponseBox
@@ -47,6 +51,26 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
       }
     };
   }, []);
+
+  // Separa o enunciado da questão do código base do execício
+  // Código base é inserido direto no CodeSpace
+  useEffect(() => {
+    if (question.content) {
+      // Código base em Markdown - ```verilog ... ```
+      const regex = /```verilog\s*([\s\S]*?)\s*```/;
+      const match = question.content.match(regex);
+
+      if (match) {
+        const code = match[1].trim();
+        setVerilog(code);
+
+        const cleaned = question.content.replace(regex, "").trim();
+        setQuestionContent(cleaned);
+      } else {
+        setQuestionContent(question.content);
+      }
+    }
+  }, [question.content]);
 
   const handleVerilogSubmit = async () => {
     if (!question?.id || !id_quiz) {
@@ -102,7 +126,9 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         {/* Enunciado */}
         <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
-          <p className="text-[#454545]">{question.content}</p>
+          <div>
+            <ReactMarkdown>{questionContent}</ReactMarkdown>
+          </div>
         </div>
 
         {/* Área de código */}
