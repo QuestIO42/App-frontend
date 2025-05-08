@@ -12,4 +12,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        script: cd /srv/QuestIO42/DevOps && ./update.sh
+        script: cd /srv/QuestIO42/DevOps && ./update_front.sh
