@@ -64,10 +64,10 @@ export default function Course() {
   };
 
   return (
-    <div className="grid w-full overflow-x-hidden gap-6 bg-grid-pattern">
+    <div className="w-full overflow-x-hidden gap-6 bg-grid-pattern">
       <Header/>
 
-      <div className="flex justify-between items-center w-full">
+      <div className="flex mt-11 justify-between items-center w-full">
         <div className="w-[25%] h-full flex flex-col justify-end gap-6">
           <div className="ml-10 md:ml-20">
             <Voltar/>
