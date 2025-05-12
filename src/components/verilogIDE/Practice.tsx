@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
-import { getAllAnswers, postVerilogAnswer } from '@/services/api/answer';
+import { postVerilogAnswer } from '@/services/api/answer';
 import ReactMarkdown from 'react-markdown'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
@@ -25,7 +25,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Enunciado sem o código base
   const [questionContent, setQuestionContent] = useState<string>("");
   // Código exibido em CodeSpace
-  const [verilogLang, setVerilog] = useState("");
+  const [verilogAnswer, setVerilog] = useState("");
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<string>("Aguardando execução...");
 
@@ -80,16 +80,12 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
 
     setFeedback("Executando testes...");
 
-    const answers = await getAllAnswers([question.id]);
-    console.log("id da resposta: " + answers[0][0].id)
-
     try {
       const result = await postVerilogAnswer(
         user?.id.toString() || '',
         id_quiz,
         question.id,
-        verilogLang,
-        answers[0][0].id
+        verilogAnswer,
       );
 
       const textualFeedback = typeof result.feedback === 'string'
@@ -143,7 +139,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
                 <IconGroup onIconClick={handleIconClick}/>
               </div>
 
-              <CodeSpace verilogLang={verilogLang} setVerilog={setVerilog} width={size.width} height="500px" />
+              <CodeSpace verilogLang={verilogAnswer} setVerilog={setVerilog} width={size.width} height="500px" />
             </div>
           </div>
         </div>
