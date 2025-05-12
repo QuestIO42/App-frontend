@@ -6,7 +6,7 @@ import Voltar from '@/components/course/Voltar';
 
 import { fetchQuizQuestion } from '@/services/api/quiz';
 import { getAllAnswers } from '@/services/api/answer';
-import { getUserAnswer, postUserAnswer } from '@/services/api/userAnswer';
+import { getUserAnswer, postUserAnswer, putUserAnswer } from '@/services/api/userAnswer';
 
 import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
@@ -17,34 +17,30 @@ import QuestionBox from '@/components/quiz/QuestionBox';
 import OpenAnswer from '@/components/quiz/OpenAnswer';
 import Practice from '@/components/verilogIDE/Practice';
 
-const mockQuestions: Question[] = [
-  { name: 'Question 1', type: 0, content: 'Content for question 1', responsible: false, id_category: '', id: '1', verified: false },
-  { name: 'Question 2', type: 1, content: 'Content for question 2', responsible: true, id_category: '', id: '2', verified: false },
-  { name: 'Question 3', type: 2, content: 'Content for question 3', responsible: true, id_category: '', id: '3', verified: false },
-  { name: 'Question 4', type: 0, content: 'Content for question 4', responsible: false, id_category: '', id: '4', verified: false },
-];
-
 interface Answer {
-  answer: string;
-  id_question: string;
-  value: number;
   id: string;
+  id_question: string;
   description: string;
+  answer?: string;
+  value: number;
 }
 
 interface UserAnswer {
+  id_user_answer_instance?: string;
   id_question: string;
   answer: string;
   value: number;
   correct: boolean;
   type: number; // Adiciona o tipo de questão
+  resultStatus?: "right" | "wrong" | "partial";
+  feedback?: string;
 }
 
 export default function Quiz() {
   const { user } = useAuth();
   const userId = user?.id.toString() || '';
   const { quizId } = useParams();
-  const [Questions, setQuestions] = useState<Question[]>(mockQuestions);
+  const [Questions, setQuestions] = useState<Question[]>();
   const [Answers, setAnswers] = useState<Answer[][]>([]);
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [verifiedValues, setVerifiedValues] = useState<Record<string, string>>({});
@@ -69,33 +65,114 @@ export default function Quiz() {
 
   // Busca as questões e respostas do quiz a partir do ID na URL
   useEffect(() => {
-    if (quizId) {
-      const fetchQuestions = async () => {
-        try {
-          const response = await fetchQuizQuestion(quizId);
-          console.log("resposta:", response);
+  // Log para verificar se quizId está presente no início
+  // console.log(`useEffect - Iniciando busca. quizId: ${quizId}`);
 
-          const questionIds = response.map((question: any) => question.id);
-          console.log("questionIds", questionIds);
+  if (quizId) {
+    const fetchQuizContent = async () => {
+      setIsLoading(true);
+      try {
+        // 1. Buscar as questões do quiz
+        const questionsResponse = await fetchQuizQuestion(quizId);
+        // console.log("useEffect - Resposta de fetchQuizQuestion:", questionsResponse);
+        // Garante que questionsResponse seja um array; se for null/undefined, usa array vazio.
+        setQuestions(Array.isArray(questionsResponse) ? questionsResponse : []);
 
-          const answers = await getAllAnswers(questionIds);
-          console.log("as respostas são essas:", answers);
+        // Prossegue somente se questionsResponse for um array e tiver itens
+        if (Array.isArray(questionsResponse) && questionsResponse.length > 0) {
+          const questionIds = questionsResponse.map((question: Question) => question.id);
+          // console.log("useEffect - IDs das Questões para buscar alternativas:", questionIds);
 
-          // const userAnswers = await getUserAnswer(userId);
+          // 2. Buscar todas as opções de resposta para essas questões
+          const possibleAnswersResponse = await getAllAnswers(questionIds);
+          // console.log("useEffect - Resposta de getAllAnswers (PossibleAnswers cru):", possibleAnswersResponse);
+          // Garante que possibleAnswersResponse seja um array; se for null/undefined, usa array vazio.
+          setAnswers(Array.isArray(possibleAnswersResponse) ? possibleAnswersResponse : []);
 
-          setQuestions(response);
-          setAnswers(answers);
+          // 3. Buscar as respostas que o usuário já deu para este quiz
+          const userAnswersFromAPI: any[] = await getUserAnswer(quizId);
+          // console.log("useEffect - Resposta de getUserAnswer (UserAnswers cru da API):", userAnswersFromAPI);
 
-        } catch (error) {
-          console.error('Erro ao buscar as questões:', error);
+          // 4. Formatar as respostas do usuário para o estado local
+          // Garante que userAnswersFromAPI seja um array antes de mapear
+          const formattedUserAnswers = (Array.isArray(userAnswersFromAPI) ? userAnswersFromAPI : []).map((apiUA: any) => {
+            const question = questionsResponse.find((q: Question) => q.id === apiUA.id_question);
+            let localAnswerContent = '';
+            if (question) {
+              if (question.type === 1) { // Múltipla escolha
+                localAnswerContent = apiUA.id_answer || '';
+              } else if (question.type === 2) { // Aberta
+                localAnswerContent = apiUA.text_answer || '';
+              }
+            }
+            const scoreFromAPI = apiUA.score ? parseFloat(apiUA.score) : 0;
+            let correctFromAPI = false;
+            if (apiUA.result === "right") correctFromAPI = true;
+
+            return {
+              id_user_answer_instance: apiUA.id,
+              id_question: apiUA.id_question,
+              answer: localAnswerContent,
+              value: scoreFromAPI,
+              correct: correctFromAPI,
+              type: question ? question.type : 0,
+              resultStatus: apiUA.result as UserAnswer['resultStatus'],
+              feedback: apiUA.feedback,
+            };
+          });
+          setUserAnswers(formattedUserAnswers);
+          // console.log("useEffect - UserAnswers formatados para o estado:", formattedUserAnswers);
+
+          // Lógica para pré-popular estados de UI com base nas respostas carregadas
+          // (Mantida da versão anterior, pois depende de formattedUserAnswers)
+          const initialDisabled: Record<string, boolean> = {};
+          const initialVerified: Record<string, string> = {};
+          let questionsToUpdateVerifiedStatus: Question[] = [];
+          formattedUserAnswers.forEach(ua => {
+            if (ua.id_user_answer_instance && ua.resultStatus) { // Se já veio do backend e foi avaliada
+              initialDisabled[ua.id_question] = true;
+              initialVerified[ua.id_question] = ua.answer;
+              const qToUpdate = questionsResponse.find((q: Question) => q.id === ua.id_question);
+                if (qToUpdate) questionsToUpdateVerifiedStatus.push(qToUpdate);
+            }
+          });
+          setDisabledQuestions(initialDisabled);
+          setVerifiedValues(initialVerified);
+           if (questionsToUpdateVerifiedStatus.length > 0) {
+                setQuestions(prevQs => (prevQs || []).map(q => questionsToUpdateVerifiedStatus.find(updatedQ => updatedQ.id === q.id) ? {...q, verified: true} : q));
+            }
+
+
+        } else {
+          // Se não houver questões (questionsResponse é vazio ou inválido)
+          // console.log("useEffect - Nenhuma questão encontrada, limpando estados dependentes.");
+          setAnswers([]);
+          setUserAnswers([]);
+          // setQuestions já foi definido como [] acima se questionsResponse não for um array
         }
-        finally {
-          setIsLoading(false);
-        }
-      };
-      fetchQuestions();
-    }
-  }, [quizId]);
+
+      } catch (error) {
+        console.error('useEffect - Erro ao buscar os dados do quiz:', error);
+        // Em caso de erro, define todos os estados como vazios para evitar erros de renderização
+        setQuestions([]);
+        setAnswers([]);
+        setUserAnswers([]);
+      }
+      finally {
+        setIsLoading(false);
+        // console.log("useEffect - Busca de dados finalizada, isLoading: false");
+      }
+    };
+    fetchQuizContent();
+  } else {
+    // console.log("useEffect - quizId está faltando, limpando estados.");
+    // Caso não haja quizId, reseta os estados e para de carregar
+    setQuestions([]);
+    setAnswers([]);
+    setUserAnswers([]);
+    setIsLoading(false);
+  }
+}, [quizId]); // Dependência principal é quizId
 
   if (isLoading) {
     // Show a loading spinner or placeholder while fetching
@@ -107,74 +184,226 @@ export default function Quiz() {
   }
 
   // Atualiza ou adiciona a resposta do usuário para uma pergunta
-  const handleAnswer = (id_question: string, answer: string, score: number, type: number) => {
-    setUserAnswers(prevAnswers => {
-      // Verifica se já existe uma resposta para esta pergunta
+  const handleAnswer = (id_question: string, answerIdOrText: string, score: number, type: number) => {
+    setUserAnswers((prevAnswers: UserAnswer[]): UserAnswer[] => { // Tipagem explícita para clareza
       const existingAnswerIndex = prevAnswers.findIndex(ans => ans.id_question === id_question);
 
-      // Se existir, atualiza o valor
       if (existingAnswerIndex !== -1) {
+        // Resposta já existe, atualiza-a
+        const existingAnswer = prevAnswers[existingAnswerIndex];
         const updatedAnswers = [...prevAnswers];
-        updatedAnswers[existingAnswerIndex] = { ...updatedAnswers[existingAnswerIndex], answer: answer, value: score, type: type };
+        updatedAnswers[existingAnswerIndex] = {
+          ...existingAnswer,
+          answer: answerIdOrText,
+          value: score,
+          type: type,
+          correct: false,
+          resultStatus: undefined,
+          feedback: undefined,
+        };
+        console.log("Resposta atualizada:", updatedAnswers[existingAnswerIndex]);
         return updatedAnswers;
+      } else {
+        // Resposta não existe, adiciona uma nova
+        const newAnswer: UserAnswer = { // Criando o objeto com todas as propriedades da interface
+          id_question,
+          answer: answerIdOrText,
+          value: score,
+          correct: false,
+          type: type,
+          id_user_answer_instance: undefined, // Explicitamente undefined
+          resultStatus: undefined,          // Explicitamente undefined
+          feedback: undefined,              // Explicitamente undefined
+        };
+        console.log("Nova resposta adicionada:", newAnswer);
+        return [...prevAnswers, newAnswer];
       }
-      // Se não existir, adiciona uma nova resposta
-      return [...prevAnswers, { id_question, answer: answer, value: score, correct: false, type: type }];
     });
   };
 
   // Envia todas as respostas do usuário para a API
-  function publishAnswers() {
-    UserAnswers.forEach(userAnswer => {
-      postUserAnswer(userId, quizId || '', userAnswer.id_question, Answers[1][0].id, userAnswer.answer, userAnswer.value);
+  async function publishAnswers() {
+    if (!quizId) {
+      console.error("Quiz ID é indefinido. Não é possível publicar respostas.");
+      alert("Erro: ID do Quiz não encontrado. Não foi possível enviar as respostas.");
+      return;
     }
+    if (!userId) {
+      console.error("User ID é indefinido. Não é possível publicar respostas.");
+      alert("Erro: Usuário não identificado. Não foi possível enviar as respostas.");
+      return;
+    }
+
+    let allRequestsSuccessful = true;
+
+    const answersToPublish = UserAnswers.filter(
+      ua => disabledQuestions[ua.id_question] && ua.answer.trim() !== ''
     );
-  }
+
+    if (answersToPublish.length === 0) {
+      console.log("Nenhuma resposta para publicar.");
+      return;
+    }
+
+    // console.log("Respostas a serem publicadas:", answersToPublish);
+
+    for (const userAnswer of answersToPublish) {
+      try {
+        let backendResponse: any;
+
+        const answerPayloadPart = {
+          id_answer: userAnswer.type === 1 ? userAnswer.answer : "",
+          text_answer: userAnswer.type === 2 ? userAnswer.answer : "",
+        }
+
+        if (userAnswer.id_user_answer_instance) {
+          backendResponse = putUserAnswer(
+            userAnswer.id_user_answer_instance,
+            answerPayloadPart
+          );
+        } else {
+          const createPayload = {
+            id_user: userId,
+            id_quiz: quizId,
+            id_question : userAnswer.id_question,
+            ...answerPayloadPart,
+          };
+          backendResponse = await postUserAnswer(createPayload);
+        }
+        if (backendResponse && backendResponse.id) {
+          const backendInstanceId = backendResponse.id;
+          // backendResponse.score é uma string, converter para número
+          const backendScore = backendResponse.score ? parseFloat(backendResponse.score) : 0;
+          const backendResultStatus = backendResponse.result as UserAnswer['resultStatus']; // "right", "wrong", "partial"
+          const backendFeedback = backendResponse.feedback;
+
+          let isCorrectAfterBackend = false;
+          if (backendResultStatus === "right") {
+            isCorrectAfterBackend = true;
+          }
+          // Para "partial", decidimos que 'correct' continua false por padrão (ou ajuste conforme sua regra de negócio)
+
+          setUserAnswers(prevUserAnswers =>
+            prevUserAnswers.map(ua => {
+              if (ua.id_question === userAnswer.id_question) {
+                return {
+                  ...ua,
+                  id_user_answer_instance: backendInstanceId, // Atualiza ou define o ID da instância
+                  value: backendScore,                        // Usa a pontuação do backend
+                  correct: isCorrectAfterBackend,             // Usa a correção baseada no 'result' do backend
+                  resultStatus: backendResultStatus,          // Armazena o status "right", "wrong", "partial"
+                  feedback: backendFeedback || "",            // Armazena o feedback (ou limpa se não houver)
+                };
+              }
+              return ua;
+            })
+          );
+        } else {
+          console.error(`Resposta do backend inválida ou sem ID para questão: ${userAnswer.id_question}`, backendResponse);
+          allRequestsSuccessful = false;
+        }
+         
+      } catch (error) {
+        console.error("Erro ao publicar resposta:", error);
+        allRequestsSuccessful = false;
+      }
+    }
+
+    // Feedback geral ao final do processo de publicação
+    if (answersToPublish.length > 0) { // Somente mostra alerta se tentou publicar algo
+        if (allRequestsSuccessful) {
+            alert("Respostas verificadas foram enviadas e processadas pelo servidor!");
+        } else {
+            alert("Algumas respostas não puderam ser enviadas ou foram processadas incorretamente. Verifique o console para mais detalhes.");
+        }
+      }
+    }
 
   // Verifica se as respostas do usuário estão corretas e atualiza o estado
   function checkAnswers(questionsToCheck: Question[]) {
-    console.log("Respostas", Answers);
-
-    const newDisabled = { ...disabledQuestions };
+    // 1. Marcar as questões como desabilitadas para este grupo
+    const newDisabledState = { ...disabledQuestions };
     questionsToCheck.forEach(q => {
-      newDisabled[q.id] = true;
+      newDisabledState[q.id] = true;
     });
-    setDisabledQuestions(newDisabled);
+    setDisabledQuestions(newDisabledState);
 
+    // 2. Avaliar localmente as respostas e atualizar UserAnswers
     const updatedUserAnswers = UserAnswers.map(userAnswer => {
-      const questionAnswers = Answers.find(ans => ans[0]?.id_question === userAnswer.id_question);
-      if (questionAnswers && questionsToCheck.some(q => q.id === userAnswer.id_question)) {
-        if (userAnswer.type === 1) { // Questão de alternativa
-          userAnswer.correct = userAnswer.value > 0;
-        } else if (userAnswer.type === 2) { // Questão de resposta aberta
-          userAnswer.correct = questionAnswers.some(ans => ans && ans.description && ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase());
-          if (userAnswer.correct) {
-            userAnswer.value = questionAnswers.find(ans => ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase())?.value || 0;
+      // Processar apenas as respostas que pertencem ao grupo de 'questionsToCheck'
+      if (!questionsToCheck.some(q => q.id === userAnswer.id_question)) {
+        return userAnswer; // Retorna a resposta inalterada se não for do grupo atual
+      }
+
+      const question = Questions?.find(q => q.id === userAnswer.id_question);
+      // Encontra as opções/respostas corretas para esta questão em PossibleAnswers
+      const questionOptionsAndCorrectAnswers = Answers.find(
+        ansArray => ansArray.length > 0 && ansArray[0]?.id_question === userAnswer.id_question
+      ) || [];
+
+      let localIsCorrect = false;
+      let localNewScore = 0; // Score padrão se não houver acerto ou opção
+
+      if (question && questionOptionsAndCorrectAnswers.length > 0) {
+        if (question.type === 1) { // Múltipla escolha
+          // userAnswer.answer contém o ID da opção selecionada
+          const selectedOption = questionOptionsAndCorrectAnswers.find(opt => opt.id === userAnswer.answer);
+          if (selectedOption) {
+            localIsCorrect = selectedOption.value > 0; // Ex: pontuação > 0 indica opção correta
+            localNewScore = selectedOption.value;
+          }
+        } else if (question.type === 2) { // Questão de resposta aberta
+          // userAnswer.answer contém o texto da resposta do usuário
+          // PossibleAnswers para tipo 2 deve ter um campo 'answer' com o texto correto
+          const matchingCorrectAnswer = questionOptionsAndCorrectAnswers.find(
+            opt => opt.answer && opt.answer.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase()
+          );
+          if (matchingCorrectAnswer) {
+            localIsCorrect = true;
+            localNewScore = matchingCorrectAnswer.value; // Pega a pontuação da resposta correta
           }
         }
       }
-      return userAnswer;
+
+      // Retorna a UserAnswer atualizada com a avaliação LOCAL
+      // e reseta resultStatus e feedback para aguardar a resposta do backend
+      return {
+        ...userAnswer,
+        correct: localIsCorrect,
+        value: localNewScore,
+        resultStatus: undefined, // Limpa status anterior
+        feedback: undefined,     // Limpa feedback anterior
+      };
     });
-
     setUserAnswers(updatedUserAnswers);
-    console.log("teste respostas", updatedUserAnswers);
 
-    setVerifiedValues(prev => {
-      const next = { ...prev };
-      questionsToCheck.forEach(question => {
-        const updatedAnswer = updatedUserAnswers.find(ans => ans.id_question === question.id);
-        if (updatedAnswer) {
-          next[question.id] = updatedAnswer.answer;
-          question.verified = true;
+    // 3. Atualizar 'verifiedValues' para a UI e marcar questões como 'verified' no estado Questions (imutável)
+    setVerifiedValues(prevVerified => {
+      const nextVerified = { ...prevVerified };
+      questionsToCheck.forEach(questionInBox => {
+        const uAnswer = updatedUserAnswers.find(ans => ans.id_question === questionInBox.id);
+        if (uAnswer) {
+          nextVerified[questionInBox.id] = uAnswer.answer; // Armazena o ID da opção ou o texto
         }
       });
-      return next;
+      return nextVerified;
     });
-    publishAnswers();
 
-    // Enviar respostas para o back
-    // postUserAnswer(userId, quizId || '', 1, 1);
+    setQuestions(prevQuestions =>
+      (prevQuestions || []).map(q => {
+        if (questionsToCheck.some(qtc => qtc.id === q.id)) {
+          return { ...q, verified: true }; // Marca a questão original como verificada
+        }
+        return q;
+      })
+    );
+
+    // 4. Chamar publishAnswers para enviar ao backend
+    // publishAnswers usará os UserAnswers atualizados (com correct/value locais)
+    // e depois atualizará UserAnswers novamente com a resposta do backend.
+    publishAnswers();
   }
+
 
   // Agrupa perguntas de múltipla escolha ou dissertativas em um "QuestionBox"
   const groupQuestions = (Questions: Question[], boxIndex: number) => {
@@ -195,9 +424,8 @@ export default function Quiz() {
         key={`question-box-${boxIndex}`}>
         {Questions.map((question) => {
           // Encontre as respostas corretas para a pergunta atual
-          const answerArray = Answers.find(ans => ans[0]?.id_question === question.id) || [];
-          const descriptions = answerArray.map(item => item.description);
-
+          const answerOptionsForQuestion = Answers.find(arr => arr[0]?.id_question === question.id) || [];
+          const currentUserAnswer = UserAnswers.find(ua => ua.id_question === question.id);
           return (
             <div key={`question-${question.id}`} className="flex items-start">
               {question.type === 1 && (
@@ -205,12 +433,27 @@ export default function Quiz() {
                   <div className="flex flex-col gap-4">
                     <Paragraph title={question.name} text={question.content} />
                     <RadioButtonGroup
-                      handleAnswer={(value: string) => handleAnswer(question.id, value, answerArray.find(ans => ans.description === value)?.value || 0, question.type)} // Pass function to handle answer
-                      values={descriptions} // Pass answer values
-                      name={`question-${question.id}`} // Use question.id for unique name
-                      verified={question.verified}
-                      correct={!!UserAnswers.find(ua => ua.id_question === question.id && ua.correct)}
-                      verifiedValue={verifiedValues[question.id]}
+                      // 1. Corrigir a prop 'options'
+                      options={answerOptionsForQuestion.map(opt => ({ id: opt.id, label: opt.description }))}
+                      name={`question-${question.id}`}
+                      
+                      // 2. Corrigir a callback 'handleAnswer' (agora chamada 'onValueChange' no exemplo que dei para RadioButtonGroup,
+                      //    ou mantenha 'handleAnswer' no RadioButtonGroup e ajuste sua assinatura)
+                      //    Vou assumir que a prop no RadioButtonGroup.tsx é 'handleAnswer' e espera (optionId: string)
+                      handleAnswer={(optionId: string) => { // Esta callback agora recebe o ID da opção
+                        const selectedOpt = answerOptionsForQuestion.find(opt => opt.id === optionId);
+                        // Chama a handleAnswer principal do Quiz.tsx com o ID da opção, o valor/score da opção e o tipo da questão
+                        handleAnswer(question.id, optionId, selectedOpt?.value || 0, question.type);
+                      }}
+                      
+                      verified={question.verified} // Se a questão/grupo foi verificada
+                      
+                      // 3. Corrigir prop para feedback de acerto da opção selecionada
+                      correctDisplayForSelected={currentUserAnswer?.correct}
+                      
+                      // 4. Corrigir prop para valor selecionado (deve ser o ID)
+                      selectedValueProp={currentUserAnswer?.answer} // currentUserAnswer.answer agora é o ID da opção
+                      
                       disabled={!!disabledQuestions[question.id]}
                     />
 
@@ -302,7 +545,7 @@ export default function Quiz() {
         </div>
 
         <div className="col-span-full w-full mb-16 flex flex-col gap-24 mx-auto items-center justify-center">
-          {renderQuestions(Questions)}
+          {renderQuestions(Questions || [])}
         </div>
 
         <Footer/>

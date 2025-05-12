@@ -3,7 +3,8 @@ import { cva } from 'class-variance-authority';
 interface RadioButtonProps {
   label: string;
   name: string;
-  value: string;
+  optionId: string;
+  displayText: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
@@ -24,7 +25,8 @@ const squareStyles = cva(
 export default function RadioButton ({
   label,
   name,
-  value,
+  optionId,
+  displayText,
   checked,
   onChange,
   disabled = false,
@@ -34,7 +36,7 @@ export default function RadioButton ({
       <input
         type="radio"
         name={name}
-        value={value}
+        value={optionId}
         checked={checked}
         onChange={onChange}
         disabled={disabled}
@@ -48,7 +50,7 @@ export default function RadioButton ({
         <span style={{opacity: 0.69}}>{label}</span>
       </span>
 
-      <span className="ml-[15px] text-cinza font-bold">{value}</span>
+      <span className="ml-[15px] text-cinza font-bold">{displayText}</span>
     </label>
   )
 }
