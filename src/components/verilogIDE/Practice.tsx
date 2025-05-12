@@ -56,11 +56,13 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Código base é inserido direto no CodeSpace
   useEffect(() => {
     if (question.content) {
+      console.log("QUESTÃO: " + question.content)
       // Código base em Markdown - ```verilog ... ```
       const regex = /```verilog\s*([\s\S]*?)\s*```/;
       const match = question.content.match(regex);
 
       if (match) {
+        console.log("MARKDOWN" + match[1].trim());
         const code = match[1].trim();
         setVerilog(code);
 
