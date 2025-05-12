@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
 import { postVerilogAnswer } from '@/services/api/answer';
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
@@ -15,7 +16,7 @@ interface Size{
 
 interface PracticeProps {
   question: Question;
-  id_quiz: string | undefined;
+  id_quiz: string ;
 }
 
 export default function Practice({ question, id_quiz }: PracticeProps) {
@@ -56,13 +57,11 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Código base é inserido direto no CodeSpace
   useEffect(() => {
     if (question.content) {
-      console.log("QUESTÃO: " + question.content)
       // Código base em Markdown - ```verilog ... ```
       const regex = /```verilog\s*([\s\S]*?)\s*```/;
       const match = question.content.match(regex);
 
       if (match) {
-        console.log("MARKDOWN" + match[1].trim());
         const code = match[1].trim();
         setVerilog(code);
 
@@ -124,8 +123,8 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         {/* Enunciado */}
         <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
-          <div>
-            <ReactMarkdown>{questionContent}</ReactMarkdown>
+          <div className="prose prose-sm max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{questionContent}</ReactMarkdown>
           </div>
         </div>
 
