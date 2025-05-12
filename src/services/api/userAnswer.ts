@@ -20,7 +20,7 @@ const postUserAnswer = async (
   id_answer?: string,
   text_answer?: number
 ) => {
-  const response = await api.post(`/userquizquestionanswer/`, {
+  const response = await api.post(`/userquizquestionanswer`, {
     userId: id_user,
     id_quiz,
     id_question,
@@ -39,7 +39,7 @@ const putUserAnswer = async (
   value?: number
 ) => {
   const response = await api.put(`/userquizquestionanswer/${id_quiz}`, {
-    userId: id_user,
+    id_user,
     id_question,
     answer,
     value,

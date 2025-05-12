@@ -125,8 +125,9 @@ export default function Quiz() {
 
   // Envia todas as respostas do usuário para a API
   function publishAnswers() {
+    console.log("userId", userId);
     UserAnswers.forEach(userAnswer => {
-      postUserAnswer(userId, quizId || '', userAnswer.id_question, Answers[1][0].id, userAnswer.answer, userAnswer.value);
+      postUserAnswer(userId, quizId || '', userAnswer.id_question, userAnswer.answer, userAnswer.value);
     }
     );
   }
