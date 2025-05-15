@@ -27,6 +27,8 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   const [questionContent, setQuestionContent] = useState<string>("");
   // Código exibido em CodeSpace
   const [verilogAnswer, setVerilog] = useState("");
+  const [savedCode, setSavedCode] = useState<string>("");
+  const [isModified, setIsModified] = useState<boolean>(false);
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
 
@@ -80,6 +82,18 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
     }
   }, [question.content]);
 
+  // Verifica alterações no CodeSpace
+  useEffect(() => {
+    setIsModified(verilogAnswer !== savedCode);
+  }, [verilogAnswer, savedCode]);
+
+  // Função para o ícone de save
+  const handleSave = () => {
+    setSavedCode(verilogAnswer);
+    setIsModified(false);
+  };
+
+  // Função para o ícone de play
   const handleVerilogSubmit = async () => {
     if (!question?.id || !id_quiz) {
       setFeedback("Erro: questão ou quiz não encontrados.");
@@ -128,7 +142,9 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         // Função para criar gráfico
         break;
       case 'save':
-        // Função para salvar resposta
+        if (isModified)
+          handleSave();
+
         break;
       case 'play':
         handleVerilogSubmit();
@@ -158,7 +174,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick}/>
+                <IconGroup onIconClick={handleIconClick} isModified={isModified}/>
               </div>
 
               <CodeSpace verilogLang={verilogAnswer} setVerilog={setVerilog} width={size.width} height="500px" />
