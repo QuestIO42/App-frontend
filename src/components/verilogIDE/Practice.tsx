@@ -28,7 +28,14 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Código exibido em CodeSpace
   const [verilogAnswer, setVerilog] = useState("");
   // Feedback exibido em ResponseBox
-  const [feedback, setFeedback] = useState<string>("Aguardando execução...");
+  const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
+
+  // Mapa de cores para o feedback
+  const colorMap = {
+    wrong: 'text-red-600',
+    partial: 'text-yellow-600',
+    right: 'text-green-600',
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -89,11 +96,25 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         verilogAnswer,
       );
 
-      const textualFeedback = typeof result.feedback === 'string'
-        ? result.feedback
-        : Object.values(result.feedback).join('\n');
+      const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
 
-      setFeedback(prev => `${prev}\n\nResultado: ${result.result}\nScore: ${result.score}\n${textualFeedback}`);
+      setFeedback(
+        <div className="whitespace-pre-wrap text-[#5c5b5b]">
+          <div className="flex">
+            <p className="font-semibold">Resultado: </p>
+            <p className={`${resultClass}`}>{result.result}</p>
+          </div>
+          <div className="flex">
+            <p className="font-bold">Score: </p>
+            <p className={`${resultClass}`}>{result.score}</p>
+          </div>
+          <div>
+            {typeof result.feedback === 'string'
+              ? result.feedback
+              : Object.values(result.feedback).join('\n')}
+          </div>
+        </div>
+      );
     } catch (err) {
       console.error("Erro ao corrigir Verilog:", err);
       setFeedback("Erro ao conectar com o servidor ou ao corrigir.");
