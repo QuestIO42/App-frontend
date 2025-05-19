@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
-import { getAllAnswers, postVerilogAnswer } from '@/services/api/answer';
+import { postVerilogAnswer } from '@/services/api/answer';
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
+
 
 interface Size{
   width: string;
@@ -13,17 +16,28 @@ interface Size{
 
 interface PracticeProps {
   question: Question;
-  id_quiz: string | undefined;
+  id_quiz: string ;
 }
 
 export default function Practice({ question, id_quiz }: PracticeProps) {
   const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
+  // Enunciado sem o código base
+  const [questionContent, setQuestionContent] = useState<string>("");
   // Código exibido em CodeSpace
-  const [verilogLang, setVerilog] = useState("");
+  const [verilogAnswer, setVerilog] = useState("");
+  const [savedCode, setSavedCode] = useState<string>("");
+  const [isModified, setIsModified] = useState<boolean>(false);
   // Feedback exibido em ResponseBox
-  const [feedback, setFeedback] = useState<string>("Aguardando execução...");
+  const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
+
+  // Mapa de cores para o feedback
+  const colorMap = {
+    wrong: 'text-red-600',
+    partial: 'text-yellow-600',
+    right: 'text-green-600',
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,6 +62,38 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
     };
   }, []);
 
+  // Separa o enunciado da questão do código base do execício
+  // Código base é inserido direto no CodeSpace
+  useEffect(() => {
+    if (question.content) {
+      // Código base em Markdown - ```verilog ... ```
+      const regex = /```verilog\s*([\s\S]*?)\s*```/;
+      const match = question.content.match(regex);
+
+      if (match) {
+        const code = match[1].trim();
+        setVerilog(code);
+
+        const cleaned = question.content.replace(regex, "").trim();
+        setQuestionContent(cleaned);
+      } else {
+        setQuestionContent(question.content);
+      }
+    }
+  }, [question.content]);
+
+  // Verifica alterações no CodeSpace
+  useEffect(() => {
+    setIsModified(verilogAnswer !== savedCode);
+  }, [verilogAnswer, savedCode]);
+
+  // Função para o ícone de save
+  const handleSave = () => {
+    setSavedCode(verilogAnswer);
+    setIsModified(false);
+  };
+
+  // Função para o ícone de play
   const handleVerilogSubmit = async () => {
     if (!question?.id || !id_quiz) {
       setFeedback("Erro: questão ou quiz não encontrados.");
@@ -56,23 +102,33 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
 
     setFeedback("Executando testes...");
 
-    const answers = await getAllAnswers([question.id]);
-    console.log("id da resposta: " + answers[0][0].id)
-
     try {
       const result = await postVerilogAnswer(
         user?.id.toString() || '',
         id_quiz,
         question.id,
-        verilogLang,
-        answers[0][0].id
+        verilogAnswer,
       );
 
-      const textualFeedback = typeof result.feedback === 'string'
-        ? result.feedback
-        : Object.values(result.feedback).join('\n');
+      const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
 
-      setFeedback(prev => `${prev}\n\nResultado: ${result.result}\nScore: ${result.score}\n${textualFeedback}`);
+      setFeedback(
+        <div className="whitespace-pre-wrap text-[#5c5b5b]">
+          <div className="flex">
+            <p className="font-semibold">Resultado: </p>
+            <p className={`${resultClass}`}>{result.result}</p>
+          </div>
+          <div className="flex">
+            <p className="font-bold">Score: </p>
+            <p className={`${resultClass}`}>{result.score}</p>
+          </div>
+          <div>
+            {typeof result.feedback === 'string'
+              ? result.feedback
+              : Object.values(result.feedback).join('\n')}
+          </div>
+        </div>
+      );
     } catch (err) {
       console.error("Erro ao corrigir Verilog:", err);
       setFeedback("Erro ao conectar com o servidor ou ao corrigir.");
@@ -86,7 +142,9 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         // Função para criar gráfico
         break;
       case 'save':
-        // Função para salvar resposta
+        if (isModified)
+          handleSave();
+
         break;
       case 'play':
         handleVerilogSubmit();
@@ -102,7 +160,9 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         {/* Enunciado */}
         <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
-          <p className="text-[#454545]">{question.content}</p>
+          <div className="text-[15px] prose prose-sm max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{questionContent}</ReactMarkdown>
+          </div>
         </div>
 
         {/* Área de código */}
@@ -114,10 +174,10 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick}/>
+                <IconGroup onIconClick={handleIconClick} isModified={isModified}/>
               </div>
 
-              <CodeSpace verilogLang={verilogLang} setVerilog={setVerilog} width={size.width} height="500px" />
+              <CodeSpace verilogLang={verilogAnswer} setVerilog={setVerilog} width={size.width} height="500px" />
             </div>
           </div>
         </div>

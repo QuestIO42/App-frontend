@@ -5,17 +5,16 @@ interface CodeSpaceProps {
   width?: string;
 }
 
-import CodeMirror, { basicSetup } from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import { StreamLanguage } from '@codemirror/language';
 import { verilog } from '@codemirror/legacy-modes/mode/verilog';
 import { EditorView } from '@codemirror/view';
-import { useEffect, useState , useRef} from 'react';
+import { useRef} from 'react';
 import React from 'react';
 
 const CodeSpace = ({ verilogLang, setVerilog, height = "100%", width="100%" }: CodeSpaceProps) => {
   const editorRef = useRef(null);
-  const onChange = React.useCallback((val: any, viewUpdate : any) => {
-    console.log('val:', val);
+  const onChange = React.useCallback((val: any) => {
     setVerilog(val);
   }, []);
 

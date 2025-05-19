@@ -94,7 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                   .then((response) => {
                     const { access: accessToken } = response.data
                     setToken(accessToken)
-                    console.log('accessToken', accessToken)
+                    // console.log('accessToken', accessToken)
                     Cookies.set('accessToken', accessToken)
                     // Atualiza o header Authorization com o novo token de acesso
                     api.defaults.headers['Authorization'] =
