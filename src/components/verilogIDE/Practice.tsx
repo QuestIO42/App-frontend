@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
-
+import WaveformView from './WaveformView';
 
 interface Size{
   width: string;
@@ -19,18 +19,31 @@ interface PracticeProps {
   id_quiz: string ;
 }
 
+interface FeedbackEntry {
+  message: string;
+  error?: string;
+  dump?: any;
+}
+
 export default function Practice({ question, id_quiz }: PracticeProps) {
   const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
+
   // Enunciado sem o código base
   const [questionContent, setQuestionContent] = useState<string>("");
+
   // Código exibido em CodeSpace
   const [verilogAnswer, setVerilog] = useState("");
   const [savedCode, setSavedCode] = useState<string>("");
   const [isModified, setIsModified] = useState<boolean>(false);
+
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
+
+  // Waveform
+  const [showWaveform, setShowWaveform] = useState(false);
+  const [waveformDumps, setWaveformDumps] = useState<any[]>([]);
 
   // Mapa de cores para o feedback
   const colorMap = {
@@ -87,8 +100,21 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
     setIsModified(verilogAnswer !== savedCode);
   }, [verilogAnswer, savedCode]);
 
+  // Carrega o código salvo no LocalStorage
+  useEffect(() => {
+    const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      setVerilog(stored);
+      setSavedCode(stored);
+    }
+  }, [id_quiz, question.id, user?.id]);
+
   // Função para o ícone de save
   const handleSave = () => {
+    // salva o estado atual no localStorage, usando uma chave única por questão e usuário
+    const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
+    localStorage.setItem(key, verilogAnswer);
     setSavedCode(verilogAnswer);
     setIsModified(false);
   };
@@ -112,21 +138,62 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
 
       const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
 
+      // Processa o feedback dependendo da estrutura
+      const feedbackEntries = Object.values(result.feedback ?? {}) as FeedbackEntry[];
+
+      // Pega os dumps para criar os waveforms
+      const dumps = feedbackEntries
+        .filter(entry => entry.dump)
+        .map(entry => entry.dump)
+        .flat();
+
+      setWaveformDumps(dumps);
+
+      // Detecta erro de compilação
+      const firstWithError = feedbackEntries.find((entry: any) => entry?.error);
+      const hasSyntaxError = !!firstWithError;
+
+      let formattedFeedback;
+
+      if (hasSyntaxError) {
+        // Apenas uma mensagem de erro exibida
+        const { message, error } = firstWithError;
+        formattedFeedback = (
+          <div className="mb-4">
+            <p className="font-semibold text-sm text-preto-default">Mensagem:</p>
+            <pre className="text-xs whitespace-pre-wrap text-[#5c5b5b]">{message}</pre>
+            <p className="font-semibold text-sm mt-2 text-preto-default">Erro de compilação:</p>
+            <pre className="text-xs whitespace-pre-wrap text-red-600">{error}</pre>
+          </div>
+        );
+      } else {
+        // Exibe todos os feedbacks de testes
+        formattedFeedback = feedbackEntries.map((entry: any, index: number) => (
+          <div key={index} className="mb-4">
+            <p className="font-semibold text-sm text-preto-default">Mensagem do teste {index + 1}:</p>
+            <pre className="text-xs whitespace-pre-wrap text-[#5c5b5b]">{entry.message}</pre>
+
+
+            {entry.dump && (
+              <div className="mt-2 border border-gray-300 p-2 rounded">
+                <WaveformView idx={index} dump={entry.dump} />
+              </div>
+            )}
+          </div>
+        ));
+      }
+
       setFeedback(
         <div className="whitespace-pre-wrap text-[#5c5b5b]">
           <div className="flex">
-            <p className="font-semibold">Resultado: </p>
-            <p className={`${resultClass}`}>{result.result}</p>
+            <p className="font-semibold">Resultado:</p>
+            <p className={`ml-2 ${resultClass}`}>{result.result}</p>
           </div>
           <div className="flex">
-            <p className="font-bold">Score: </p>
-            <p className={`${resultClass}`}>{result.score}</p>
+            <p className="font-bold">Score:</p>
+            <p className={`ml-2 ${resultClass}`}>{result.score}</p>
           </div>
-          <div>
-            {typeof result.feedback === 'string'
-              ? result.feedback
-              : Object.values(result.feedback).join('\n')}
-          </div>
+          <div className="mt-4">{formattedFeedback}</div>
         </div>
       );
     } catch (err) {
@@ -139,16 +206,17 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   const handleIconClick = (value: string) => {
     switch(value){
       case 'waveform':
-        // Função para criar gráfico
+        setShowWaveform(prev => !prev);
         break;
-      case 'save':
-        if (isModified)
-          handleSave();
 
+      case 'save':
+        if (isModified) handleSave();
         break;
+
       case 'play':
         handleVerilogSubmit();
         break;
+
       default:
         console.log("oh no")
     }
@@ -186,12 +254,30 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         <div className="w-full mt-6">
           <div className="flex justify-start">
             <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
-              <div className="flex flex-row w-full h-[200px] py-4">
-                  <ResponseBox verilog_code={feedback} width={size.width} height="130px"/>
+              <div className="flex flex-row w-full h-[240px] py-4">
+                  <ResponseBox verilog_code={feedback} width={size.width} height="170px"/>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Gráficos Waveform */}
+        {showWaveform && waveformDumps.length > 0 && (
+          <div className="w-full mt-6">
+            <div className="flex justify-start">
+              <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
+                <div className="flex flex-col w-full py-4">
+                  <p className="font-bold mb-2">Sinais de simulação:</p>
+                  {waveformDumps.map((dump, index) => (
+                    <div key={index} className="mb-4">
+                      <WaveformView idx={index} dump={dump} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
