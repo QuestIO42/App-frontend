@@ -37,6 +37,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   const [verilogAnswer, setVerilog] = useState("");
   const [savedCode, setSavedCode] = useState<string>("");
   const [isModified, setIsModified] = useState<boolean>(false);
+  const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
 
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
@@ -102,7 +103,6 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
 
   // Carrega o código salvo no LocalStorage
   useEffect(() => {
-    const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
     const stored = localStorage.getItem(key);
     if (stored) {
       setVerilog(stored);
@@ -113,10 +113,14 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Função para o ícone de save
   const handleSave = () => {
     // salva o estado atual no localStorage, usando uma chave única por questão e usuário
-    const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
     localStorage.setItem(key, verilogAnswer);
     setSavedCode(verilogAnswer);
     setIsModified(false);
+
+    // PRECISA REMOVER O ITEM DO LOCALSTORAGE AO ENVIAR O QUESTIONÁRIO
+    // if (localStorage.getItem(key) !== null) {
+    //   localStorage.removeItem(key);
+    // }
   };
 
   // Função para o ícone de play

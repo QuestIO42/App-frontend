@@ -40,7 +40,7 @@ const postVerilogAnswer = async (
   id_question: string,
   text_answer: string,
 ) => {
-  const response = await api.post(`/userquizquestionanswer`, {
+  const response = await api.post(`/userquizquestionanswer/send`, {
     id_user,
     id_quiz,
     id_question,

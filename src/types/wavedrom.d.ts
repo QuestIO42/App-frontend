@@ -15,7 +15,7 @@ declare module 'wavedrom' {
     index: number,
     source: {
       config: Record<string, any>;
-      signal: Array<{ name: string; wave: string; data?: any[] }>;
+      signal: Array<{ data?: any[]; name: string; wave: string; }>;
     },
     outputElement: HTMLElement,
     notFirstSignal: boolean
