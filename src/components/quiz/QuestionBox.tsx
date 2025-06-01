@@ -1,22 +1,49 @@
 
 import { ReactNode } from 'react';
-import Button from '../utility/Button';
 
-export default function QuestionBox({ children, handlePrint }: { children: ReactNode, handlePrint: () => void }) {
-  const handleClick = () => {
-    console.log('Verificar');
-    handlePrint();
-  }
+export default function QuestionBox({ children, questionType }: { children: ReactNode, questionType: number }) {
+  const getTitle = (type: number) => {
+    switch (type) {
+      case 1:
+        return 'Múltipla Escolha';
+      case 2:
+        return 'Resposta Aberta';
+      default:
+        return 'Questão';
+    }
+  };
+
+  const bgColor =
+    questionType === 1
+      ? "bg-roxo-300"
+      : questionType === 2
+      ? "bg-verde-300"
+      : "bg-gray-300";
+
+  const shadowColor =
+    questionType === 1
+      ? "shadow-default-roxo-500"
+      : questionType === 2
+      ? "shadow-default-verde-900"
+      : "shadow-md";
+
+  const textColor =
+    questionType === 1
+      ? "text-amarelo"
+      : questionType === 2
+      ? "text-preto"
+      : "text-gray-800";
+
   return (
-    <>
-      <div className="flex flex-col bg-white p-10 gap-20 justify-start shadow-default-preto-900
-                      border-4 border-solid border-black
-                      w-[90%] min-h-[400px]">
-        {children}
-        <div className="mt-auto flex justify-center">
-          <Button onClick={handleClick} variant="primary" text="verificar" />
-        </div>
+    <div className="w-[90%]">
+      <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold ${bgColor} ${shadowColor} ${textColor}`}>
+          <p className="text-left text-2xl">{getTitle(questionType)}</p>
       </div>
-    </>
+
+      <div className="flex flex-col bg-white p-10 justify-start shadow-default-preto-900
+                      border-4 border-solid border-black my-6">
+        {children}
+      </div>
+    </div>
   )
 }

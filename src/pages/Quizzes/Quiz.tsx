@@ -4,25 +4,18 @@ import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
 
-import { fetchQuizQuestion } from '@/services/api/quiz';
-import { getAllAnswers, postUserAnswer } from '@/services/api/answer';
-// import { getUserAnswer } from '@/services/api/userAnswer';
+import { fetchQuestion } from '@/services/api/quiz';
+import { postNewQuiz, getQuizAnswers, updateUserAnswer, submitQuizAnswers, getAllAnswers } from '@/services/api/answer';
 
 import { useAuth } from '@/hooks/useAuth';
-import { Question } from '@/interfaces/Quiz';
+import { Question, UserQuizQuestionAnswer } from '@/interfaces/Quiz';
 import Paragraph from '@/components/quiz/Paragraph';
 import Description from '@/components/quiz/Description';
 import RadioButtonGroup from '@/components/quiz/RadioButtonGroup';
 import QuestionBox from '@/components/quiz/QuestionBox';
 import OpenAnswer from '@/components/quiz/OpenAnswer';
 import Practice from '@/components/verilogIDE/Practice';
-
-const mockQuestions: Question[] = [
-  { name: 'Question 1', type: 0, content: 'Content for question 1', responsible: false, id_category: '', id: '1', verified: false },
-  { name: 'Question 2', type: 1, content: 'Content for question 2', responsible: true, id_category: '', id: '2', verified: false },
-  { name: 'Question 3', type: 2, content: 'Content for question 3', responsible: true, id_category: '', id: '3', verified: false },
-  { name: 'Question 4', type: 0, content: 'Content for question 4', responsible: false, id_category: '', id: '4', verified: false },
-];
+import Button from '@/components/utility/Button';
 
 interface Answer {
   answer: string;
@@ -34,68 +27,116 @@ interface Answer {
 
 interface UserAnswer {
   id_question: string;
-  answer: string;
-  value: number;
-  correct: boolean;
-  type: number; // Adiciona o tipo de questão
+  answer: string;   // para múltipla: id da alternativa; para aberta: texto
+  value: number;    // pontuação local
+  type: number;     // 1 = múltipla, 2 = aberta, 3 = Verilog, 0 = texto
 }
 
 export default function Quiz() {
   const { user } = useAuth();
   const userId = user?.id.toString() || '';
+
   const { quizId } = useParams();
-  const [Questions, setQuestions] = useState<Question[]>(mockQuestions);
-  const [Answers, setAnswers] = useState<Answer[][]>([]);
+  const [UserQuizQuestion, setUserQuizQuestion] = useState<UserQuizQuestionAnswer[]>();
+  const [userQuizMap, setUserQuizMap] = useState<Record<string, string>>({});
+  const [Questions, setQuestions] = useState<Question[]>();
+
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [verifiedValues, setVerifiedValues] = useState<Record<string, string>>({});
-  const [description] = useState<string>('Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrase a linha k');
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [description] = useState<string>(
+    'Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrasse a linha k'
+  );
+  const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
 
-  // Altera o título da aba do navegador com o nome do quiz, se disponível
+  // guarda o retorno de submitQuizAnswers: { [id_do_UserQuizQuestionAnswer]: { score, result, feedback? } }
+  const [submissionResults, setSubmissionResults] = useState<
+    Record<string, { score: string | number; result: string; feedback?: string | object }>
+  >({});
+
+  // mapeia cada id_question → lista de Answer (alternativas)
+  const [possibleAnswers, setPossibleAnswers] = useState<Record<string, Answer[]>>({});
+
+  /* Ajusta o título da página com o nome do quiz */
   useEffect(() => {
     if (!nome) return;
-
     const originalTitle = document.title;
     document.title = `${originalTitle} - ${nome}`;
-
     return () => {
       document.title = originalTitle;
     };
   }, [nome]);
 
-  // Busca as questões e respostas do quiz a partir do ID na URL
+  /* 1) Cria ou retoma as questões do quiz;
+     2) Carrega o detalhe de cada pergunta;
+     3) Busca alternativas de múltipla escolha */
   useEffect(() => {
-    if (quizId) {
-      const fetchQuestions = async () => {
-        try {
-          const response = await fetchQuizQuestion(quizId);
-          console.log("resposta:", response);
+    if (!quizId) return;
 
-          const questionIds = response.map((question: any) => question.id);
-          console.log("questionIds", questionIds);
+    const startQuiz = async () => {
+      try {
+        const response = await postNewQuiz(userId, quizId);
 
-          const answers = await getAllAnswers(questionIds);
-          console.log("as respostas são essas:", answers);
-
-          // const userAnswers = await getUserAnswer(userId);
-
-          setQuestions(response);
-          setAnswers(answers);
-
-        } catch (error) {
-          console.error('Erro ao buscar as questões:', error);
+        let userQuizArray: UserQuizQuestionAnswer[];
+        if (response.success) {
+          userQuizArray = response.data;
+        } else {
+          console.log('[DEBUG] Chamando getQuizAnswers com:', {
+            id_user: userId,
+            id_quiz: quizId,
+            current_try: response.current_try, // ou qualquer que seja o valor
+          });
+          userQuizArray = await getQuizAnswers(userId, quizId, response.current_try);
         }
-        finally {
-          setIsLoading(false);
-        }
-      };
-      fetchQuestions();
-    }
+        setUserQuizQuestion(userQuizArray);
+
+        // 2a) detalhes das perguntas
+        const questionIds = userQuizArray.map((item) => item.id_question);
+        const questionObjects = await fetchQuestion(questionIds);
+        setQuestions(questionObjects);
+
+        // 2b) alternativas de múltipla escolha
+        const allAnswersArrays: Answer[][] = await getAllAnswers(questionIds);
+        const map: Record<string, Answer[]> = {};
+        allAnswersArrays.forEach((arr) => {
+          if (arr.length > 0) {
+            const idq = arr[0].id_question;
+            map[idq] = arr;
+          }
+        });
+        setPossibleAnswers(map);
+      } catch (error) {
+        console.error('Erro ao buscar as questões ou alternativas:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    startQuiz();
   }, [quizId]);
 
+  /* Mapeia cada id_question → id (UUID) do objeto UserQuizQuestionAnswer */
+  useEffect(() => {
+    if (!UserQuizQuestion) return;
+    const map: Record<string, string> = {};
+    UserQuizQuestion.forEach((item) => {
+      map[item.id_question] = item.id;
+    });
+    setUserQuizMap(map);
+  }, [UserQuizQuestion]);
+
+  /* Publica cada resposta ao backend via updateUserAnswer (intervalo opcional) */
+  useEffect(() => {
+    const INTERVAL_MS = 30_000;
+    if (!isLoading && Object.keys(userQuizMap).length > 0) {
+      const intervalId = setInterval(() => {
+        publishAnswers();
+      }, INTERVAL_MS);
+      return () => clearInterval(intervalId);
+    }
+  }, [isLoading, userQuizMap, UserAnswers]);
+
   if (isLoading) {
-    // Show a loading spinner or placeholder while fetching
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading...</p>
@@ -103,185 +144,227 @@ export default function Quiz() {
     );
   }
 
-  // Atualiza ou adiciona a resposta do usuário para uma pergunta
+  /* 1) Atualiza UserAnswers conforme o usuário escolhe valor ou digita texto */
   const handleAnswer = (id_question: string, answer: string, score: number, type: number) => {
-    setUserAnswers(prevAnswers => {
-      // Verifica se já existe uma resposta para esta pergunta
-      const existingAnswerIndex = prevAnswers.findIndex(ans => ans.id_question === id_question);
-
-      // Se existir, atualiza o valor
-      if (existingAnswerIndex !== -1) {
-        const updatedAnswers = [...prevAnswers];
-        updatedAnswers[existingAnswerIndex] = { ...updatedAnswers[existingAnswerIndex], answer: answer, value: score, type: type };
-        return updatedAnswers;
+    setUserAnswers((prev) => {
+      const idx = prev.findIndex((ans) => ans.id_question === id_question);
+      if (idx !== -1) {
+        const updated = [...prev];
+        updated[idx] = { ...updated[idx], answer, value: score, type };
+        return updated;
       }
-      // Se não existir, adiciona uma nova resposta
-      return [...prevAnswers, { id_question, answer: answer, value: score, correct: false, type: type }];
+      return [...prev, { id_question, answer, value: score, correct: false, type }];
     });
+
+    setVerifiedValues((prev) => ({
+      ...prev,
+      [id_question]: answer,
+    }));
   };
 
-  // Envia todas as respostas do usuário para a API
-  function publishAnswers() {
-    UserAnswers.forEach(userAnswer => {
-      postUserAnswer(userId, quizId || '', userAnswer.id_question, Answers[1][0].id, userAnswer.answer, userAnswer.value);
-    }
-    );
-  }
-
-  // Verifica se as respostas do usuário estão corretas e atualiza o estado
-  function checkAnswers(questionsToCheck: Question[]) {
-    console.log("Respostas", Answers);
-
-    const updatedUserAnswers = UserAnswers.map(userAnswer => {
-      const questionAnswers = Answers.find(ans => ans[0]?.id_question === userAnswer.id_question);
-      if (questionAnswers && questionsToCheck.some(q => q.id === userAnswer.id_question)) {
-        if (userAnswer.type === 1) { // Questão de alternativa
-          userAnswer.correct = userAnswer.value > 0;
-        } else if (userAnswer.type === 2) { // Questão de resposta aberta
-          userAnswer.correct = questionAnswers.some(ans => ans && ans.description && ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase());
-          if (userAnswer.correct) {
-            userAnswer.value = questionAnswers.find(ans => ans.description.trim().toLowerCase() === userAnswer.answer.trim().toLowerCase())?.value || 0;
-          }
-        }
+  /* 2) Chama updateUserAnswer para cada resposta que já existe em UserAnswers */
+  const publishAnswers = async () => {
+    if (!quizId) return;
+    for (const userAnswer of UserAnswers) {
+      const userQuizAnswerId = userQuizMap[userAnswer.id_question];
+      if (!userQuizAnswerId) {
+        console.warn(`Não há UserQuizQuestionAnswer para id_question=${userAnswer.id_question}`);
+        continue;
       }
-      return userAnswer;
-    });
+      const payload: { text_answer?: string; id_answer?: string } = {};
+      if (userAnswer.type === 1) {
+        payload.id_answer = userAnswer.answer;
+      } else if (userAnswer.type === 2) {
+        payload.text_answer = userAnswer.answer;
+      }
+      try {
+        await updateUserAnswer(userQuizAnswerId, payload);
+      } catch (err) {
+        console.error(`Erro ao atualizar resposta ${userQuizAnswerId}:`, err);
+      }
+    }
+  };
 
-    setUserAnswers(updatedUserAnswers);
-    console.log("teste respostas", updatedUserAnswers);
-
-    setVerifiedValues(prev => {
-      const next = { ...prev };
-      questionsToCheck.forEach(question => {
-        const updatedAnswer = updatedUserAnswers.find(ans => ans.id_question === question.id);
-        if (updatedAnswer) {
-          next[question.id] = updatedAnswer.answer;
-          question.verified = true;
-        }
+  /* 3) Ao clicar em “Enviar Quiz”, validamos TODAS as respostas de uma vez no backend */
+  const handleSubmit = async () => {
+    if (!quizId) return;
+    try {
+      const resultsArray = await submitQuizAnswers(userId, quizId);
+      const mapResults: Record<string, any> = {};
+      resultsArray.forEach((item: any) => {
+        mapResults[item.id] = {
+          score: item.score,
+          result: item.result,
+          feedback: item.feedback,
+        };
       });
-      return next;
-    });
-    publishAnswers();
+      setSubmissionResults(mapResults);
+    } catch (err) {
+      console.error('Erro ao enviar respostas finais:', err);
+    }
+  };
 
-    // Enviar respostas para o back
-    // postUserAnswer(userId, quizId || '', 1, 1);
-  }
+  /* Renderiza cada pergunta em seu próprio bloco */
+  const renderQuestions = (questions: Question[]) => {
+    return questions.map((question) => {
+      const userQuizAnswerId = userQuizMap[question.id];
+      const resultObj = userQuizAnswerId
+        ? submissionResults[userQuizAnswerId]
+        : undefined;
 
-  // Agrupa perguntas de múltipla escolha ou dissertativas em um "QuestionBox"
-  const groupQuestions = (Questions: Question[], boxIndex: number) => {
-    return (
-      <QuestionBox handlePrint={() => checkAnswers(Questions)} key={`question-box-${boxIndex}`}>
-        {Questions.map((question) => {
-          // Encontre as respostas corretas para a pergunta atual
-          const answerArray = Answers.find(ans => ans[0]?.id_question === question.id) || [];
-          const descriptions = answerArray.map(item => item.description);
+      const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
 
-          return (
-            <div key={`question-${question.id}`} className="flex items-start">
-              {question.type === 1 && (
-                <>
-                  <div className="flex flex-col gap-4">
-                    <Paragraph title={question.name} text={question.content} />
-                    <RadioButtonGroup
-                      handleAnswer={(value: string) => handleAnswer(question.id, value, answerArray.find(ans => ans.description === value)?.value || 0, question.type)} // Pass function to handle answer
-                      values={descriptions} // Pass answer values
-                      name={`question-${question.id}`} // Use question.id for unique name
-                      verified={question.verified}
-                      correct={!!UserAnswers.find(ua => ua.id_question === question.id && ua.correct)}
-                      verifiedValue={verifiedValues[question.id]}
-                    />
+      // Múltipla escolha (tipo 1)
+      if (question.type === 1) {
+        return (
+          <QuestionBox questionType={1} key={question.id}>
+            <div className="flex flex-col gap-4">
+              <Paragraph title={question.name} text={question.content} />
 
+              <RadioButtonGroup
+                handleAnswer={(value: string) => {
+                  const found = alternativesForThis.find((ans) => ans.description === value);
+                  handleAnswer(question.id, value, found?.value ?? 0, question.type);
+                }}
+                values={alternativesForThis.map((ans) => ans.description)}
+                name={`question-${question.id}`}
+                verified={!!verifiedValues[question.id]}
+                correct={resultObj?.result === 'right'}
+                verifiedValue={verifiedValues[question.id]}
+              />
 
-                  </div>
-                </>
-              )}
-              {question.type === 2 && (
-                <div className="flex flex-col gap-4 w-full">
-                  <Paragraph title={question.name} text={question.content} />
-                  <OpenAnswer
-                    id_question={question.id}
-                    handleAnswer={(value: string) => handleAnswer(question.id, value, 0, question.type)}
-                    verified={question.verified}
-                    correct={UserAnswers.find(userAnswer => question.id === userAnswer.id_question && userAnswer.correct) ? true : false}
-                  />
+              {resultObj && (
+                <div className="mt-2 p-2 border rounded bg-gray-50">
+                  <p><strong>Resultado:</strong> {resultObj.result}</p>
+                  <p><strong>Score:</strong> {resultObj.score}</p>
+                  {resultObj.feedback && (
+                    <div className="mt-1">
+                      <strong>Feedback:</strong>{' '}
+                      {typeof resultObj.feedback === 'object' ? (
+                        <pre className="whitespace-pre-wrap text-sm">
+                          {JSON.stringify(resultObj.feedback, null, 2)}
+                        </pre>
+                      ) : (
+                        <span>{resultObj.feedback}</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          );
-        })}
-      </QuestionBox>
-    );
-  };
-
-  // Organiza todas as perguntas e renderiza conforme o tipo (texto, múltipla escolha, aberta, código)
-  const renderQuestions = (questions: Question[]) => {
-    const groups: JSX.Element[] = [];
-    let currentGroup: Question[] = [];
-    let boxIndex = 0;
-
-    questions.forEach((question, index) => {
-      if (question.type === 1 || question.type === 2) {
-        currentGroup.push(question);
-      } else {
-        if (currentGroup.length > 0) {
-          const result = groupQuestions(currentGroup, boxIndex);
-          groups.push(result);
-          currentGroup = [];
-          boxIndex++;
-        }
-        switch (question.type) {
-          // Conteúdo
-          case 0:
-            groups.push(
-              <div className='w-[90%] mx-auto'>
-                <Paragraph key={question.name + "-" + index} title={question.name} text={question.content} />
-              </div>
-            );
-            break;
-          // Exercícios de código em Verilog
-          case 3:
-            groups.push(
-              <Practice key={question.name + "-" + index} question={question} id_quiz={quizId}/>
-            );
-            break;
-          default:
-            break;
-        }
+          </QuestionBox>
+        );
       }
-    });
 
-    if (currentGroup.length > 0) {
-      const result = groupQuestions(currentGroup, boxIndex);
-      groups.push(result);
-    }
-    return groups;
+      // Resposta aberta (tipo 2) → Agora também com QuestionBox
+      if (question.type === 2) {
+        return (
+          <QuestionBox questionType={2} key={question.id}>
+            <div className="flex flex-col gap-4">
+              <Paragraph title={question.name} text={question.content} />
+
+              <OpenAnswer
+                id_question={question.id}
+                handleAnswer={(value: string) =>
+                  handleAnswer(question.id, value, 0, question.type)
+                }
+                verified={!!verifiedValues[question.id]}
+                correct={resultObj?.result === 'right'}
+              />
+
+              {resultObj && (
+                <div className="mt-2 p-2 border rounded bg-gray-50">
+                  <p><strong>Resultado:</strong> {resultObj.result}</p>
+                  <p><strong>Score:</strong> {resultObj.score}</p>
+                  {resultObj.feedback && (
+                    <div className="mt-1">
+                      <strong>Feedback:</strong>{' '}
+                      {typeof resultObj.feedback === 'object' ? (
+                        <pre className="whitespace-pre-wrap text-sm">
+                          {JSON.stringify(resultObj.feedback, null, 2)}
+                        </pre>
+                      ) : (
+                        <span>{resultObj.feedback}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </QuestionBox>
+        );
+      }
+
+      // Texto puro (tipo 0) 
+      if (question.type === 0) {
+        return (
+          <div key={question.id} className="w-[90%] mx-auto my-6">
+            <Paragraph title={question.name} text={question.content} />
+          </div>
+        );
+      }
+
+      // Verilog (tipo 3)
+      if (question.type === 3) {
+        return (
+          <div key={question.id} className="w-full mx-auto my-6">
+            <Practice question={question} id_quiz={quizId!} />
+
+            {resultObj && (
+              <div className="mt-2 p-2 border rounded bg-gray-50">
+                <p><strong>Resultado:</strong> {resultObj.result}</p>
+                <p><strong>Score:</strong> {resultObj.score}</p>
+                {resultObj.feedback && (
+                  <div className="mt-1">
+                    <strong>Feedback:</strong>{' '}
+                    {typeof resultObj.feedback === 'object' ? (
+                      <pre className="whitespace-pre-wrap text-sm">
+                        {JSON.stringify(resultObj.feedback, null, 2)}
+                      </pre>
+                    ) : (
+                      <span>{resultObj.feedback}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      return null;
+    });
   };
+
 
   return (
     <>
       <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
-        <Header/>
+        <Header />
 
-        <div className=" flex flex-col col-span-full flex justify-start gap-4">
+        <div className="flex flex-col col-span-full justify-start gap-4">
           <div className="w-30 justify-start">
             <div className="ml-10 md:ml-20 mt-10">
-              <Voltar/>
+              <Voltar />
             </div>
           </div>
 
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
             <div className="flex mt-5 mb-16 px-10 justify-center">
-              <Description text={description} variant={'purple'}/>
+              <Description text={description} variant={'purple'} />
             </div>
           </div>
         </div>
 
-        <div className="col-span-full w-full mb-16 flex flex-col gap-24 mx-auto items-center justify-center">
-          {renderQuestions(Questions)}
+        <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
+          {Questions && renderQuestions(Questions)}
+
+          {/* Botão de envio geral */}
+          <Button onClick={handleSubmit} className='bg-white' variant="primary" text="Enviar" />
         </div>
 
-        <Footer/>
+        <Footer />
       </div>
     </>
   );

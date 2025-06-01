@@ -16,7 +16,7 @@ interface Size{
 
 interface PracticeProps {
   question: Question;
-  id_quiz: string ;
+  id_quiz?: string ;
 }
 
 interface FeedbackEntry {
@@ -229,6 +229,10 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   return(
     <div className="grid w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto]">
       <div className="w-[90%] mx-auto col-span-4 flex flex-col items-center justify-center">
+        <div className="self-start w-fit flex justify-center bg-[#F2953F] px-8 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-preto">
+            <p className="text-left text-2xl">Verilog</p>
+        </div>
+
         {/* Enunciado */}
         <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
@@ -238,11 +242,7 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
         </div>
 
         {/* Área de código */}
-        <div className="w-full flex flex-col justify-start mt-10">
-          <div className="w-[180px] flex justify-center bg-[#F2953F] px-6 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-cinza">
-            <p className="text-left text-2xl">Solução</p>
-          </div>
-
+        <div className="w-full flex flex-col justify-start mt-6">
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
