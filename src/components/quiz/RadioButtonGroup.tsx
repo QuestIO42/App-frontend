@@ -5,7 +5,7 @@ import RedCrossIcon from '@/components/svgComponents/icons/RedCrossIcon';
 
 interface RadioButtonGroupProps {
   initialValue?: string;
-  values: string[];
+  values?: string[] | undefined;
   name: string;
   handleAnswer: (value: string) => void;
   verified: boolean;
@@ -28,7 +28,7 @@ export default function RadioButtonGroup({ initialValue, values, name, handleAns
 
   return (
     <div className="flex-col">
-      {values.map((value, index) => (
+      {values?.map((value, index) => (
         <div key={value} className="flex items-center justfify-center">
           <RadioButton
             label={labels[index]}
