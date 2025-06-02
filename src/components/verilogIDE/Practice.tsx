@@ -198,7 +198,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
         </div>
 
         {/* Enunciado */}
-        <div className="w-full flex flex-col gap-4 items-center px-16 py-12 border-2 border-[#a8a8a8] bg-white">
+        <div className="w-full flex flex-col gap-4 items-center px-8 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
           <div className="text-[15px] prose prose-sm max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{questionContent}</ReactMarkdown>
