@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import { Question } from '@/interfaces/Quiz';
 import { postVerilogAnswer } from '@/services/api/answer';
 import ReactMarkdown from 'react-markdown'
@@ -28,7 +27,6 @@ interface FeedbackEntry {
 }
 
 export default function Practice({ question, id_quiz, initialCode, onChangeCode}: PracticeProps) {
-  const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
 
