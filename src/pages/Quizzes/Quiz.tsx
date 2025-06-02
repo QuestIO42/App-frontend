@@ -81,7 +81,8 @@ export default function Quiz() {
       Carrega o detalhe de cada pergunta;
       Busca alternativas de múltipla escolha */
   useEffect(() => {
-    if (!quizId) return;
+    if (!quizId || !user) return;
+
 
     const startQuiz = async () => {
       try {
@@ -164,7 +165,7 @@ export default function Quiz() {
     };
 
     startQuiz();
-  }, [quizId]);
+  }, [quizId, user]);
 
   /* Mapeia cada id_question → id (UUID) do objeto UserQuizQuestionAnswer */
   useEffect(() => {
