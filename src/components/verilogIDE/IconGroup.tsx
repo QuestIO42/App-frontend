@@ -6,15 +6,15 @@ interface IconGroupProps {
   onIconClick: (value: string) => void;
   disabled: boolean;
 }
-export default function IconGroup(IconGroup: IconGroupProps, disabled: boolean) {
+export default function IconGroup({ onIconClick, disabled }: IconGroupProps) {
 
   const handleClick = (value: string) => {
     switch(value){
       case 'waveform':
-        if (!disabled) IconGroup.onIconClick(value)
+        if (!disabled) onIconClick(value)
         break;
       case 'play':
-        if (!disabled) IconGroup.onIconClick(value)
+        if (!disabled) onIconClick(value)
         break;
       default:
         console.log("oh no")
