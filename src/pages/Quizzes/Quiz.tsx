@@ -37,17 +37,25 @@ export default function Quiz() {
   const { user } = useAuth();
   const userId = user?.id.toString() || '';
 
+  // Armazena a tentativa atual do usuário com as questões associadas
   const [UserQuizQuestion, setUserQuizQuestion] = useState<UserQuizQuestionAnswer[]>();
+
+  // Mapeia id da questão → id da resposta do usuário (UserQuizQuestionAnswer.id)
   const [userQuizMap, setUserQuizMap] = useState<Record<string, string>>({});
+
+  // Armazena os detalhes das questões do quiz
   const [Questions, setQuestions] = useState<Question[]>();
 
+  // Armazena as respostas que o usuário forneceu localmente
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+
+  // Armazena as alternativas possíveis de múltipla escolha por pergunta
   const [possibleAnswers, setPossibleAnswers] = useState<Record<string, Answer[]>>({});
+
   const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
 
-  // Guarda o retorno de submitQuizAnswers:
-  // chave = id_do_UserQuizQuestionAnswer, valor = { score, result, feedback? }
+  // Armazena os resultados após o envio do quiz (pontuação, resultado e feedback)
   const [submissionResults, setSubmissionResults] = useState<
     Record<string, { score: string | number; result: string; feedback?: string | object }>
   >({});
@@ -274,7 +282,7 @@ export default function Quiz() {
                   if (!found) return;
                   handleAnswer(
                     question.id,
-                    found.id,       
+                    found.id,
                     found.value,
                     question.type
                   );
