@@ -16,7 +16,8 @@ interface Size{
 
 interface PracticeProps {
   question: Question;
-  id_quiz?: string ;
+  id_quiz?: string;
+  onChangeCode?: (id_question: string, code: string) => void;
 }
 
 interface FeedbackEntry {
@@ -25,7 +26,7 @@ interface FeedbackEntry {
   dump?: any;
 }
 
-export default function Practice({ question, id_quiz }: PracticeProps) {
+export default function Practice({ question, id_quiz, onChangeCode}: PracticeProps) {
   const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
@@ -99,6 +100,10 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
   // Verifica alterações no CodeSpace
   useEffect(() => {
     setIsModified(verilogAnswer !== savedCode);
+
+    if (onChangeCode) {
+      onChangeCode(question.id, verilogAnswer);
+    }
   }, [verilogAnswer, savedCode]);
 
   // Carrega o código salvo no LocalStorage
@@ -134,7 +139,6 @@ export default function Practice({ question, id_quiz }: PracticeProps) {
 
     try {
       const result = await postVerilogAnswer(
-        user?.id.toString() || '',
         id_quiz,
         question.id,
         verilogAnswer,

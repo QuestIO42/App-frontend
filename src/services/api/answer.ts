@@ -89,13 +89,11 @@ const submitQuizAnswers = async (
 
 // Criado para testar questões verilog
 const postVerilogAnswer = async (
-  id_user: string,
   id_quiz: string,
   id_question: string,
   text_answer: string,
 ) => {
   const response = await api.post(`/userquizquestionanswer/check`, {
-    id_user,
     id_quiz,
     id_question,
     text_answer,
