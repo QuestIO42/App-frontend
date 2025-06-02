@@ -27,7 +27,7 @@ export default function RadioButtonGroup({ initialValue, values, name, handleAns
   };
 
   return (
-    <div className="">
+    <div className="flex-col">
       {values.map((value, index) => (
         <div key={value} className="flex items-center justfify-center">
           <RadioButton
@@ -45,6 +45,13 @@ export default function RadioButtonGroup({ initialValue, values, name, handleAns
           )}
         </div>
       ))}
+
+      {verified && selectedValue === '' && (
+        <div className="mt-4 flex items-center">
+          <RedCrossIcon />
+          <span className="ml-6 text-md text-red-600">Nenhuma opção selecionada</span>
+        </div>
+      )}
     </div>
   );
 }
