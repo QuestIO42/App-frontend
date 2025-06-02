@@ -36,7 +36,7 @@ const buttonVariants = cva(
         quaternary:
           'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
         default:
-          'border-[#454545] bg-white shadow-default-cinza text-cinza hover:bg-[#454545] hover:text-branco hover:shadow-default-preto'
+          'border-[#DDDDDD] bg-white shadow-default-cinza-300 text-[#999] hover:bg-[#DDDDDD] hover:text-[#777] hover:shadow-default-cinza'
       },
       size: {
         small: 'text-base',

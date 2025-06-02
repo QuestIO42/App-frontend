@@ -29,7 +29,7 @@ export default function OpenAnswer({ initialValue, handleAnswer, verified, corre
           onChange={handleChange}
           placeholder="Resposta"
           required
-          className={`border-[3px] border-cinza shadow-default-cinza resize-none p-4 w-full focus:outline-none ${verified ? "pr-20" : ""}`}
+          className={`border-[2px] border-[#CCC] resize-none p-4 w-full focus:outline-none ${verified ? "pr-20" : ""}`}
           rows={3}
         />
         {(verified && correct) && (

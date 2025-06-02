@@ -31,7 +31,7 @@ export default function QuestionBox({ children, questionType }: { children: Reac
     questionType === 1
       ? "text-[#bab1fc]"
       : questionType === 2
-      ? "text-[#224f39]"
+      ? "text-[#2f6e4e]"
       : "text-gray-800";
 
   return (

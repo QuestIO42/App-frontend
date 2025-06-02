@@ -14,6 +14,7 @@ import Description from '@/components/quiz/Description';
 import RadioButtonGroup from '@/components/quiz/RadioButtonGroup';
 import QuestionBox from '@/components/quiz/QuestionBox';
 import OpenAnswer from '@/components/quiz/OpenAnswer';
+import ConfirmModal from '@/components/quiz/ConfirmModal';
 import Practice from '@/components/verilogIDE/Practice';
 import Button from '@/components/utility/Button';
 
@@ -62,6 +63,10 @@ export default function Quiz() {
   const [submissionResults, setSubmissionResults] = useState<
     Record<string, { score: string | number; result: string; feedback?: string | object }>
   >({});
+
+  // Modal de confirmação e salvamento das respostas
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
 
   const [description] = useState<string>(
     'Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrasse a linha k'
@@ -280,7 +285,7 @@ export default function Quiz() {
       if (question.type === 0) {
         return (
           <div className="w-[90%] my-6" key={question.id}>
-            <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-black">
+            <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]">
               <p className="text-left text-2xl">Conteúdo</p>
             </div>
 
@@ -410,11 +415,39 @@ export default function Quiz() {
         <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
           {Questions && renderQuestions(Questions)}
 
-          <div className="flex gap-12">
-            <Button onClick={publishAnswers} className="py-3" variant="default" text="Salvar respostas"/>
-            <Button onClick={handleSubmit} className="bg-white py-3" variant="primary" text="Finalizar questionário" />
+          <div className="flex w-[90%] gap-12 items-end justify-end">
+            <Button onClick={() => {setShowSaveModal(true)}} className="bg-white py-3" variant="quaternary" text="Salvar Respostas"/>
+            <Button onClick={() => setShowConfirmModal(true)} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
           </div>
         </div>
+
+        {/* Modal de salvamento */}
+        {showSaveModal && (
+          <ConfirmModal
+            isOpen={showSaveModal}
+            title="Salvar respostas"
+            description="Deseja salvar suas respostas? Você poderá continuar o questionário depois."
+            onCancel={() => setShowSaveModal(false)}
+            onConfirm={async () => {
+              setShowSaveModal(false);
+              await publishAnswers();
+            }}
+          />
+        )}
+
+        {/* Modal de confirmação de envio das respostas */}
+        {showConfirmModal && (
+          <ConfirmModal
+            isOpen={showConfirmModal}
+            title="Enviar respostas"
+            description="Você tem certeza de que deseja finalizar? Suas respostas serão enviadas e não poderão ser alteradas."
+            onCancel={() => setShowConfirmModal(false)}
+            onConfirm={async () => {
+              setShowConfirmModal(false);
+              await handleSubmit();
+            }}
+          />
+        )}
 
         <Footer />
       </div>
