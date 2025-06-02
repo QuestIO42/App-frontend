@@ -117,7 +117,7 @@ export default function Quiz() {
         .map((q) => q.id);
 
         // Carrega as alternativas de múltipla escolha
-        const allAnswersArrays: Answer[][] = await getAllAnswers(questionIds);
+        const allAnswersArrays: Answer[][] = await getAllAnswers(mcQuestionIds);
         const map: Record<string, Answer[]> = {};
         allAnswersArrays.forEach((arr) => {
           if (arr.length > 0) {
