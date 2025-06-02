@@ -2,15 +2,12 @@ import {api} from './api'
 
 const getAnswer = async (idQuestion: string) => {
   const response = await api.get(`/answer/question/${idQuestion}`) //Obtem todas as respsotas de uma questao
-  console.log("resposta individual: ", response.data)
   return response.data
 }
 
 const getAllAnswers = async (idQuestion: string[]) => {
-  console.log("idQuestion", idQuestion)
   const iterators = idQuestion.map(id => getAnswer(id)); //Obtem todas as respostas de todas as questoes
   const answers = await Promise.all(iterators);
-  console.log("respostas aqui em",answers)
   return answers
 }
 

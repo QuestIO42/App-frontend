@@ -28,16 +28,16 @@ export default function OpenAnswer({ handleAnswer, verified, correct }: OpenAnsw
           onChange={handleChange}
           placeholder="Resposta"
           required
-          className={`border-[3px] border-cinza shadow-default-cinza resize-none p-4 w-full focus:outline-none ${verified ? "pr-16" : ""}`}
+          className={`border-[3px] border-cinza shadow-default-cinza resize-none p-4 w-full focus:outline-none ${verified ? "pr-20" : ""}`}
           rows={3}
         />
         {(verified && correct) && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
             <CheckIcon className="h-5 w-5 text-green-500" />
           </div>
         )}
         {(verified && !correct) && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
             <RedCrossIcon className="h-5 w-5 text-red-500" />
           </div>
         )}
