@@ -18,6 +18,7 @@ interface PracticeProps {
   id_quiz?: string;
   initialCode: string;
   onChangeCode: (id_question: string, code: string) => void;
+  disabled: boolean;
 }
 
 interface FeedbackEntry {
@@ -26,7 +27,7 @@ interface FeedbackEntry {
   dump?: any;
 }
 
-export default function Practice({ question, id_quiz, initialCode, onChangeCode}: PracticeProps) {
+export default function Practice({ question, id_quiz, initialCode, onChangeCode, disabled}: PracticeProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
 
@@ -209,7 +210,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode}
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick}/>
+                <IconGroup onIconClick={handleIconClick} disabled={disabled}/>
               </div>
 
               <CodeSpace
@@ -218,7 +219,9 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode}
                   onChangeCode(question.id, novoTexto);
                 }}
                 width={size.width}
-                height="500px" />
+                height="500px"
+                disabled={disabled}
+              />
             </div>
           </div>
         </div>

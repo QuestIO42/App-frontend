@@ -8,9 +8,10 @@ interface OpenAnswerProps {
   handleAnswer: (value: string) => void;
   verified?: boolean;
   correct?: boolean;
+  disabled: boolean;
 }
 
-export default function OpenAnswer({ initialValue, handleAnswer, verified, correct }: OpenAnswerProps) {
+export default function OpenAnswer({ initialValue, handleAnswer, verified, correct, disabled }: OpenAnswerProps) {
   const [answer, setAnswer] = useState(initialValue);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,6 +32,7 @@ export default function OpenAnswer({ initialValue, handleAnswer, verified, corre
           required
           className={`border-[2px] border-[#CCC] resize-none p-4 w-full focus:outline-none ${verified ? "pr-20" : ""}`}
           rows={3}
+          disabled={disabled}
         />
         {(verified && correct) && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">

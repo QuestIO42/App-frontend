@@ -6,16 +6,21 @@ interface RadioButtonProps {
   value: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
 }
 
 const squareStyles = cva(
-  'flex active:scale-90 cursor-pointer items-center justify-center border-[3px] h-10 w-10 text-cinza border-roxo-900 text-center font-bold transition-all duration-200 ease-in-out',
+  'flex cursor-pointer items-center justify-center border-[3px] h-10 w-10 text-cinza border-roxo-900 text-center font-bold',
   {
     variants: {
       checked: {
         true: 'bg-roxo-500 text-white',
         false: 'bg-branco',
       },
+      disabled: {
+        true: '',
+        false: 'active:scale-90 transition-all duration-200 ease-in-out',
+      }
     },
   }
 );
@@ -25,7 +30,8 @@ export default function RadioButton ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  disabled,
 }: RadioButtonProps) {
   return (
     <label className='flex text-xl items-center cursor-pointer my-4 mr-4'>
@@ -36,10 +42,11 @@ export default function RadioButton ({
         checked={checked}
         onChange={onChange}
         className="hidden"
+        disabled={disabled}
       />
 
       <span
-        className={ squareStyles({checked}) }
+        className={ squareStyles({checked, disabled}) }
         style={{boxShadow: '3px 3px #3e347b'}}
       >
         <span>{label}</span>

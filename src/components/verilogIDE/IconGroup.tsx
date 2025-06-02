@@ -4,16 +4,17 @@ import WaveformIcon from "../svgComponents/icons/WaveformIcon";
 
 interface IconGroupProps {
   onIconClick: (value: string) => void;
+  disabled: boolean;
 }
-export default function IconGroup(IconGroup: IconGroupProps) {
+export default function IconGroup(IconGroup: IconGroupProps, disabled: boolean) {
 
   const handleClick = (value: string) => {
     switch(value){
       case 'waveform':
-        IconGroup.onIconClick(value)
+        if (!disabled) IconGroup.onIconClick(value)
         break;
       case 'play':
-        IconGroup.onIconClick(value)
+        if (!disabled) IconGroup.onIconClick(value)
         break;
       default:
         console.log("oh no")
@@ -23,11 +24,11 @@ export default function IconGroup(IconGroup: IconGroupProps) {
   return(
     <>
       <div className="flex gap-8 flex-row">
-        <div className="cursor-pointer flex gap-2 transition transform duration-300 active:scale-90" onClick={() => handleClick('waveform')} >
+        <div className={`cursor-pointer flex gap-2 ${disabled ? "" : "transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('waveform')} >
           <WaveformIcon></WaveformIcon>
           <p>waveform</p>
         </div>
-        <div className="cursor-pointer flex gap-2 transition transform duration-300 active:scale-90" onClick={() => handleClick('play')} >
+        <div className={`cursor-pointer flex gap-2 ${disabled ? "" : "transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('play')} >
           <PlayIcon></PlayIcon>
           <p>run</p>
         </div>

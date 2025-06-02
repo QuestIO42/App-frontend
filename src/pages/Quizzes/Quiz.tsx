@@ -72,6 +72,9 @@ export default function Quiz() {
     'Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrasse a linha k'
   );
 
+  // Estado do quiz, se já foi respondido ou não
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   /* Ajusta o título da página com o nome do quiz */
   useEffect(() => {
     if (!nome) return;
@@ -267,6 +270,7 @@ export default function Quiz() {
         };
       });
       setSubmissionResults(mapResults);
+      setIsSubmitted(true);
     } catch (err) {
       console.error('Erro ao enviar respostas finais:', err);
     }
@@ -332,6 +336,7 @@ export default function Quiz() {
                 verified={!!resultObj}
                 correct={resultObj?.result === 'right'}
                 verifiedValue={selectedDescription}
+                disabled={isSubmitted}
               />
             </div>
           </QuestionBox>
@@ -356,6 +361,7 @@ export default function Quiz() {
                 }
                 verified={!!resultObj}
                 correct={resultObj?.result === 'right'}
+                disabled={isSubmitted}
               />
             </div>
           </QuestionBox>
@@ -375,7 +381,9 @@ export default function Quiz() {
                   ...prev,
                   [id_question]: code,
                 }));
-              }}/>
+              }}
+              disabled={isSubmitted}
+            />
           </div>
         );
       }
@@ -415,9 +423,9 @@ export default function Quiz() {
         <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
           {Questions && renderQuestions(Questions)}
 
-          <div className="flex w-[90%] gap-12 items-end justify-end">
-            <Button onClick={() => {setShowSaveModal(true)}} className="bg-white py-3" variant="quaternary" text="Salvar Respostas"/>
-            <Button onClick={() => setShowConfirmModal(true)} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
+          <div className={`w-[90%] gap-12 items-end justify-end ${isSubmitted ? "hidden" : "flex"}`}>
+            <Button onClick={() => {setShowSaveModal(true)}} disabled={isSubmitted} className="bg-white py-3" variant="quaternary" text="Salvar Respostas"/>
+            <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
           </div>
         </div>
 
