@@ -21,9 +21,9 @@ import Button from '@/components/utility/Button';
 interface Answer {
   answer: string;
   id_question: string;
-  value: number;
+  value?: number;
   id: string;
-  description: string;
+  description?: string;
 }
 
 interface UserAnswer {
@@ -112,6 +112,11 @@ export default function Quiz() {
         setQuestions(questionObjects);
 
         // Carrega as alternativas de múltipla escolha
+        const mcQuestionIds = questionObjects
+        .filter((q) => q.type === 1)
+        .map((q) => q.id);
+
+        // Carrega as alternativas de múltipla escolha
         const allAnswersArrays: Answer[][] = await getAllAnswers(questionIds);
         const map: Record<string, Answer[]> = {};
         allAnswersArrays.forEach((arr) => {
@@ -189,17 +194,18 @@ export default function Quiz() {
   const handleAnswer = (
     id_question: string,
     answer: string,
-    score: number,
+    score: number | undefined,,
     type: number
   ) => {
     setUserAnswers((prev) => {
+      const value = score ?? 0;
       const idx = prev.findIndex((ans) => ans.id_question === id_question);
       if (idx !== -1) {
         const updated = [...prev];
-        updated[idx] = { ...updated[idx], answer, value: score, type };
+        updated[idx] = { ...updated[idx], answer, value, type };
         return updated;
       }
-      return [...prev, { id_question, answer, value: score, type }];
+      return [...prev, { id_question, answer, value, type }];
     });
   };
 
@@ -327,11 +333,11 @@ export default function Quiz() {
                   handleAnswer(
                     question.id,
                     found.id,
-                    found.value,
+                    found.value ?? undefined,
                     question.type
                   );
                 }}
-                values={alternativesForThis.map((ans) => ans.description)}
+                values={alternativesForThis.map((ans) => ans.description ?? '')}
                 name={`question-${question.id}`}
                 verified={!!resultObj}
                 correct={resultObj?.result === 'right'}
