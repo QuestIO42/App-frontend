@@ -423,7 +423,7 @@ export default function Quiz() {
         <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
           {Questions && renderQuestions(Questions)}
 
-          <div className={`w-[90%] gap-12 items-end justify-end ${isSubmitted ? "hidden" : "flex"}`}>
+          <div className={`w-[90%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
             <Button onClick={() => {setShowSaveModal(true)}} disabled={isSubmitted} className="bg-white py-3" variant="quaternary" text="Salvar Respostas"/>
             <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
           </div>
