@@ -217,8 +217,14 @@ export default function Quiz() {
       // Conteúdo (tipo 0)
       if (question.type === 0) {
         return (
-          <div key={question.id} className="w-[90%] mx-auto my-6">
-            <Paragraph title={question.name} text={question.content} />
+          <div className="w-[90%] my-6">
+            <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-black">
+              <p className="text-left text-2xl">Conteúdo</p>
+            </div>
+
+            <div key={question.id} className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
+              <Paragraph title={question.name} text={question.content} />
+            </div>
           </div>
         );
       }
