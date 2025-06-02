@@ -194,7 +194,7 @@ export default function Quiz() {
   const handleAnswer = (
     id_question: string,
     answer: string,
-    score: number | undefined,,
+    score: number | undefined,
     type: number
   ) => {
     setUserAnswers((prev) => {
