@@ -3,6 +3,7 @@ interface CodeSpaceProps {
   setVerilog: (value: string) => void;
   height?: string;
   width?: string;
+  disabled: boolean;
 }
 
 import CodeMirror from '@uiw/react-codemirror';
@@ -12,7 +13,7 @@ import { EditorView } from '@codemirror/view';
 import { useRef} from 'react';
 import React from 'react';
 
-const CodeSpace = ({ verilogLang, setVerilog, height = "100%", width="100%" }: CodeSpaceProps) => {
+const CodeSpace = ({ verilogLang, setVerilog, height = "100%", width="100%", disabled }: CodeSpaceProps) => {
   const editorRef = useRef(null);
   const onChange = React.useCallback((val: any) => {
     setVerilog(val);
@@ -25,6 +26,7 @@ const CodeSpace = ({ verilogLang, setVerilog, height = "100%", width="100%" }: C
       height="550px"
       width={width}
       onChange={onChange}
+      editable={!disabled}
       extensions={[
         StreamLanguage.define(verilog),
         EditorView.lineWrapping,

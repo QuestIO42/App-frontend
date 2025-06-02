@@ -8,7 +8,7 @@ import { api } from '@/services/api/api';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
-  variant?: 'primary' | 'secondary' |'tertiary' |'quaternary';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'default';
   buttonDisabled?: 'active' | 'disactive';
   size?: 'small' | 'medium' | 'large';
   to?: string
@@ -28,14 +28,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'border-roxo-300 shadow-default-roxo-300 text-cinza hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
+          'border-roxo-300 shadow-default-roxo-300 text-roxo-300 hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
         secondary:
           'border-verde-300 text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
           'border-[#97581F] bg-white text-cinza shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
         quaternary:
           'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
-
+        default:
+          'border-[#DDDDDD] bg-white shadow-default-cinza-300 text-[#999] hover:bg-[#DDDDDD] hover:text-[#777] hover:shadow-default-cinza'
       },
       size: {
         small: 'text-base',

@@ -20,6 +20,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@uiw/react-codemirror": "^4.23.7",
     "@uiw/react-textarea-code-editor": "^3.1.0",
+    "@yowasp/wavedrom": "^3.5.0-8",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -36,6 +37,7 @@
     "react-router-dom": "^6.24.0",
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^2.3.0",
+    "wavedrom": "^3.5.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
