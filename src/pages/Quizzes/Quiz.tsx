@@ -412,7 +412,7 @@ export default function Quiz() {
 
           <div className="flex gap-12">
             <Button onClick={publishAnswers} className="py-3" variant="default" text="Salvar respostas"/>
-            <Button onClick={handleSubmit} className="bg-white py-3" variant="primary" text="Finalizar quesitonário" />
+            <Button onClick={handleSubmit} className="bg-white py-3" variant="primary" text="Finalizar questionário" />
           </div>
         </div>
 

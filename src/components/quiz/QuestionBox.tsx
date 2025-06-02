@@ -29,9 +29,9 @@ export default function QuestionBox({ children, questionType }: { children: Reac
 
   const textColor =
     questionType === 1
-      ? "text-amarelo"
+      ? "text-[#bab1fc]"
       : questionType === 2
-      ? "text-preto"
+      ? "text-[#224f39]"
       : "text-gray-800";
 
   return (
