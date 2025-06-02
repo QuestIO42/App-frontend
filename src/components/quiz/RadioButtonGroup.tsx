@@ -6,15 +6,16 @@ import RedCrossIcon from '@/components/svgComponents/icons/RedCrossIcon';
 interface RadioButtonGroupProps {
   values: string[];
   name: string;
+  handleAnswer: (value: string) => void;
   verified: boolean;
   correct: boolean;
-  handleAnswer: (value: string) => void;
   verifiedValue?: string;
+  initialValue?: string;
 }
 
-export default function RadioButtonGroup({ values, name, handleAnswer, correct, verified, verifiedValue }: RadioButtonGroupProps) {
+export default function RadioButtonGroup({ values, name, handleAnswer, verified, correct, verifiedValue, initialValue }: RadioButtonGroupProps) {
   const labels = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState<string>(initialValue || '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

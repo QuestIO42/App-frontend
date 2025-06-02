@@ -84,26 +84,22 @@ export default function Quiz() {
       try {
         // Inicia uma nova tentativa em um quiz, criando as questões
         const response = await postNewQuiz(userId, quizId);
-
         let userQuizArray: UserQuizQuestionAnswer[];
+
         if (response.success) {
           userQuizArray = response.data;
         } else {
           // Caso o usuário já tenha uma tentativa em aberto, apenas recupera as questões criadas anteriormente
-          userQuizArray = await getQuizAnswers(
-            userId,
-            quizId,
-            response.current_try
-          );
+          userQuizArray = await getQuizAnswers(userId, quizId, response.current_try);
         }
         setUserQuizQuestion(userQuizArray);
 
-        // Pega os detalhes de cada pergunta
+        // Carrega os detalhes de cada pergunta
         const questionIds = userQuizArray.map((item) => item.id_question);
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
 
-        // Repostas das alternativas de múltipla escolha
+        // Carrega as alternativas de múltipla escolha
         const allAnswersArrays: Answer[][] = await getAllAnswers(questionIds);
         const map: Record<string, Answer[]> = {};
         allAnswersArrays.forEach((arr) => {
@@ -113,6 +109,36 @@ export default function Quiz() {
           }
         });
         setPossibleAnswers(map);
+
+        // Carrega as respostas do usuário que já existiam, salvas no banco
+        const existingAnswers: UserAnswer[] = userQuizArray
+          .map(item => {
+            // Múltipla escolha
+            if ((item as any).id_answer) {
+              const chosenId = (item as any).id_answer as string;
+              const alternativas = map[item.id_question] || [];
+              const chosenObj = alternativas.find(ans => ans.id === chosenId);
+              return {
+                id_question: item.id_question,
+                answer: chosenId,
+                value: chosenObj ? chosenObj.value : 0,
+                type: 1,
+              } as UserAnswer;
+            }
+            // Discursiva
+            if ((item as any).text_answer) {
+              return {
+                id_question: item.id_question,
+                answer: (item as any).text_answer as string,
+                value: 0,
+                type: 2,
+              } as UserAnswer;
+            }
+            return null;
+          })
+          .filter((x): x is UserAnswer => x !== null);
+
+        setUserAnswers(existingAnswers);
       } catch (error) {
         console.error('Erro ao buscar as questões ou alternativas:', error);
       } finally {
@@ -132,25 +158,6 @@ export default function Quiz() {
     });
     setUserQuizMap(map);
   }, [UserQuizQuestion]);
-
-  /* Publica cada resposta ao backend via updateUserAnswer (intervalo de 30 segundos) */
-  useEffect(() => {
-    const INTERVAL_MS = 30_000;
-    if (!isLoading && Object.keys(userQuizMap).length > 0) {
-      const intervalId = setInterval(() => {
-        publishAnswers();
-      }, INTERVAL_MS);
-      return () => clearInterval(intervalId);
-    }
-  }, [isLoading, userQuizMap, UserAnswers]);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Loading...</p>
-      </div>
-    );
-  }
 
   /* Atualiza UserAnswers conforme o usuário escolhe valor ou digita texto */
   const handleAnswer = (
@@ -192,6 +199,17 @@ export default function Quiz() {
       }
     }
   };
+
+  /* Publica cada resposta ao backend via updateUserAnswer (intervalo de 30 segundos) */
+  useEffect(() => {
+    const INTERVAL_MS = 30_000;
+    if (!isLoading && Object.keys(userQuizMap).length > 0) {
+      const intervalId = setInterval(() => {
+        publishAnswers();
+      }, INTERVAL_MS);
+      return () => clearInterval(intervalId);
+    }
+  }, [isLoading, userQuizMap, UserAnswers]);
 
   /* Função responsável por enviar as repostas do usuário e corrigir */
   const handleSubmit = async () => {
@@ -275,6 +293,7 @@ export default function Quiz() {
               <Paragraph title={question.name} text={question.content} />
 
               <RadioButtonGroup
+                initialValue={selectedDescription}    // ← aqui você informa qual opção já estava salva
                 handleAnswer={(value: string) => {
                   const found = alternativesForThis.find(
                     (ans) => ans.description === value
@@ -300,6 +319,9 @@ export default function Quiz() {
 
       // TIPO 2: Resposta aberta
       if (question.type === 2) {
+        // Encontra resposta salva do usuário
+        const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
+
         return (
           <QuestionBox questionType={2} key={question.id}>
             <div className="flex flex-col gap-4">
@@ -307,6 +329,7 @@ export default function Quiz() {
 
               <OpenAnswer
                 id_question={question.id}
+                initialValue={initialText || ''}
                 handleAnswer={(value: string) =>
                   handleAnswer(question.id, value, 0, question.type)
                 }
@@ -330,6 +353,14 @@ export default function Quiz() {
       return null;
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <>

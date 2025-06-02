@@ -3,14 +3,15 @@ import CheckIcon from '@/components/svgComponents/icons/CheckIcon';
 import RedCrossIcon from '@/components/svgComponents/icons/RedCrossIcon';
 
 interface OpenAnswerProps {
-  handleAnswer: (value: string) => void;
   id_question: string;
-  verified: boolean;
-  correct: boolean;
+  initialValue: string;
+  handleAnswer: (value: string) => void;
+  verified?: boolean;
+  correct?: boolean;
 }
 
-export default function OpenAnswer({ handleAnswer, verified, correct }: OpenAnswerProps) {
-  const [answer, setAnswer] = useState('');
+export default function OpenAnswer({ initialValue, handleAnswer, verified, correct }: OpenAnswerProps) {
+  const [answer, setAnswer] = useState(initialValue);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
