@@ -142,6 +142,20 @@ export default function Quiz() {
           .filter((x): x is UserAnswer => x !== null);
 
         setUserAnswers(existingAnswers);
+
+        // Carrega o código salvo para as questões de verilog
+        const initialVerilog: Record<string,string> = {};
+        questionObjects.forEach((question) => {
+          if (question.type === 3) {
+            // procura no userQuizArray o objeto que tem esse id_question
+            const found = userQuizArray.find((item) => item.id_question === question.id);
+            if (found && (found as any).text_answer) {
+              initialVerilog[question.id] = (found as any).text_answer as string;
+            }
+          }
+        });
+
+        setVerilogAnswers(initialVerilog);
       } catch (error) {
         console.error('Erro ao buscar as questões ou alternativas:', error);
       } finally {
@@ -183,13 +197,14 @@ export default function Quiz() {
   /* Função que salva cada resposta que já existe em UserAnswers */
   const publishAnswers = async () => {
     if (!quizId) return;
+
+    // Salva múltipla escolha e discursivas
     for (const userAnswer of UserAnswers) {
       const userQuizAnswerId = userQuizMap[userAnswer.id_question];
       if (!userQuizAnswerId) continue;
 
       const payload: { text_answer?: string; id_answer?: string } = {};
       if (userAnswer.type === 1) {
-        // ATTENTION: aqui userAnswer.answer já é o UUID da alternativa
         payload.id_answer = userAnswer.answer;
       } else if (userAnswer.type === 2) {
         payload.text_answer = userAnswer.answer;
@@ -198,7 +213,20 @@ export default function Quiz() {
       try {
         await updateUserAnswer(userQuizAnswerId, payload);
       } catch (err) {
-        console.error(`Erro ao atualizar resposta ${userQuizAnswerId}:`, err);
+        console.error(`Erro ao salvar resposta ${userQuizAnswerId}:`, err);
+      }
+    }
+
+    // Salva respostas de verilog
+    for (const [id_question, code] of Object.entries(verilogAnswers)) {
+      const userQuizAnswerId = userQuizMap[id_question];
+      if (!userQuizAnswerId) continue;
+
+      const payload = { text_answer: code };
+      try {
+        await updateUserAnswer(userQuizAnswerId, payload);
+      } catch (err) {
+        console.error(`Erro ao salvar código Verilog ${userQuizAnswerId}:`, err);
       }
     }
   };
@@ -218,39 +246,8 @@ export default function Quiz() {
   const handleSubmit = async () => {
     if (!quizId) return;
 
-    // Primeiro atualiza todas as UserAnswers no banco (tipo 1 e 2)
-    for (const userAnswer of UserAnswers) {
-      const userQuizAnswerId = userQuizMap[userAnswer.id_question];
-      if (!userQuizAnswerId) continue;
-
-      const payload: { text_answer?: string; id_answer?: string } = {};
-      if (userAnswer.type === 1) {
-        payload.id_answer = userAnswer.answer;
-      } else if (userAnswer.type === 2) {
-        payload.text_answer = userAnswer.answer;
-      }
-
-      try {
-        await updateUserAnswer(userQuizAnswerId, payload);
-      } catch (err) {
-        console.error(`Erro ao atualizar resposta ${userQuizAnswerId}:`, err);
-      }
-    }
-
-    // Atualiza as respostas das questões de verilog (tipo 3)
-    for (const [id_question, code] of Object.entries(verilogAnswers)) {
-      const userQuizAnswerId = userQuizMap[id_question];
-      if (!userQuizAnswerId) continue;
-
-      const payload: { text_answer?: string; id_answer?: string } = {
-        text_answer: code,
-      };
-      try {
-        await updateUserAnswer(userQuizAnswerId, payload);
-      } catch (err) {
-        console.error(`Erro ao atualizar VerilogResposta ${userQuizAnswerId}:`, err);
-      }
-    }
+    // Salva as questões
+    await publishAnswers();
 
     // Após salvar as respostas, chama a correção
     try {
@@ -366,30 +363,13 @@ export default function Quiz() {
             <Practice
               question={question}
               id_quiz={quizId}
+              initialCode={verilogAnswers[question.id] || ''}
               onChangeCode={(id_question, code) => {
                 setVerilogAnswers((prev) => ({
                   ...prev,
                   [id_question]: code,
                 }));
               }}/>
-
-            {resultObj && (
-                    <div className="mt-4 p-4 border rounded bg-gray-50">
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        <span
-                          className={
-                            resultObj.result === "right" ? "text-green-600" : "text-red-600"
-                          }
-                        >
-                          {resultObj.result === "right" ? "Correto" : "Incorreto"}
-                        </span>
-                      </p>
-                      <p>
-                        <strong>Score:</strong> {resultObj.score}
-                      </p>
-                    </div>
-                  )}
           </div>
         );
       }
@@ -429,7 +409,10 @@ export default function Quiz() {
         <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
           {Questions && renderQuestions(Questions)}
 
-          <Button onClick={handleSubmit} className="bg-white" variant="primary" text="Enviar respostas" />
+          <div className="flex gap-12">
+            <Button onClick={publishAnswers} className="py-3" variant="default" text="Salvar respostas"/>
+            <Button onClick={handleSubmit} className="bg-white py-3" variant="primary" text="Finalizar quesitonário" />
+          </div>
         </div>
 
         <Footer />

@@ -17,7 +17,8 @@ interface Size{
 interface PracticeProps {
   question: Question;
   id_quiz?: string;
-  onChangeCode?: (id_question: string, code: string) => void;
+  initialCode: string;
+  onChangeCode: (id_question: string, code: string) => void;
 }
 
 interface FeedbackEntry {
@@ -26,7 +27,7 @@ interface FeedbackEntry {
   dump?: any;
 }
 
-export default function Practice({ question, id_quiz, onChangeCode}: PracticeProps) {
+export default function Practice({ question, id_quiz, initialCode, onChangeCode}: PracticeProps) {
   const { user } = useAuth();
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
@@ -35,10 +36,7 @@ export default function Practice({ question, id_quiz, onChangeCode}: PracticePro
   const [questionContent, setQuestionContent] = useState<string>("");
 
   // Código exibido em CodeSpace
-  const [verilogAnswer, setVerilog] = useState("");
-  const [savedCode, setSavedCode] = useState<string>("");
-  const [isModified, setIsModified] = useState<boolean>(false);
-  const key = `quiz_${id_quiz}_q${question.id}_user${user?.id}`;
+  const [verilogAnswer, setVerilog] = useState(initialCode);
 
   // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
@@ -96,37 +94,6 @@ export default function Practice({ question, id_quiz, onChangeCode}: PracticePro
       }
     }
   }, [question.content]);
-
-  // Verifica alterações no CodeSpace
-  useEffect(() => {
-    setIsModified(verilogAnswer !== savedCode);
-
-    if (onChangeCode) {
-      onChangeCode(question.id, verilogAnswer);
-    }
-  }, [verilogAnswer, savedCode]);
-
-  // Carrega o código salvo no LocalStorage
-  useEffect(() => {
-    const stored = localStorage.getItem(key);
-    if (stored) {
-      setVerilog(stored);
-      setSavedCode(stored);
-    }
-  }, [id_quiz, question.id, user?.id]);
-
-  // Função para o ícone de save
-  const handleSave = () => {
-    // salva o estado atual no localStorage, usando uma chave única por questão e usuário
-    localStorage.setItem(key, verilogAnswer);
-    setSavedCode(verilogAnswer);
-    setIsModified(false);
-
-    // PRECISA REMOVER O ITEM DO LOCALSTORAGE AO ENVIAR O QUESTIONÁRIO
-    // if (localStorage.getItem(key) !== null) {
-    //   localStorage.removeItem(key);
-    // }
-  };
 
   // Função para o ícone de play
   const handleVerilogSubmit = async () => {
@@ -216,15 +183,9 @@ export default function Practice({ question, id_quiz, onChangeCode}: PracticePro
       case 'waveform':
         setShowWaveform(prev => !prev);
         break;
-
-      case 'save':
-        if (isModified) handleSave();
-        break;
-
       case 'play':
         handleVerilogSubmit();
         break;
-
       default:
         console.log("oh no")
     }
@@ -250,10 +211,16 @@ export default function Practice({ question, id_quiz, onChangeCode}: PracticePro
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick} isModified={isModified}/>
+                <IconGroup onIconClick={handleIconClick}/>
               </div>
 
-              <CodeSpace verilogLang={verilogAnswer} setVerilog={setVerilog} width={size.width} height="500px" />
+              <CodeSpace
+                verilogLang={verilogAnswer}
+                setVerilog={(novoTexto: string) => {
+                  onChangeCode(question.id, novoTexto);
+                }}
+                width={size.width}
+                height="500px" />
             </div>
           </div>
         </div>
