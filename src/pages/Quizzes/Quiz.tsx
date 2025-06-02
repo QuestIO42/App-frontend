@@ -214,11 +214,20 @@ export default function Quiz() {
 
       const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
 
+      // Conteúdo (tipo 0)
+      if (question.type === 0) {
+        return (
+          <div key={question.id} className="w-[90%] mx-auto my-6">
+            <Paragraph title={question.name} text={question.content} />
+          </div>
+        );
+      }
+
       // Múltipla escolha (tipo 1)
       if (question.type === 1) {
         return (
           <QuestionBox questionType={1} key={question.id}>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               <Paragraph title={question.name} text={question.content} />
 
               <RadioButtonGroup
@@ -256,7 +265,7 @@ export default function Quiz() {
         );
       }
 
-      // Resposta aberta (tipo 2) → Agora também com QuestionBox
+      // Resposta aberta (tipo 2)
       if (question.type === 2) {
         return (
           <QuestionBox questionType={2} key={question.id}>
@@ -295,15 +304,6 @@ export default function Quiz() {
         );
       }
 
-      // Texto puro (tipo 0) 
-      if (question.type === 0) {
-        return (
-          <div key={question.id} className="w-[90%] mx-auto my-6">
-            <Paragraph title={question.name} text={question.content} />
-          </div>
-        );
-      }
-
       // Verilog (tipo 3)
       if (question.type === 3) {
         return (
@@ -335,7 +335,6 @@ export default function Quiz() {
       return null;
     });
   };
-
 
   return (
     <>

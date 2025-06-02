@@ -14,8 +14,6 @@ interface RadioButtonGroupProps {
 
 export default function RadioButtonGroup({ values, name, handleAnswer, correct, verified, verifiedValue }: RadioButtonGroupProps) {
   const labels = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-  console.log("alternativas", values);
-
   const [selectedValue, setSelectedValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +23,9 @@ export default function RadioButtonGroup({ values, name, handleAnswer, correct, 
   };
 
   return (
-    <div>
+    <div className="">
       {values.map((value, index) => (
-        <div key={value} className="flex items-center">
+        <div key={value} className="flex items-center justfify-center">
           <RadioButton
             label={labels[index]}
             name={name}
