@@ -20,7 +20,7 @@ export default function OpenAnswer({ handleAnswer, verified, correct }: OpenAnsw
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full mt-6">
       <form action="" autoComplete="off" className="w-full h-full relative">
         <textarea
           name="answer"
@@ -28,7 +28,7 @@ export default function OpenAnswer({ handleAnswer, verified, correct }: OpenAnsw
           onChange={handleChange}
           placeholder="Resposta"
           required
-          className="border-[3px] border-roxo-900 shadow-default-roxo-500 resize-none p-2 w-full pr-10" // Add pr-10 for padding-right
+          className={`border-[3px] border-cinza shadow-default-cinza resize-none p-4 w-full focus:outline-none ${verified ? "pr-16" : ""}`}
           rows={3}
         />
         {(verified && correct) && (

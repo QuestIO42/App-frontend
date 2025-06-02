@@ -13,7 +13,7 @@ const squareStyles = cva(
   {
     variants: {
       checked: {
-        true: 'bg-roxo-500 text-branco',
+        true: 'bg-roxo-500 text-white',
         false: 'bg-branco',
       },
     },
