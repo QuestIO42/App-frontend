@@ -88,7 +88,7 @@ export default function Course() {
           </div>
         )}
 
-        <div className="w-[25%] font-size-1 mt-10 mr-4 h-20 w-16 flex justify-end">
+        <div className="w-[25%] font-size-1 h-20 w-16 flex justify-end">
           <Button
             upload
             // Rota
@@ -98,8 +98,15 @@ export default function Course() {
             onUploadSuccess={handleImportSuccess}
             onUploadError={handleImportError}
             variant='secondary'
-            className="mr-[90px] bg-white text-xl"
+            className="mr-10 bg-white text-xl"
             text="importar alunos"
+            size="small"
+          ></Button>
+          <Button
+            courseId={courseId!}
+            variant='quaternary'
+            className="mr-[90px] text-cinza bg-white text-xl"
+            text="exportar notas"
             size="small"
           ></Button>
         </div>
