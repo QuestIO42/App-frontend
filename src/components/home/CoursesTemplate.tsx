@@ -94,6 +94,7 @@ export default function CoursesTemplate({
           labs!.map((lab) => (
             <div
               key={lab.link}
+              title={lab.alt}
               onClick={() => window.open(lab.link, '_blank')}
               className="cursor-pointer"
             >
