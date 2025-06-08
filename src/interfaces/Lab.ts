@@ -3,4 +3,6 @@ export interface Lab{
   name: string
   description: string
   teacher: string
+  image: string
+  alt: string
 }
