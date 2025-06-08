@@ -94,6 +94,7 @@ export default function CoursesTemplate({
           labs!.map((lab) => (
             <div
               key={lab.link}
+              title={lab.alt}
               onClick={() => window.open(lab.link, '_blank')}
               className="cursor-pointer"
             >
@@ -103,9 +104,9 @@ export default function CoursesTemplate({
                 courseName={lab.name}
                 courseTeacher={lab.teacher}
               >
-                <div
-                  className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
-                ></div>
+                <div className={`bg-gray-300 p-4 flex items-center justify-center ${IsRectangle ? 'h-[205px] w-[265px]' : 'h-[240px] w-[240px]'}`}>
+                  <img src={lab.image} alt={lab.alt} className="w-full h-full object-contain"/>
+                </div>
               </ModalSquareForm>
             </div>
           ))

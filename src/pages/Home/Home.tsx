@@ -85,7 +85,7 @@ export default function Home() {
           </Ranking>
         </div>
 
-        <CircuitHome className="absolute bottom-0 right-0"></CircuitHome>
+        <CircuitHome className="absolute bottom-0 right-0 -z-10"></CircuitHome>
       </div>
       <Footer></Footer>
     </div>
