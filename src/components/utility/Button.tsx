@@ -13,11 +13,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large';
   to?: string
 
+  fieldName?: string;
+  courseId?: string;
+  
+  // Download de arquivos
+  download?: boolean;
+  downloadUrl?: boolean;
+  onDownloadSuccess?: (response: any) => void;
+  onDownloadError?: (error: any) => void;
+
   // Upload de arquivos
   upload?: boolean;
   uploadUrl?: string;
-  fieldName?: string;
-  courseId?: string;
   onUploadSuccess?: (response: any) => void;
   onUploadError?: (error: any) => void;
 }
@@ -64,6 +71,8 @@ export default function Button({
   buttonDisabled,
   size,
   to,
+  download,
+  downloadUrl,
   upload,
   uploadUrl,
   fieldName = 'file',
