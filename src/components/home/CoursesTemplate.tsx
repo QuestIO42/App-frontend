@@ -102,7 +102,7 @@ export default function CoursesTemplate({
                 IsRectangle={IsRectangle}
                 key={lab.link}
                 courseName={lab.name}
-                courseTeacher={lab.teacher}
+                courseTeacher={lab.type}
               >
                 <div className={`bg-gray-300 p-4 flex items-center justify-center ${IsRectangle ? 'h-[205px] w-[265px]' : 'h-[240px] w-[240px]'}`}>
                   <img src={lab.image} alt={lab.alt} className="w-full h-full object-contain"/>

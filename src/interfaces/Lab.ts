@@ -2,7 +2,7 @@ export interface Lab{
   link: string
   name: string
   description: string
-  teacher: string
+  type: string
   image: string
   alt: string
 }
