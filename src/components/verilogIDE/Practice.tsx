@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm'
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
-import WaveformView from './WaveformView';
+import WaveDromComponent from './WaveformView';
 
 interface Size{
   width: string;
@@ -150,7 +150,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
             {entry.dump && (
               <div className="mt-2 border border-gray-300 p-2 rounded">
-                <WaveformView idx={index} dump={entry.dump} />
+                <WaveDromComponent jsonData={entry.dump} />
               </div>
             )}
           </div>
@@ -245,8 +245,14 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
                 <div className="flex flex-col w-full py-4">
                   <p className="font-bold mb-2">Sinais de simulação:</p>
                   {waveformDumps.map((dump, index) => (
-                    <div key={index} className="mb-4">
-                      <WaveformView idx={index} dump={dump} />
+                    <div key={index}>
+                      {/* <div
+                        key={index} className="mb-4"
+                        dangerouslySetInnerHTML={{
+                          __html: `<script type="WaveDrom">${JSON.stringify(dump)}</script>`,
+                        }}
+                      /> */}
+                      <WaveDromComponent jsonData={dump} />
                     </div>
                   ))}
                 </div>
