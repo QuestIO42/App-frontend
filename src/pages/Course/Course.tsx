@@ -91,7 +91,7 @@ export default function Course() {
           </div>
         )}
 
-        <div className="font-size-1 h-20 w-16 flex justify-end">
+        <div className="w-[25%] font-size-1 h-20 flex justify-end">
           {user && user.role >= 2 && (
             <>
               <Button
