@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useLayoutEffect } from 'react'
+import { createContext, useState, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
@@ -16,6 +16,7 @@ type AuthContextData = {
   configPass(verificationCode: string): Promise<void>
   isAuthenticated: boolean
   user: User | null
+  isLoading: boolean
 }
 
 type AuthProviderProps = {
@@ -34,6 +35,7 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
@@ -48,15 +50,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useLayoutEffect(() => {
     const fetchUser = async () => {
+      if (!accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
+        setIsLoading(false)
+        return
+      }
+
+    try {
       if (accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
         const { sub } = jwtDecode<{ sub: string }>(accessToken)
         await fetchPerson(sub)
       } else {
         setUser(mockUser)
       }
+    } catch (error) {
+      console.error("Falha ao buscar dados do usuário", error)
+      setUser(null)
+    } finally {
+      setIsLoading(false)
     }
-    fetchUser()
-  }, [accessToken])
+  }
+  fetchUser()
+ }, [accessToken])
 
   useLayoutEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
@@ -229,7 +243,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signOut, configPass, isAuthenticated, user }}
+      value={{ signIn, signOut, configPass, isAuthenticated, user, isLoading  }}
     >
       {children}
     </AuthContext.Provider>
