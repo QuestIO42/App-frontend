@@ -15,12 +15,15 @@ import { fetchAllQuizes } from '@/services/api/quiz';
 import { fetchCourse } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
   const { courseId } = useParams();
+
+    const { user, isLoading: isAuthLoading } = useAuth();
 
   useEffect(() => {
     async function fetchQuizes() {
@@ -38,13 +41,13 @@ export default function Course() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false); // Set loading to false after fetch
+        setIsCourseLoading(false); // Set loading to false after fetch
       }
     }
     fetchQuizes();
   }, [courseId]);
 
-  if (isLoading) {
+  if (isCourseLoading || isAuthLoading) {
     // Show a loading spinner or placeholder while fetching
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -88,27 +91,31 @@ export default function Course() {
           </div>
         )}
 
-        <div className="w-[25%] font-size-1 h-20 w-16 flex justify-end">
-          <Button
-            upload
-            // Rota
-            uploadUrl="/user"
-            fieldName="file"
-            courseId={courseId!}
-            onUploadSuccess={handleImportSuccess}
-            onUploadError={handleImportError}
-            variant='secondary'
-            className="mr-10 bg-white text-xl"
-            text="importar alunos"
-            size="small"
-          ></Button>
-          <Button
-            courseId={courseId!}
-            variant='quaternary'
-            className="mr-[90px] text-cinza bg-white text-xl"
-            text="exportar notas"
-            size="small"
-          ></Button>
+        <div className="w-[25%] font-size-1 h-20 flex justify-end">
+          {user && user.role >= 2 && (
+            <>
+              <Button
+                upload
+                // Rota
+                uploadUrl="/user"
+                fieldName="file"
+                courseId={courseId!}
+                onUploadSuccess={handleImportSuccess}
+                onUploadError={handleImportError}
+                variant='secondary'
+                className="mr-10 bg-white text-xl"
+                text="importar alunos"
+                size="small"
+              ></Button>
+              <Button
+                courseId={courseId!}
+                variant='quaternary'
+                className="mr-[90px] text-cinza bg-white text-xl"
+                text="exportar notas"
+                size="small"
+              ></Button>
+            </>
+          )}
         </div>
       </div>
 
