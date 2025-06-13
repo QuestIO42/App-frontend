@@ -12,29 +12,46 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { mockUsers } from '@/utils/mocks/mockUsers';
 import { mockVirtualLabs } from '@/utils/mocks/mockVirtualLabs';
-import { fetchAllCourses } from '@/services/api/course';
+import { fetchAllCourses, fetchAllUserCourses } from '@/services/api/course';
+import { Course } from '@/interfaces/Course';
+
+interface CourseWithSubscription extends Course {
+  isSubscribed: boolean;
+}
 
 export default function Home() {
   const { user } = useAuth();
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<CourseWithSubscription[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
-    async function fetchCourses() {
+
+    async function fetchCoursesAndSubscriptionStatus() {
       try {
-        const courses = await fetchAllCourses();
-        console.log('Curso:', courses);
-        console.log('Data:', courses.data);
-        setCourses(courses.data);
+        if (!user) return;
+        const [allCoursesResponse, userCoursesResponse] = await Promise.all([
+          fetchAllCourses(),
+          fetchAllUserCourses(user.id.toString())
+        ]);
+
+        const allCoursesData = allCoursesResponse.data;
+        
+        const userSubscribedIds = new Set(userCoursesResponse.map((c: Course) => c.id));
+        const coursesWithStatus = allCoursesData.map((course: Course) => ({
+          ...course,
+          isSubscribed: userSubscribedIds.has(course.id)
+        }));
+
+        setCourses(coursesWithStatus);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false); // Set loading to false after fetch
+        setIsLoading(false);
       }
     }
 
-    fetchCourses();
-  }, []);
+    fetchCoursesAndSubscriptionStatus();
+  }, [user]);
 
   if (isLoading) {
     // Show a loading spinner or placeholder while fetching

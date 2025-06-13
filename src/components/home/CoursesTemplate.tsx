@@ -6,14 +6,23 @@ import { Course } from '@/interfaces/Course'
 import { Lab } from '@/interfaces/Lab'
 import { User } from '@/interfaces/User'
 import { getUsersInCourse } from '@/services/api/user'
+import Button from '../utility/Button'
+import { useAuth } from '@/hooks/useAuth'
+import { subscribeToCourse } from '@/services/api/course'
 
-// Interface aceita cursos e laboratórios de maneira opcional
+// Interface que define a estrutura do objeto de curso que o componente espera
+interface CourseWithSubscription extends Course {
+  isSubscribed: boolean;
+}
+
+// Props que o componente recebe da Home.tsx
 interface CoursesTemplateProps {
   title: string;
   Icon: ElementType;
   IsRectangle: boolean;
-  courses?: Course[];
+  courses?: CourseWithSubscription[]; // Espera a lista de cursos já com o boolean
   labs?: Lab[];
+  onSubscriptionChange?: (courseId: string) => void; // Função para atualizar a Home
 }
 
 export default function CoursesTemplate({
@@ -22,11 +31,29 @@ export default function CoursesTemplate({
   IsRectangle,
   courses = [],
   labs = [],
+  onSubscriptionChange = () => {}, // Valor padrão para a prop
 }: CoursesTemplateProps) {
-  const hasCourses = courses && courses.length > 0
+  const hasCourses = courses && courses.length > 0;
   const hasLabs = labs && labs.length > 0;
-  const [teachers, setTeachers] = useState<Record<string, string>>({})
-  const navigate = useNavigate()
+  const [teachers, setTeachers] = useState<Record<string, string>>({});
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Função que é chamada ao clicar em "Inscrever-se"
+  const handleSubscribe = async (courseId: string) => {
+    if (!user) return;
+    try {
+      await subscribeToCourse(courseId, user.id.toString());
+      alert('Inscrição realizada com sucesso!');
+      // Avisa a Home.tsx que a inscrição foi feita, para que ela possa atualizar a UI
+      if (onSubscriptionChange) {
+        onSubscriptionChange(courseId);
+      }
+    } catch (error) {
+      console.error('Erro ao se inscrever:', error);
+      alert('Falha ao se inscrever no curso.');
+    }
+  };
 
   // Busca os professores de cada curso
   // Funciona para os cursos em que o usuário está inscrito e cursos abertos, caso contrário
@@ -66,28 +93,41 @@ export default function CoursesTemplate({
   return (
     <div className="flex flex-col items-start justify-start gap-10">
       <div className="mr-auto flex items-center justify-center gap-3">
-        <Icon width="48" height="48"></Icon>
+        <Icon width="48" height="48" />
         <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
       </div>
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
         {hasCourses ? (
-          courses!.slice(0, 4).map((course) => (
-            <div
-              key={course.id}
-              onClick={() => navigate(`/Course/${course.id}`)}
-              className="cursor-pointer"
-            >
-              <ModalSquareForm
-                IsRectangle={IsRectangle}
-                key={course.id}
-                courseName={course.name}
-                courseTeacher={teachers[course.id]}
+          courses.map((course) => ( // Mapeamos a lista de cursos enriquecida
+            <div key={course.id} className="flex flex-col gap-3 items-center">
+              <div
+                // O card só é clicável se o usuário estiver inscrito
+                onClick={() => course.isSubscribed && navigate(`/Course/${course.id}`)}
+                className={course.isSubscribed ? "cursor-pointer" : "cursor-default"}
               >
-                <div
-                  className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}
-                ></div>
-              </ModalSquareForm>
+                <ModalSquareForm
+                  IsRectangle={IsRectangle}
+                  key={course.id}
+                  courseName={course.name}
+                  courseTeacher={teachers[course.id]}
+                >
+                  <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}></div>
+                </ModalSquareForm>
+              </div>
+
+              {/* AQUI ESTÁ A LÓGICA PRINCIPAL */}
+              {/* O componente verifica o boolean para decidir o que renderizar */}
+              {!course.isSubscribed && (
+                // Se isSubscribed for FALSE, mostra o botão "Inscrever-se"
+                <Button
+                  text="Inscrever-se"
+                  variant="secondary"
+                  size="medium"
+                  className="w-full"
+                  onClick={() => handleSubscribe(course.id)}
+                />
+              )}
             </div>
           ))
         ) : hasLabs ? (

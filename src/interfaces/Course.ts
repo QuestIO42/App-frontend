@@ -1,5 +1,6 @@
 
 export interface Course{
+  isSubscribed: boolean
   id: string
   name: string
   description: string
