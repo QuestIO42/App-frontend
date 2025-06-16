@@ -24,7 +24,7 @@ export default {
         amarelo: 'var(--amarelo)',
         vermelho: {
           300: 'var(--vermelho-300)',
-          900: 'ver(--vermelho-900)',
+          900: 'var(--vermelho-900)',
         },
         verde: {
           300: 'var(--verde-300)',
@@ -57,7 +57,7 @@ export default {
         'default-vermelho-900': '0 0 0 0px #FFFFFF, 8px 8px #752c22',
       },
       backgroundImage: {
-        'grid-pattern': 'url(/grid.svg)',
+        'grid-pattern': 'url(./grid.svg)',
       },
     },
   },
