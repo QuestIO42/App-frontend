@@ -18,7 +18,8 @@ const fetchAllUserCourses = async (id: string) => {
 const subscribeToCourse = async (courseId: string, userId: string) => {
   const response = await api.post(`/usercourse`, { 
     id_course: courseId,
-    id_user: userId
+    id_user: userId,
+    xp: 0
   });
   return response.data;
 };
