@@ -1,0 +1,9 @@
+.git
+.gitignore
+.github
+.dockerignore
+*.example
+Dockerfile
+Dockerfile.dev
+Dockerfile.prod
+README.md
