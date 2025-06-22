@@ -96,6 +96,10 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
   // Função para o ícone de play
   const handleVerilogSubmit = async () => {
+    console.log('id_quiz:', id_quiz);
+    console.log('question.id:', question?.id);
+    console.log('verilogAnswer:', verilogAnswer);
+
     if (!question?.id || !id_quiz) {
       setFeedback("Erro: questão ou quiz não encontrados.");
       return;
@@ -216,7 +220,8 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
               <CodeSpace
                 verilogLang={verilogAnswer}
                 setVerilog={(novoTexto: string) => {
-                  onChangeCode(question.id, novoTexto);
+                  setVerilog(novoTexto);
+                  onChangeCode(question.id, novoTexto); // informa o componente pai
                 }}
                 width={size.width}
                 height="500px"

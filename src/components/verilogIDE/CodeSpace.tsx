@@ -15,9 +15,9 @@ import React from 'react';
 
 const CodeSpace = ({ verilogLang, setVerilog, height = "100%", width="100%", disabled }: CodeSpaceProps) => {
   const editorRef = useRef(null);
-  const onChange = React.useCallback((val: any) => {
+  const onChange = React.useCallback((val: string) => {
     setVerilog(val);
-  }, []);
+  }, [setVerilog]);
 
   return (
     <CodeMirror
