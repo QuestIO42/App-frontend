@@ -38,19 +38,19 @@ export default function Footer() {
         <div className="flex flex-row flex-wrap gap-4">
           <a
             href={`/home`}
-            className="text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
+            className="flex items-center text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
             Início
           </a>
 
           <a
             href={`/profile/${user?.id}`}
-            className="text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
+            className="flex items-center text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
             Perfil
           </a>
 
           <a
             href={`https://www.vlab.dc.ufscar.br/`}
-            className="text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
+            className="flex items-center text-roxo-500 text-sm font-semibold py-2 px-4 border border-roxo-500 rounded-full transition delay-10 duration-200 ease-in-out hover:border-[#9386d9] hover:text-[#9386d9]">
             Sobre
           </a>
         </div>
