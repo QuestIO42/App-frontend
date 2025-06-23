@@ -52,6 +52,10 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
   };
 
   useEffect(() => {
+    setVerilog(initialCode);
+  }, [initialCode]);
+
+  useEffect(() => {
     const handleResize = () => {
       if(divRef.current){
         setSize({
@@ -78,13 +82,16 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
   // Código base é inserido direto no CodeSpace
   useEffect(() => {
     if (question.content) {
-      // Código base em Markdown - ```verilog ... ```
       const regex = /```verilog\s*([\s\S]*?)\s*```/;
       const match = question.content.match(regex);
 
       if (match) {
         const code = match[1].trim();
-        setVerilog(code);
+
+        // Só seta o código base se o initialCode estiver vazio
+        if (!initialCode) {
+          setVerilog(code);
+        }
 
         const cleaned = question.content.replace(regex, "").trim();
         setQuestionContent(cleaned);
@@ -92,14 +99,10 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
         setQuestionContent(question.content);
       }
     }
-  }, [question.content]);
+  }, [question.content, initialCode]);
 
   // Função para o ícone de play
   const handleVerilogSubmit = async () => {
-    console.log('id_quiz:', id_quiz);
-    console.log('question.id:', question?.id);
-    console.log('verilogAnswer:', verilogAnswer);
-
     if (!question?.id || !id_quiz) {
       setFeedback("Erro: questão ou quiz não encontrados.");
       return;
