@@ -35,13 +35,13 @@ export default function QuestionBox({ children, questionType }: { children: Reac
       : "text-gray-800";
 
   return (
-    <div className="w-[90%]">
+    <div className="w-[90%] my-3">
       <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold ${bgColor} ${shadowColor} ${textColor}`}>
           <p className="text-left text-2xl">{getTitle(questionType)}</p>
       </div>
 
       <div className="flex flex-col bg-white p-10 justify-start shadow-default-preto-900
-                      border-[3px] border-solid border-black my-6">
+                      border-[3px] border-solid border-black">
         {children}
       </div>
     </div>

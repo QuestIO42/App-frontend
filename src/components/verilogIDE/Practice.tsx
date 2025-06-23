@@ -245,7 +245,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
         {/* Console */}
         <div className="w-full mt-6">
           <div className="flex justify-start">
-            <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
+            <div className="flex flex-col mb-4 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
               <div className="flex flex-row w-full h-[240px] py-4">
                   <ResponseBox verilog_code={feedback} width={size.width} height="170px"/>
               </div>

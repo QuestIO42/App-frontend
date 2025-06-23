@@ -299,7 +299,7 @@ export default function Quiz() {
       // TIPO 0: Conteúdo
       if (question.type === 0) {
         return (
-          <div className="w-[90%] my-6" key={question.id}>
+          <div className="w-[90%] my-3" key={question.id}>
             <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]">
               <p className="text-left text-2xl">Conteúdo</p>
             </div>
@@ -329,7 +329,7 @@ export default function Quiz() {
               <Paragraph title={question.name} text={question.content} />
 
               <RadioButtonGroup
-                initialValue={selectedDescription} 
+                initialValue={selectedDescription}
                 handleAnswer={(value: string) => {
                   const found = alternativesForThis.find(
                     (ans) => ans.description === value
@@ -382,7 +382,7 @@ export default function Quiz() {
       // TIPO 3: Verilog
       if (question.type === 3) {
         return (
-          <div key={question.id} className="w-full mx-auto my-6">
+          <div key={question.id} className="w-full mx-auto my-3">
             <Practice
               question={question}
               id_quiz={quizId}
