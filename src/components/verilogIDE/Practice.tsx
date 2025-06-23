@@ -110,11 +110,19 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
     setFeedback("Executando testes...");
 
+    // Evita causar erros no backend em caso de resposta vazia
+    let verilogToSend = verilogAnswer?.trim();
+
+    // Define um código padrão se estiver vazio
+    if (!verilogToSend) {
+      verilogToSend = "Código Verilog não fornecido.";
+    }
+
     try {
       const result = await postVerilogAnswer(
         id_quiz,
         question.id,
-        verilogAnswer,
+        verilogToSend,
       );
 
       const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
