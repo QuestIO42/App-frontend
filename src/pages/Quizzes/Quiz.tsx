@@ -68,9 +68,8 @@ export default function Quiz() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
 
-  const [description] = useState<string>(
-    'Essa é a descrição para um questionário de um curso com uma coletânea de questões associadas e etc e tal. seria bom se quebrasse a linha k'
-  );
+  // Descrição do questionário
+  const [quizDesc, setQuizDesc] = useState("Descrição do questionário");
 
   // Estado do quiz, se já foi respondido ou não
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -84,6 +83,12 @@ export default function Quiz() {
       document.title = originalTitle;
     };
   }, [nome]);
+
+  /* Ajusta a descrição do quiz */
+  useEffect(() => {
+    const desc = localStorage.getItem("quizDesc") || "";
+    setQuizDesc(desc);
+  }, []);
 
   /*  Cria ou retoma as questões do quiz;
       Carrega o detalhe de cada pergunta;
@@ -421,7 +426,7 @@ export default function Quiz() {
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
             <div className="flex mt-5 mb-16 px-10 justify-center">
-              <Description text={description} variant={'purple'} />
+              <Description text={quizDesc} variant={'purple'} />
             </div>
           </div>
         </div>

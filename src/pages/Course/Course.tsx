@@ -31,10 +31,7 @@ export default function Course() {
         if (courseId) {
           const quizes = await fetchAllQuizes(courseId);
           const courseInfo = await fetchCourse(courseId);
-
-          console.log('quiz', quizes);
-          console.log('course', courseInfo);
-
+          
           setQuizes(quizes);
           setCourse(courseInfo.data);
         }

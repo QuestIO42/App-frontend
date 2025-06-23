@@ -1,4 +1,3 @@
-import { ElementType } from "react"
 import ExerciseTemplate from "../utility/ExerciseTemplate"
 import LockIcon from "../svgComponents/icons/LockIcon"
 import UnlockIcon from "../svgComponents/icons/UnlockIcon"
@@ -21,7 +20,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     const location = useLocation()
     const handleClick = (quiz: Quiz) => {
       localStorage.setItem("quizName", quiz.name)
-      localStorage.setItem("quizDesc",quiz.description)
+      localStorage.setItem("quizDesc", quiz.description)
       navigate(location.pathname + "/quiz/" + quiz.id)
     }
 
