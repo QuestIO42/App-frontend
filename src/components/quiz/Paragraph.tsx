@@ -31,6 +31,9 @@ export default function Paragraph({title, text} : ParagraphProps) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         components={{
+          h1: ({ children }) => <h1 className="text-3xl text-cinza font-bold mb-3">{children}</h1>,
+          h2: ({ children }) => <h2 className="text-2xl text-cinza font-bold mb-2">{children}</h2>,
+          h3: ({ children }) => <h3 className="text-xl text-cinza font-bold mb-1">{children}</h3>,
           p: ({ children }) => <p className="text-cinza">{children}</p>,
           iframe: ({ node, ...props }) => (
             <div className="w-full my-4 max-w-4xl aspect-video self-center">
