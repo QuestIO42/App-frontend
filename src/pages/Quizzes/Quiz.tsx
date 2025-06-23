@@ -329,7 +329,7 @@ export default function Quiz() {
               <Paragraph title={question.name} text={question.content} />
 
               <RadioButtonGroup
-                initialValue={selectedDescription}    // ← aqui você informa qual opção já estava salva
+                initialValue={selectedDescription} 
                 handleAnswer={(value: string) => {
                   const found = alternativesForThis.find(
                     (ans) => ans.description === value
