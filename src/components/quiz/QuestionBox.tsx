@@ -41,7 +41,7 @@ export default function QuestionBox({ children, questionType }: { children: Reac
       </div>
 
       <div className="flex flex-col bg-white p-10 justify-start shadow-default-preto-900
-                      border-4 border-solid border-black my-6">
+                      border-[3px] border-solid border-black my-6">
         {children}
       </div>
     </div>
