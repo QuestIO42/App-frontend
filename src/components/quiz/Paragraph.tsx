@@ -42,6 +42,16 @@ export default function Paragraph({title, text} : ParagraphProps) {
               />
             </div>
           ),
+          ul: ({ children }) => (
+            <ul className="list-disc pl-12 space-y-1 text-cinza">
+              {children}
+            </ul>
+          ),
+          ol: ({ children }) => (
+            <ol className="list-decimal pl-12 space-y-1 text-cinza">
+              {children}
+            </ol>
+          ),
         }}
       >
         {sanitizedText}
