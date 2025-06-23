@@ -26,7 +26,7 @@ export default function Paragraph({title, text} : ParagraphProps) {
 
   return(
     <div className="flex flex-col w-full gap-2">
-      <h2 className="text-4xl font-bold text-cinza">{title}</h2>
+      <h3 className="text-3xl font-bold mb-2">{title}</h3>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
