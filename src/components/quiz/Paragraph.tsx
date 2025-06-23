@@ -13,11 +13,12 @@ export default function Paragraph({title, text} : ParagraphProps) {
   const sanitizedText = sanitizeHtml(text, {
     allowedTags: [
       'b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li', 'code', 'pre', 'br',
-      'iframe', 'h1', 'h2', 'h3', 'h4', 'blockquote'
+      'iframe', 'h1', 'h2', 'h3', 'h4', 'blockquote', 'img'
     ],
     allowedAttributes: {
       a: ['href', 'target', 'rel'],
       iframe: ['src', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
+      img: ['src', 'alt', 'width', 'height', 'style', 'class'],
     },
     allowedSchemes: ['http', 'https'],
     // Só permite iframe de YouTube
