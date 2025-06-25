@@ -8,9 +8,7 @@ export default defineConfig({
     host: true,
     allowedHosts: ['front.vlab.dc.ufscar.br',
                   'dev.vlab.dc.ufscar.br',
-                  'questio.vlab.dc.ufscar.br',
-                  import.meta.env.DJANGO_SIMPLE_URL,
-                  import.meta.env.FRONTEND_SIMPLE_URL,],
+                  'questio.vlab.dc.ufscar.br',],
   },
   plugins: [react()],
   resolve: {
