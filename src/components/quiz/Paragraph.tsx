@@ -46,6 +46,13 @@ export default function Paragraph({title, text} : ParagraphProps) {
               />
             </div>
           ),
+          img: ({ node, ...props }) => (
+              <img
+                  {...props}
+                  // Exemplo de estilos/classes customizadas:
+                  className="max-w-full h-auto rounded-md my-4 self-center"
+              />
+          ),
           ul: ({ children }) => (
             <ul className="list-disc pl-12 space-y-1 text-cinza">
               {children}
