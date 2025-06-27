@@ -22,7 +22,7 @@ interface CourseWithSubscription extends Course {
 export default function Home() {
   const { user } = useAuth();
   const [courses, setCourses] = useState<CourseWithSubscription[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
 
@@ -54,13 +54,20 @@ export default function Home() {
   }, [user]);
 
   if (isLoading) {
-    // Show a loading spinner or placeholder while fetching
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading...</p>
       </div>
     );
   }
+
+  const handleSubscriptionChange = (courseId: string) => {
+    setCourses(prevCourses =>
+      prevCourses.map(course =>
+        course.id === courseId ? { ...course, isSubscribed: true } : course
+      )
+    );
+  };  
 
   return (
     <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
@@ -86,6 +93,7 @@ export default function Home() {
               title="Cursos disponíveis"
               IsRectangle={false}
               courses={courses}
+              onSubscriptionChange={handleSubscriptionChange}
             ></CoursesTemplate>
 
             {/* Laboratórios */}

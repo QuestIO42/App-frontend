@@ -10,19 +10,17 @@ import Button from '../utility/Button'
 import { useAuth } from '@/hooks/useAuth'
 import { subscribeToCourse } from '@/services/api/course'
 
-// Interface que define a estrutura do objeto de curso que o componente espera
 interface CourseWithSubscription extends Course {
   isSubscribed: boolean;
 }
 
-// Props que o componente recebe da Home.tsx
 interface CoursesTemplateProps {
   title: string;
   Icon: ElementType;
   IsRectangle: boolean;
-  courses?: CourseWithSubscription[]; // Espera a lista de cursos já com o boolean
+  courses?: CourseWithSubscription[];
   labs?: Lab[];
-  onSubscriptionChange?: (courseId: string) => void; // Função para atualizar a Home
+  onSubscriptionChange?: (courseId: string) => void;
 }
 
 export default function CoursesTemplate({
@@ -31,7 +29,7 @@ export default function CoursesTemplate({
   IsRectangle,
   courses = [],
   labs = [],
-  onSubscriptionChange = () => {}, // Valor padrão para a prop
+  onSubscriptionChange = () => {},
 }: CoursesTemplateProps) {
   const hasCourses = courses && courses.length > 0;
   const hasLabs = labs && labs.length > 0;
@@ -45,7 +43,6 @@ export default function CoursesTemplate({
     try {
       await subscribeToCourse(courseId, user.id.toString());
       alert('Inscrição realizada com sucesso!');
-      // Avisa a Home.tsx que a inscrição foi feita, para que ela possa atualizar a UI
       if (onSubscriptionChange) {
         onSubscriptionChange(courseId);
       }
@@ -56,8 +53,6 @@ export default function CoursesTemplate({
   };
 
   // Busca os professores de cada curso
-  // Funciona para os cursos em que o usuário está inscrito e cursos abertos, caso contrário
-  // o usuário não tem permissão para ver o professor (back-end)
   useEffect(() => {
     async function fetchTeachers() {
       try {
@@ -99,7 +94,7 @@ export default function CoursesTemplate({
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
         {hasCourses ? (
-          courses.map((course) => ( // Mapeamos a lista de cursos enriquecida
+          courses.map((course) => (
             <div key={course.id} className="flex flex-col gap-3 items-center">
               <div
                 // O card só é clicável se o usuário estiver inscrito
@@ -116,10 +111,7 @@ export default function CoursesTemplate({
                 </ModalSquareForm>
               </div>
 
-              {/* AQUI ESTÁ A LÓGICA PRINCIPAL */}
-              {/* O componente verifica o boolean para decidir o que renderizar */}
               {!course.isSubscribed && (
-                // Se isSubscribed for FALSE, mostra o botão "Inscrever-se"
                 <Button
                   text="Inscrever-se"
                   variant="secondary"
