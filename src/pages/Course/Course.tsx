@@ -16,33 +16,45 @@ import { fetchCourse } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
+import { getUsersInCourse } from '@/services/api/user';
+import { User } from '@/interfaces/User';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
+  const [courseTeacher, setCourseTeacher] = useState<User | null>(null);
   const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
   const { courseId } = useParams();
-
-    const { user, isLoading: isAuthLoading } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   useEffect(() => {
     async function fetchQuizes() {
       try {
         if (courseId) {
-          const quizes = await fetchAllQuizes(courseId);
-          const courseInfo = await fetchCourse(courseId);
+          const [quizesResponse, courseInfoResponse, teachersResponse] = await Promise.all([
+            fetchAllQuizes(courseId),
+            fetchCourse(courseId),
+            getUsersInCourse(courseId, 2) // Busca usuários com role 2 (professor)
+          ]);
           
-          setQuizes(quizes);
-          setCourse(courseInfo.data);
+          setQuizes(quizesResponse);
+          setCourse(courseInfoResponse.data);
+
+          if (teachersResponse && teachersResponse.length > 0) {
+            setCourseTeacher(teachersResponse[0]);
+          }
         }
       } catch (error) {
         console.error(error);
+        setCourseTeacher(null);
       } finally {
         setIsCourseLoading(false); // Set loading to false after fetch
       }
     }
     fetchQuizes();
   }, [courseId]);
+
+  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id_user);
 
   if (isCourseLoading || isAuthLoading) {
     // Show a loading spinner or placeholder while fetching
@@ -89,7 +101,7 @@ export default function Course() {
         )}
 
         <div className="w-[25%] font-size-1 h-20 flex justify-end">
-          {user && user.role >= 2 && (
+          {isUserTheCourseTeacher && (
             <>
               <Button
                 upload
