@@ -16,4 +16,9 @@ const fetchQuestion = async (id: string[]) => {
   return responses.map(response => response.data);
 }
 
-export {fetchAllQuizes, fetchQuizQuestion, fetchQuestion}
+const fetchRemainingTries = async (id: string) => {
+  const response = await api.get(`/quiz/remainingtries/${id}`);
+  return response.data; 
+}
+
+export {fetchAllQuizes, fetchQuizQuestion, fetchQuestion, fetchRemainingTries}
