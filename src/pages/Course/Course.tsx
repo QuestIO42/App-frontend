@@ -36,7 +36,7 @@ export default function Course() {
             fetchCourse(courseId),
             getUsersInCourse(courseId, 2) // Busca usuários com role 2 (professor)
           ]);
-          
+
           setQuizes(quizesResponse);
           setCourse(courseInfoResponse.data);
 
@@ -54,7 +54,7 @@ export default function Course() {
     fetchQuizes();
   }, [courseId]);
 
-  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id_user);
+  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id);
 
   if (isCourseLoading || isAuthLoading) {
     // Show a loading spinner or placeholder while fetching
