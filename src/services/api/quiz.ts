@@ -18,7 +18,7 @@ const fetchQuestion = async (id: string[]) => {
 
 const fetchRemainingTries = async (id: string) => {
   const response = await api.get(`/quiz/remainingtries/${id}`);
-  return response.data; 
+  return response.data;
 }
 
 export {fetchAllQuizes, fetchQuizQuestion, fetchQuestion, fetchRemainingTries}
