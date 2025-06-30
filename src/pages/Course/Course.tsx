@@ -36,7 +36,7 @@ export default function Course() {
             fetchCourse(courseId),
             getUsersInCourse(courseId, 2) // Busca usuários com role 2 (professor)
           ]);
-          
+
           setQuizes(quizesResponse);
           setCourse(courseInfoResponse.data);
 
@@ -54,7 +54,7 @@ export default function Course() {
     fetchQuizes();
   }, [courseId]);
 
-  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id_user);
+  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id);
 
   if (isCourseLoading || isAuthLoading) {
     // Show a loading spinner or placeholder while fetching
@@ -79,20 +79,20 @@ export default function Course() {
     <div className="w-full overflow-x-hidden gap-6 bg-grid-pattern">
       <Header/>
 
-      <div className="flex mt-11 justify-between items-center w-full">
-        <div className="w-[25%] h-full flex flex-col justify-end gap-6">
+      <div className="flex flex-col mt-12 justify-between items-center w-full">
+        <div className="relative w-full flex flex-col justify-end gap-6">
           <div className="ml-10 md:ml-20">
             <Voltar/>
           </div>
 
-          <div className="">
-            <CircuitCourse/>
+          <div className="absolute -bottom-44 left-0 w-full">
+            <CircuitCourse />
           </div>
         </div>
 
         {Course && (
-          <div className="flex flex-col justify-center">
-            <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
+          <div className="flex flex-col justify-center mx-10">
+            <h2 className="mb-8 mt-10 text-5xl text-center font-bold text-cinza">
               {Course.name}
             </h2>
 
@@ -100,7 +100,7 @@ export default function Course() {
           </div>
         )}
 
-        <div className="w-[25%] font-size-1 h-20 flex justify-end">
+        <div className="w-[25%] my-12 flex justify-end">
           {isUserTheCourseTeacher && (
             <>
               <Button
@@ -128,8 +128,14 @@ export default function Course() {
         </div>
       </div>
 
-      <div className="flex items-start justify-between my-6">
-        <div className="mb-4 ml-10 md:ml-20 flex min-w-[500px] flex-col gap-10">
+      <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
+        <div className="flex flex-col min-w-[500px] mb-4 gap-10">
+          <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
+            <p className="text-center text-2xl font-bold text-[#bab1fc]">
+              Questionários
+            </p>
+          </div>
+
           <ExercisesGroup
             itens={Quizes}
           />

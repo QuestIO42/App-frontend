@@ -40,13 +40,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [accessToken, setToken] = useState<string | null>(() => {
     return Cookies.get('accessToken') || null
   })
-  const [refreshToken, _] = useState<string | null>(() => {
-    return Cookies.get('refreshToken') || null
-  })
 
   const navigate = useNavigate()
-  const isAuthenticated =
-    import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
+  const isAuthenticated = import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
 
   useLayoutEffect(() => {
     const fetchUser = async () => {
@@ -101,10 +97,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
               error.response.data.code === 'token_not_valid' ||
               error.response.data.message === 'Token expired.'
             ) {
+
+              const currentRefreshToken = Cookies.get('refreshToken')
+
+              if (!currentRefreshToken) {
+                console.warn('Refresh token ausente. Fazendo signOut...');
+                signOut();
+                return Promise.reject(new Error('Refresh token ausente'));
+              }
+
               if (!isRefreshing) {
                 isRefreshing = true
                 api
-                  .post('/auth/token/refresh', { refresh: refreshToken })
+                  .post('/auth/token/refresh', { refresh: Cookies.get('refreshToken') })
                   .then((response) => {
                     const { access: accessToken } = response.data
                     setToken(accessToken)

@@ -7,10 +7,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   size?: 'small' | 'medium' | 'large'
   Icon: ElementType
+  disabled?: boolean
+  current_try: number
+  max_tries: number
 }
 
 const buttonVariants = cva(
-  'flex gap-28 active:scale-90 bg-white cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza',
+  'flex w-full min-h-16 bg-white items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out',
   {
     variants: {
       size: {
@@ -30,21 +33,28 @@ export default function ExerciseTemplate({
   className,
   size,
   Icon,
+  disabled,
+  current_try,
+  max_tries,
   ...rest
 }: ButtonProps) {
   return (
     <button
       className={cn(
-        buttonVariants({
-          size,
-        }),
+        buttonVariants({ size }),
+        !disabled && 'hover:scale-[102%] cursor-pointer border-preto-default shadow-default-preto text-cinza',
+        disabled && 'border-[#BBB] shadow-default-cinza text-[#888]',
         className
       )}
+      disabled={disabled}
       {...rest}
     >
-      <div className="flex-grow justify-between items-center flex">
-        <span className='flex whitespace-nowrap'>{text}</span>
-        <Icon className=" flex ml-5 h-10 w-7 shrink-0"></Icon>
+      <div className="flex-grow justify-between items-center flex flex-wrap">
+        <span className='flex whitespace-nowrap mr-8'>{text}</span>
+        <div className="flex flex-row items-center justify-center gap-4">
+          <span className="flex">{current_try}/{max_tries}</span>
+          <Icon className="flex h-7 w-7 shrink-0"></Icon>
+        </div>
       </div>
     </button>
   )

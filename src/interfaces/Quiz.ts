@@ -14,7 +14,8 @@ export interface Quiz{
   name: string
   id_course: string
   questions: Question[]
-  description:string
+  description: string
+  max_tries: number
 }
 
 export interface UserQuizQuestionAnswer {
