@@ -46,7 +46,7 @@ export default function Quiz() {
   const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
 
-  const verilogAnswersRef = useRef<Record<string, string>>({}); // 👈 useRef em vez de useState
+  const verilogAnswersRef = useRef<Record<string, string>>({});
 
   const [submissionResults, setSubmissionResults] = useState<
     Record<string, { score: string | number; result: string; feedback?: string | object }>
