@@ -51,9 +51,9 @@ export default function ExerciseTemplate({
     >
       <div className="flex-grow justify-between items-center flex gap-8">
         <span className='flex whitespace-nowrap'>{text}</span>
-        <div className="flex flex-row gap-4">
-          <span className="flex items-center justify-center text-black">{current_try}/{max_tries}</span>
-          <Icon className="flex h-10 w-7 shrink-0"></Icon>
+        <div className="flex flex-row items-center justify-center gap-4">
+          <span className="flex">{current_try}/{max_tries}</span>
+          <Icon className="flex h-7 w-7 shrink-0"></Icon>
         </div>
       </div>
     </button>

@@ -73,7 +73,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
 
     return(
       <div className="mr-8">
-          <div className="flex flex-col gap-12">
+          <div className="flex flex-col">
             {itens.map((quiz, index) => {
               const status = quizStatusMap[String(quiz.id)];
               const remainingTries = Number(status?.remaining_tries);
@@ -82,7 +82,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
               const Icon = isLocked ? LockIcon : UnlockIcon;
 
               return (
-                <div className="flex flex-col gap-6 flex-wrap">
+                <div className={`flex flex-col gap-6 flex-wrap ${isLocked ? "mb-12" : "mb-6"}`}>
                   <ExerciseTemplate
                     text={quiz.name}
                     Icon={Icon}
