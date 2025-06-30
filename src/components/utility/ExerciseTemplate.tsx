@@ -13,7 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const buttonVariants = cva(
-  'flex w-full h-16 bg-white items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out',
+  'flex w-full min-h-16 bg-white items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out',
   {
     variants: {
       size: {
@@ -49,7 +49,7 @@ export default function ExerciseTemplate({
       disabled={disabled}
       {...rest}
     >
-      <div className="flex-grow justify-between items-center flex gap-8">
+      <div className="flex-grow justify-between items-center flex flex-wrap">
         <span className='flex whitespace-nowrap'>{text}</span>
         <div className="flex flex-row items-center justify-center gap-4">
           <span className="flex">{current_try}/{max_tries}</span>

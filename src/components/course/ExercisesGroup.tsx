@@ -72,7 +72,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     }
 
     return(
-      <div className="mr-8">
+      <div className="mr-10">
           <div className="flex flex-col">
             {itens.map((quiz, index) => {
               const status = quizStatusMap[String(quiz.id)];
