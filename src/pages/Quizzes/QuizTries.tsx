@@ -95,33 +95,31 @@ export default function QuizView() {
 
         // Mapeia as respostas do usuário para visualização
         const existingAnswers: UserAnswer[] = userQuizArray
-  .map((item: UserQuizQuestionAnswer) => {
-    if (item.id_answer) {
-      const chosenId = item.id_answer;
-      const alternativas = map[item.id_question] || [];
-      const chosenObj = alternativas.find(ans => ans.id === chosenId);
-      return {
-        id_question: item.id_question,
-        answer: chosenId,
-        value: chosenObj ? chosenObj.value : 0,
-        type: 1,
-      };
-    }
-    if (item.text_answer) {
-      return {
-        id_question: item.id_question,
-        answer: item.text_answer,
-        value: 0,
-        type: 2,
-      };
-    }
-    return null;
-  })
-  .filter((x: UserAnswer | null): x is UserAnswer => x !== null);
+          .map((item: UserQuizQuestionAnswer) => {
+            if (item.id_answer) {
+              const chosenId = item.id_answer;
+              const alternativas = map[item.id_question] || [];
+              const chosenObj = alternativas.find(ans => ans.id === chosenId);
+              return {
+                id_question: item.id_question,
+                answer: chosenId,
+                value: chosenObj ? chosenObj.value : 0,
+                type: 1,
+              };
+            }
+            if (item.text_answer) {
+              return {
+                id_question: item.id_question,
+                answer: item.text_answer,
+                value: 0,
+                type: 2,
+              };
+            }
+            return null;
+          })
+          .filter((x: UserAnswer | null): x is UserAnswer => x !== null);
 
-setUserAnswers(existingAnswers);
-
-
+        setUserAnswers(existingAnswers);
 
         // Carrega código salvo para questões Verilog
         const initialVerilog: Record<string,string> = {};
@@ -159,7 +157,6 @@ setUserAnswers(existingAnswers);
   // Renderiza perguntas com respostas em modo somente leitura
   const renderQuestions = (questions: Question[]) => {
     return questions.map((question) => {
-      const userQuizAnswerId = userQuizMap[question.id];
       const userAnswerForThis = UserAnswers.find(ans => ans.id_question === question.id);
       const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
 
@@ -192,9 +189,9 @@ setUserAnswers(existingAnswers);
                 values={alternativesForThis.map((ans) => ans.description ?? '')}
                 name={`question-${question.id}`}
                 verified={true}
-                correct={true} // Pode ajustar conforme necessidade
+                correct={true}
                 verifiedValue={selectedDescription}
-                disabled={true} // só leitura
+                disabled={true}
               />
             </div>
           </QuestionBox>
@@ -214,8 +211,8 @@ setUserAnswers(existingAnswers);
                 initialValue={initialText}
                 handleAnswer={() => {}}
                 verified={true}
-                correct={true} // Ajustar conforme
-                disabled={true} // só leitura
+                correct={true}
+                disabled={true}
               />
             </div>
           </QuestionBox>

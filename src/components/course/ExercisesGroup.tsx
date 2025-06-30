@@ -98,7 +98,8 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                         <button
                           key={quiz.id + `try-${i}`}
                           onClick={() => handleTriesClick(quiz, i + 1)}
-                          className="w-full h-12 bg-[#fafafa] text-start px-6 text-cinza text-lg border-[2px] border-[#999] font-bold hover:scale-105 cursor-pointer text-cinza transition-all duration-200 ease-in-out">
+                          className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer text-cinza transition-all duration-200 ease-in-out
+                                     hover:border-[#777] hover:text-[#777] hover:scale-105">
                           Tentativa {i+1}
                         </button>
                       ))}
