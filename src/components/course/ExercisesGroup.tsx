@@ -92,9 +92,9 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                     key={`${quiz.name}-${index}`}
                   />
 
-                  {status && (
+                  {status && status.remaining_tries === 0 &&(
                     <div className="flex flex-col gap-3">
-                      {Array.from({ length: status.remaining_tries === 0 ? status.try : status.try - 1 }).map((_, i) => (
+                      {Array.from({ length: status.try }).map((_, i) => (
                         <button
                           key={quiz.id + `try-${i}`}
                           onClick={() => handleTriesClick(quiz, i + 1)}
