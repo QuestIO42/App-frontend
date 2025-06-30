@@ -54,6 +54,15 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
       navigate(location.pathname + "/quiz/" + quiz.id)
     }
 
+    // Mostrar loading enquanto não há dados de status
+    if (Object.keys(quizStatusMap).length === 0) {
+      return (
+        <div className="mt-10 mr-4 p-5 border border-cinza bg-white text-cinza">
+          Carregando quizzes...
+        </div>
+      )
+    }
+
     return(
         <div className="mt-10 mr-8">
             <div className="flex flex-col ml-2 gap-8">
