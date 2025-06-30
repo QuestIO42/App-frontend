@@ -128,8 +128,14 @@ export default function Course() {
         </div>
       </div>
 
-      <div className="flex items-start justify-between my-6">
-        <div className="mb-4 ml-10 md:ml-20 flex min-w-[500px] flex-col gap-10">
+      <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-24 mb-12">
+        <div className="flex flex-col min-w-[500px] mb-4 gap-10">
+          <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
+            <p className="text-center text-2xl font-bold text-[#bab1fc]">
+              Questionários
+            </p>
+          </div>
+
           <ExercisesGroup
             itens={Quizes}
           />

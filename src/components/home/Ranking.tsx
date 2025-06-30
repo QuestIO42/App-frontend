@@ -8,9 +8,9 @@ interface RankingProps {
 export default function Ranking(Children: RankingProps) {
   return (
     <div className={`flex flex-col gap-5 mr-10 md:mr-20`}>
-      <div className="flex min-h-[88px] min-w-[360px] items-center justify-center bg-roxo-300 shadow-default-roxo-500">
+      <div className="flex min-h-[72px] min-w-[360px] items-center justify-center bg-roxo-300 shadow-default-roxo-500">
         <p className="mr-2 text-center text-2xl font-bold text-amarelo">
-          ranking geral
+          Ranking Geral
         </p>
         <RewardIcon></RewardIcon>
       </div>
