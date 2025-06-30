@@ -19,9 +19,10 @@ export default function Paragraph({title, text} : ParagraphProps) {
       a: ['href', 'target', 'rel'],
       iframe: ['src', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
       img: ['src', 'alt', 'width', 'height', 'style', 'class'],
+      code: ['class'],
+      pre: ['class'],
     },
     allowedSchemes: ['http', 'https'],
-    // Só permite iframe de YouTube
     allowedIframeHostnames: ['www.youtube.com'],
   });
 
@@ -63,6 +64,15 @@ export default function Paragraph({title, text} : ParagraphProps) {
               {children}
             </ol>
           ),
+          code: ({node, className, children, ...props}) => {
+            return (
+              <pre className="bg-gray-100 p-4 rounded-md overflow-auto">
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              </pre>
+            ) 
+          },
         }}
       >
         {sanitizedText}
