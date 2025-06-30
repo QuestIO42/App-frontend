@@ -50,7 +50,7 @@ export default function ExerciseTemplate({
       {...rest}
     >
       <div className="flex-grow justify-between items-center flex flex-wrap">
-        <span className='flex whitespace-nowrap'>{text}</span>
+        <span className='flex whitespace-nowrap mr-8'>{text}</span>
         <div className="flex flex-row items-center justify-center gap-4">
           <span className="flex">{current_try}/{max_tries}</span>
           <Icon className="flex h-7 w-7 shrink-0"></Icon>
