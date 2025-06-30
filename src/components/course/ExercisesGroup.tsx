@@ -89,6 +89,8 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                     size="medium"
                     onClick={!isLocked ? () => handleClick(quiz) : undefined}
                     disabled={isLocked}
+                    current_try={status.try}
+                    max_tries={status.max_tries}
                     key={`${quiz.name}-${index}`}
                   />
 

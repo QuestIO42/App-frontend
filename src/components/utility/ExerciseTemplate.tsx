@@ -7,7 +7,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   size?: 'small' | 'medium' | 'large'
   Icon: ElementType
-  disabled?: boolean;
+  disabled?: boolean
+  current_try: number
+  max_tries: number
 }
 
 const buttonVariants = cva(
@@ -32,6 +34,8 @@ export default function ExerciseTemplate({
   size,
   Icon,
   disabled,
+  current_try,
+  max_tries,
   ...rest
 }: ButtonProps) {
   return (
@@ -47,7 +51,10 @@ export default function ExerciseTemplate({
     >
       <div className="flex-grow justify-between items-center flex gap-8">
         <span className='flex whitespace-nowrap'>{text}</span>
-        <Icon className="flex h-10 w-7 shrink-0"></Icon>
+        <div className="flex flex-row gap-4">
+          <span className="flex items-center justify-center text-black">{current_try}/{max_tries}</span>
+          <Icon className="flex h-10 w-7 shrink-0"></Icon>
+        </div>
       </div>
     </button>
   )
