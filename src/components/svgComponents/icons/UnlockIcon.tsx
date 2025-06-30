@@ -7,9 +7,9 @@ interface UnlockIconProps extends React.SVGProps<SVGSVGElement> {
 const UnlockIcon: React.FC<UnlockIconProps> = ({ className }) => {
   return (
     <svg
-      width="37"
-      height="45"
-      viewBox="0 0 37 45"
+      width="35"
+      height="40"
+      viewBox="0 0 40 45"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}

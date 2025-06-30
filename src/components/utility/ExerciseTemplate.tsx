@@ -7,10 +7,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   size?: 'small' | 'medium' | 'large'
   Icon: ElementType
+  disabled?: boolean;
 }
 
 const buttonVariants = cva(
-  'flex gap-28 active:scale-90 bg-white cursor-pointer items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out border-preto-default shadow-default-preto text-cinza',
+  'flex gap-28 bg-white items-center justify-center border-[3px] px-6 py-1 text-center font-bold transition-all duration-200 ease-in-out',
   {
     variants: {
       size: {
@@ -30,16 +31,18 @@ export default function ExerciseTemplate({
   className,
   size,
   Icon,
+  disabled,
   ...rest
 }: ButtonProps) {
   return (
     <button
       className={cn(
-        buttonVariants({
-          size,
-        }),
+        buttonVariants({ size }),
+        !disabled && 'active:scale-90 cursor-pointer border-preto-default shadow-default-preto text-cinza',
+        disabled && 'border-[#a8a8a8] shadow-default-cinza text-[#636363]',
         className
       )}
+      disabled={disabled}
       {...rest}
     >
       <div className="flex-grow justify-between items-center flex">
