@@ -51,8 +51,13 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     right: 'text-green-600',
   };
 
+  const hasInitialized = useRef(false);
+
   useEffect(() => {
-    setVerilog(initialCode);
+    if (!hasInitialized.current) {
+      setVerilog(initialCode);
+      hasInitialized.current = true;
+    }
   }, [initialCode]);
 
   useEffect(() => {

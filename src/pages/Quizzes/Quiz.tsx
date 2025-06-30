@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
@@ -38,43 +38,25 @@ export default function Quiz() {
   const { user } = useAuth();
   const userId = user?.id.toString() || '';
 
-  // Armazena a tentativa atual do usuário com as questões associadas
   const [UserQuizQuestion, setUserQuizQuestion] = useState<UserQuizQuestionAnswer[]>();
-
-  // Mapeia id da questão → id da resposta do usuário (UserQuizQuestionAnswer.id)
   const [userQuizMap, setUserQuizMap] = useState<Record<string, string>>({});
-
-  // Armazena os detalhes das questões do quiz
   const [Questions, setQuestions] = useState<Question[]>();
-
-  // Armazena as respostas que o usuário forneceu localmente
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
-
-  // Armazena as alternativas possíveis de múltipla escolha por pergunta
   const [possibleAnswers, setPossibleAnswers] = useState<Record<string, Answer[]>>({});
-
-  // Armazena o código verilog que vem do componente Practice
-  const [verilogAnswers, setVerilogAnswers] = useState<Record<string, string>>({});
-
   const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
 
-  // Armazena os resultados após o envio do quiz (pontuação, resultado e feedback)
+  const verilogAnswersRef = useRef<Record<string, string>>({}); // 👈 useRef em vez de useState
+
   const [submissionResults, setSubmissionResults] = useState<
     Record<string, { score: string | number; result: string; feedback?: string | object }>
   >({});
 
-  // Modal de confirmação e salvamento das respostas
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
-
-  // Descrição do questionário
   const [quizDesc, setQuizDesc] = useState("Descrição do questionário");
-
-  // Estado do quiz, se já foi respondido ou não
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  /* Ajusta o título da página com o nome do quiz */
   useEffect(() => {
     if (!nome) return;
     const originalTitle = document.title;
@@ -84,44 +66,34 @@ export default function Quiz() {
     };
   }, [nome]);
 
-  /* Ajusta a descrição do quiz */
   useEffect(() => {
     const desc = localStorage.getItem("quizDesc") || "";
     setQuizDesc(desc);
   }, []);
 
-  /*  Cria ou retoma as questões do quiz;
-      Carrega o detalhe de cada pergunta;
-      Busca alternativas de múltipla escolha */
   useEffect(() => {
     if (!quizId || !user) return;
 
-
     const startQuiz = async () => {
       try {
-        // Inicia uma nova tentativa em um quiz, criando as questões
         const response = await postNewQuiz(userId, quizId);
         let userQuizArray: UserQuizQuestionAnswer[];
 
         if (response.success) {
           userQuizArray = response.data;
         } else {
-          // Caso o usuário já tenha uma tentativa em aberto, apenas recupera as questões criadas anteriormente
           userQuizArray = await getQuizAnswers(userId, quizId, response.current_try);
         }
         setUserQuizQuestion(userQuizArray);
 
-        // Carrega os detalhes de cada pergunta
         const questionIds = userQuizArray.map((item) => item.id_question);
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
 
-        // Carrega as alternativas de múltipla escolha
         const mcQuestionIds = questionObjects
-        .filter((q) => q.type === 1)
-        .map((q) => q.id);
+          .filter((q) => q.type === 1)
+          .map((q) => q.id);
 
-        // Carrega as alternativas de múltipla escolha
         const allAnswersArrays: Answer[][] = await getAllAnswers(mcQuestionIds);
         const map: Record<string, Answer[]> = {};
         allAnswersArrays.forEach((arr) => {
@@ -132,10 +104,8 @@ export default function Quiz() {
         });
         setPossibleAnswers(map);
 
-        // Carrega as respostas do usuário que já existiam, salvas no banco
         const existingAnswers: UserAnswer[] = userQuizArray
           .map(item => {
-            // Múltipla escolha
             if ((item as any).id_answer) {
               const chosenId = (item as any).id_answer as string;
               const alternativas = map[item.id_question] || [];
@@ -145,16 +115,15 @@ export default function Quiz() {
                 answer: chosenId,
                 value: chosenObj ? chosenObj.value : 0,
                 type: 1,
-              } as UserAnswer;
+              };
             }
-            // Discursiva
-            if ((item as any).text_answer) {
+            if ((item as any).text_answer && questionObjects.find(q => q.id === item.id_question)?.type === 2) {
               return {
                 id_question: item.id_question,
                 answer: (item as any).text_answer as string,
                 value: 0,
                 type: 2,
-              } as UserAnswer;
+              };
             }
             return null;
           })
@@ -162,19 +131,17 @@ export default function Quiz() {
 
         setUserAnswers(existingAnswers);
 
-        // Carrega o código salvo para as questões de verilog
-        const initialVerilog: Record<string,string> = {};
+        const initialVerilog: Record<string, string> = {};
         questionObjects.forEach((question) => {
           if (question.type === 3) {
-            // procura no userQuizArray o objeto que tem esse id_question
             const found = userQuizArray.find((item) => item.id_question === question.id);
             if (found && (found as any).text_answer) {
               initialVerilog[question.id] = (found as any).text_answer as string;
             }
           }
         });
+        verilogAnswersRef.current = initialVerilog;
 
-        setVerilogAnswers(initialVerilog);
       } catch (error) {
         console.error('Erro ao buscar as questões ou alternativas:', error);
       } finally {
@@ -185,7 +152,6 @@ export default function Quiz() {
     startQuiz();
   }, [quizId, user]);
 
-  /* Mapeia cada id_question → id (UUID) do objeto UserQuizQuestionAnswer */
   useEffect(() => {
     if (!UserQuizQuestion) return;
     const map: Record<string, string> = {};
@@ -195,7 +161,6 @@ export default function Quiz() {
     setUserQuizMap(map);
   }, [UserQuizQuestion]);
 
-  /* Atualiza UserAnswers conforme o usuário escolhe valor ou digita texto */
   const handleAnswer = (
     id_question: string,
     answer: string,
@@ -214,11 +179,9 @@ export default function Quiz() {
     });
   };
 
-  /* Função que salva cada resposta que já existe em UserAnswers */
   const publishAnswers = async () => {
     if (!quizId) return;
 
-    // Salva múltipla escolha e discursivas
     for (const userAnswer of UserAnswers) {
       const userQuizAnswerId = userQuizMap[userAnswer.id_question];
       if (!userQuizAnswerId) continue;
@@ -237,8 +200,7 @@ export default function Quiz() {
       }
     }
 
-    // Salva respostas de verilog
-    for (const [id_question, code] of Object.entries(verilogAnswers)) {
+    for (const [id_question, code] of Object.entries(verilogAnswersRef.current)) {
       const userQuizAnswerId = userQuizMap[id_question];
       if (!userQuizAnswerId) continue;
 
@@ -251,7 +213,6 @@ export default function Quiz() {
     }
   };
 
-  /* Publica cada resposta ao backend via updateUserAnswer (intervalo de 20 segundos) */
   useEffect(() => {
     const INTERVAL_MS = 20_000;
     if (!isLoading && Object.keys(userQuizMap).length > 0) {
@@ -262,14 +223,9 @@ export default function Quiz() {
     }
   }, [isLoading, userQuizMap, UserAnswers]);
 
-  /* Função responsável por enviar as repostas do usuário e corrigir */
   const handleSubmit = async () => {
     if (!quizId) return;
-
-    // Salva as questões
     await publishAnswers();
-
-    // Após salvar as respostas, chama a correção
     try {
       const resultsArray = await submitQuizAnswers(userId, quizId);
       const mapResults: Record<string, any> = {};
@@ -287,8 +243,6 @@ export default function Quiz() {
     }
   };
 
-
-  /* Renderiza cada pergunta em seu próprio bloco */
   const renderQuestions = (questions: Question[]) => {
     return questions.map((question) => {
       const userQuizAnswerId = userQuizMap[question.id];
@@ -296,7 +250,6 @@ export default function Quiz() {
         ? submissionResults[userQuizAnswerId]
         : undefined;
 
-      // TIPO 0: Conteúdo
       if (question.type === 0) {
         return (
           <div className="w-[90%] my-3" key={question.id}>
@@ -311,7 +264,7 @@ export default function Quiz() {
         );
       }
 
-      // TIPO 1: Múltipla escolha
+      // Múltipla escolha
       if (question.type === 1) {
         const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
 
@@ -354,9 +307,8 @@ export default function Quiz() {
         );
       }
 
-      // TIPO 2: Resposta aberta
+      // Questões abertas
       if (question.type === 2) {
-        // Encontra resposta salva do usuário
         const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
 
         return (
@@ -379,19 +331,16 @@ export default function Quiz() {
         );
       }
 
-      // TIPO 3: Verilog
+      // Verilog
       if (question.type === 3) {
         return (
           <div key={question.id} className="w-full mx-auto my-3">
             <Practice
               question={question}
               id_quiz={quizId}
-              initialCode={verilogAnswers[question.id] || ''}
+              initialCode={verilogAnswersRef.current[question.id] || ''}
               onChangeCode={(id_question, code) => {
-                setVerilogAnswers((prev) => ({
-                  ...prev,
-                  [id_question]: code,
-                }));
+                verilogAnswersRef.current[id_question] = code;
               }}
               disabled={isSubmitted}
             />
@@ -435,12 +384,11 @@ export default function Quiz() {
           {Questions && renderQuestions(Questions)}
 
           <div className={`w-[90%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
-            <Button onClick={() => {setShowSaveModal(true)}} disabled={isSubmitted} className="bg-white py-3" variant="quaternary" text="Salvar Respostas"/>
+            <Button onClick={() => { setShowSaveModal(true) }} disabled={isSubmitted} className="bg-white py-3" variant="quaternary" text="Salvar Respostas" />
             <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
           </div>
         </div>
 
-        {/* Modal de salvamento */}
         {showSaveModal && (
           <ConfirmModal
             isOpen={showSaveModal}
@@ -454,7 +402,6 @@ export default function Quiz() {
           />
         )}
 
-        {/* Modal de confirmação de envio das respostas */}
         {showConfirmModal && (
           <ConfirmModal
             isOpen={showConfirmModal}
