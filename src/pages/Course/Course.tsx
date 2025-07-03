@@ -12,7 +12,7 @@ import RankingItem from '@/components/home/RankingItem';
 import Forum from '@/components/course/Forum';
 import { mockUsers } from '@/utils/mocks/mockUsers';
 import { fetchAllQuizes } from '@/services/api/quiz';
-import { fetchCourse } from '@/services/api/course';
+import { fetchCourse, exportCourseGrades } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,6 +25,7 @@ export default function Course() {
   const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -74,6 +75,38 @@ export default function Course() {
     console.error(err);
   };
 
+  const handleExportGrades = async () => {
+    if (!courseId || isExporting) return;
+
+    setIsExporting(true);
+
+    try {
+      const response = await exportCourseGrades(courseId);
+      const contentDisposition = response.headers['content-disposition'];
+      const filename = contentDisposition
+        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+        : 'notas_do_curso.csv';
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+
+      link.click();
+
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      alert('Falha ao exportar as notas. Verifique se você tem permissão e tente novamente.');
+    } finally {
+      setIsExporting(false); 
+    }
+  };
+
   return (
     <div className="w-full overflow-x-hidden gap-6 bg-grid-pattern">
       <Header/>
@@ -116,10 +149,12 @@ export default function Course() {
                 size="small"
               ></Button>
               <Button
+                onClick={handleExportGrades}
+                disabled={isExporting}
                 courseId={courseId!}
                 variant='quaternary'
                 className="mr-[90px] text-cinza bg-white text-xl"
-                text="exportar notas"
+                text={isExporting ? "Exportando..." : "exportar notas"}
                 size="small"
               ></Button>
             </>

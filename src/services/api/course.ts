@@ -34,4 +34,18 @@ const checkSubscriptionStatus = async (courseId: string, userId: string) => {
   return response;
 };
 
-export { fetchAllCourses, fetchCourse, fetchAllUserCourses, subscribeToCourse, unsubscribeFromCourse, checkSubscriptionStatus }
+const exportCourseGrades = async (courseId: string) => {
+  try {
+    //                                     👇
+    // URL ajustada para corresponder exatamente à sua rota do backend
+    const response = await api.get(`/course/exportgrade/${courseId}`, {
+      responseType: 'blob', // Essencial para o download de arquivos
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro ao exportar notas:", error);
+    throw error;
+  }
+};
+
+export { fetchAllCourses, fetchCourse, fetchAllUserCourses, subscribeToCourse, unsubscribeFromCourse, checkSubscriptionStatus, exportCourseGrades }
