@@ -17,6 +17,11 @@ async function getUsersInCourse(
   return response.data
 }
 
+const fetchUserRoleInCourse = async (userId: string, courseId: string) => {
+  const response = await api.get(`/usercourse/${userId}/${courseId}`);
+  return response.data;
+};
+
 async function signIn() {
   const response = await api.post('/auth/login')
   return response.data
@@ -33,4 +38,4 @@ async function updateUser({
   return response.data
 }
 
-export { getUser, getUsersInCourse, signIn, updateUser }
+export { getUser, getUsersInCourse, signIn, updateUser, fetchUserRoleInCourse }

@@ -16,45 +16,44 @@ import { fetchCourse } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
-import { getUsersInCourse } from '@/services/api/user';
-import { User } from '@/interfaces/User';
+import { fetchUserRoleInCourse } from '@/services/api/user';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
-  const [courseTeacher, setCourseTeacher] = useState<User | null>(null);
+  const [userCourseRole, setUserCourseRole] = useState<number | null>(null);
   const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
 
   useEffect(() => {
-    async function fetchQuizes() {
-      try {
-        if (courseId) {
-          const [quizesResponse, courseInfoResponse, teachersResponse] = await Promise.all([
+    async function fetchData() {
+      if (courseId && user?.id) {
+        try {
+          const [quizesResponse, courseInfoResponse, userCourseData] = await Promise.all([
             fetchAllQuizes(courseId),
             fetchCourse(courseId),
-            getUsersInCourse(courseId, 2) // Busca usuários com role 2 (professor)
+            fetchUserRoleInCourse(user.id.toString(), courseId)
           ]);
 
           setQuizes(quizesResponse);
           setCourse(courseInfoResponse.data);
+          setUserCourseRole(userCourseData.role);
 
-          if (teachersResponse && teachersResponse.length > 0) {
-            setCourseTeacher(teachersResponse[0]);
-          }
+        } catch (error) {
+          console.error("Failed to fetch course data:", error);
+          setUserCourseRole(null);
+        } finally {
+          setIsCourseLoading(false);
         }
-      } catch (error) {
-        console.error(error);
-        setCourseTeacher(null);
-      } finally {
-        setIsCourseLoading(false); // Set loading to false after fetch
+      } else if (!isAuthLoading) {
+        setIsCourseLoading(false);
       }
     }
-    fetchQuizes();
-  }, [courseId]);
+    fetchData();
+  }, [courseId, user, isAuthLoading]);
 
-  const isUserTheCourseTeacher = !isCourseLoading && user && courseTeacher && String(user.id) === String(courseTeacher.id);
+  const isUserTheCourseTeacher = userCourseRole === 2;
 
   if (isCourseLoading || isAuthLoading) {
     // Show a loading spinner or placeholder while fetching
