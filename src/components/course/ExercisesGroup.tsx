@@ -82,7 +82,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
               const Icon = isLocked ? LockIcon : UnlockIcon;
 
               return (
-                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col gap-6 flex-wrap mt-8`}>
+                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mt-8`}>
                   <ExerciseTemplate
                     text={quiz.name}
                     Icon={Icon}

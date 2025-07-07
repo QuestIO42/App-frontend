@@ -7,6 +7,8 @@ import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
 import WaveDromComponent from './WaveformView';
+import CheckIcon from '../svgComponents/icons/CheckIcon';
+import RedCrossIcon from '../svgComponents/icons/RedCrossIcon';
 
 interface Size{
   width: string;
@@ -19,6 +21,7 @@ interface PracticeProps {
   initialCode: string;
   onChangeCode: (id_question: string, code: string) => void;
   disabled: boolean;
+  score?: number;
 }
 
 interface FeedbackEntry {
@@ -27,7 +30,7 @@ interface FeedbackEntry {
   dump?: any;
 }
 
-export default function Practice({ question, id_quiz, initialCode, onChangeCode, disabled}: PracticeProps) {
+export default function Practice({ question, id_quiz, initialCode, onChangeCode, disabled, score}: PracticeProps) {
   const divRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({width: "0", height: "0"});
 
@@ -52,6 +55,29 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
   };
 
   const hasInitialized = useRef(false);
+
+  // Para visualização das tentativas corrigidas
+  useEffect(() => {
+    if (score !== undefined && score !== null) {
+      if (score !== 0) {
+        setFeedback(
+          <div className="flex items-center gap-3">
+            <span className="text-green-600 font-semibold">Correto</span>
+            <CheckIcon className="h-5 w-5 text-green-500" />
+          </div>
+        );
+      } else {
+        setFeedback(
+          <div className="flex items-center gap-3">
+            <span className="text-red-600 font-semibold">Incorreto</span>
+            <RedCrossIcon className="h-5 w-5 text-red-500" />
+          </div>
+        );
+      }
+    } else {
+      setFeedback("Aguardando execução...");
+    }
+  }, [score]);
 
   useEffect(() => {
     if (!hasInitialized.current) {
