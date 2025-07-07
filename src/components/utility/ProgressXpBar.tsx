@@ -10,11 +10,11 @@ export default function ProgressXpBar({ value, text  }: ProgressXpBarProps) {
       <div
         className="bg-gray-20 h-4 w-full border-2 border-preto-default" /* uma div pra caixa*/
       >
-        <div className="h-full bg-laranja" style={{ width: `${value}%` }}></div>{' '}
+        <div className="h-full bg-laranja" style={{ width: `75%` }}></div>{' '}
         {/* uma div pra barra de progresso*/}
       </div>
 
-      <div className="ml-auto text-right text-sm font-bold text-cinzaClaro">{value}%</div>
+      <div className="ml-auto text-right text-sm font-bold text-cinzaClaro">{value}</div>
     </div>
   )
 }

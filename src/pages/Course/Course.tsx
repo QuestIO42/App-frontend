@@ -10,13 +10,13 @@ import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
 import ExercisesGroup from '@/components/course/ExercisesGroup';
 import RankingItem from '@/components/home/RankingItem';
 import Forum from '@/components/course/Forum';
-import { mockUsers } from '@/utils/mocks/mockUsers';
 import { fetchAllQuizes } from '@/services/api/quiz';
 import { fetchCourse, exportCourseGrades } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchUserRoleInCourse } from '@/services/api/user';
+import { fetchRankingData, RankingUser } from '@/services/api/ranking';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
@@ -26,6 +26,8 @@ export default function Course() {
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isExporting, setIsExporting] = useState(false);
+  const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
+  const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -51,6 +53,18 @@ export default function Course() {
         setIsCourseLoading(false);
       }
     }
+    
+    const loadRanking = async () => {
+      setIsRankingLoading(true);
+      const users = await fetchRankingData(10);
+
+      const filteredUsers = users.filter(user => user.total_xp > 0);
+
+      setRankingUsers(filteredUsers);
+      setIsRankingLoading(false);
+    };
+    
+        loadRanking();
     fetchData();
   }, [courseId, user, isAuthLoading]);
 
@@ -177,7 +191,11 @@ export default function Course() {
 
         <div className="mr-4 flex flex-col">
           <Ranking>
-            <RankingItem users={mockUsers.users} />
+            {isRankingLoading ? (
+              <p>Carregando ranking...</p>
+            ) : (
+              <RankingItem users={rankingUsers} />
+            )}
           </Ranking>
 
           <Forum />

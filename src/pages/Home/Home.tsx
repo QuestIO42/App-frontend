@@ -10,10 +10,10 @@ import LabIcon from '@/components/svgComponents/icons/LabIcon';
 import RankingItem from '@/components/home/RankingItem';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { mockUsers } from '@/utils/mocks/mockUsers';
 import { mockVirtualLabs } from '@/utils/mocks/mockVirtualLabs';
 import { fetchAllCourses, fetchAllUserCourses } from '@/services/api/course';
 import { Course } from '@/interfaces/Course';
+import { fetchRankingData, RankingUser } from '@/services/api/ranking';
 
 interface CourseWithSubscription extends Course {
   isSubscribed: boolean;
@@ -23,6 +23,8 @@ export default function Home() {
   const { user } = useAuth();
   const [courses, setCourses] = useState<CourseWithSubscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
+  const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
 
   useEffect(() => {
 
@@ -50,6 +52,17 @@ export default function Home() {
       }
     }
 
+    const loadRanking = async () => {
+      setIsRankingLoading(true);
+      const users = await fetchRankingData(10);
+
+      const filteredUsers = users.filter(user => user.total_xp > 0);
+
+      setRankingUsers(filteredUsers);
+      setIsRankingLoading(false);
+    };
+
+    loadRanking();
     fetchCoursesAndSubscriptionStatus();
   }, [user]);
 
@@ -106,7 +119,11 @@ export default function Home() {
           </div>
 
           <Ranking>
-            <RankingItem users={mockUsers.users} />
+            {isRankingLoading ? (
+              <p>Carregando ranking...</p>
+            ) : (
+              <RankingItem users={rankingUsers} />
+            )}
           </Ranking>
         </div>
 
