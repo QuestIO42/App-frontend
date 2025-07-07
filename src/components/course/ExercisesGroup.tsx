@@ -14,6 +14,7 @@ interface QuizStatus {
   try: number
   max_tries: number
   remaining_tries: number
+  is_open: boolean
 }
 
 export default function ExercisesGroup({itens} : ExercisesGroupProps) {
@@ -77,12 +78,11 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
             {itens.map((quiz, index) => {
               const status = quizStatusMap[String(quiz.id)];
               const remainingTries = Number(status?.remaining_tries);
-              const isLocked = remainingTries === 0;
-
+              const isLocked = remainingTries === 0 && !status.is_open;
               const Icon = isLocked ? LockIcon : UnlockIcon;
 
               return (
-                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col gap-6 flex-wrap ${isLocked ? "mb-12" : "mb-6"}`}>
+                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col gap-6 flex-wrap mt-8`}>
                   <ExerciseTemplate
                     text={quiz.name}
                     Icon={Icon}
@@ -94,9 +94,9 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                     key={`${quiz.name}-${index}`}
                   />
 
-                  {status && status.remaining_tries === 0 &&(
+                  {status &&(
                     <div className="flex flex-col gap-3">
-                      {Array.from({ length: status.try }).map((_, i) => (
+                      {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
                         <button
                           key={quiz.id + `try-${i}`}
                           onClick={() => handleTriesClick(quiz, i + 1)}

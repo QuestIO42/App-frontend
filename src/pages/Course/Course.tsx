@@ -53,7 +53,7 @@ export default function Course() {
         setIsCourseLoading(false);
       }
     }
-    
+
     const loadRanking = async () => {
       setIsRankingLoading(true);
       const users = await fetchRankingData(10);
@@ -63,7 +63,7 @@ export default function Course() {
       setRankingUsers(filteredUsers);
       setIsRankingLoading(false);
     };
-    
+
         loadRanking();
     fetchData();
   }, [courseId, user, isAuthLoading]);
@@ -117,7 +117,7 @@ export default function Course() {
     } catch (error) {
       alert('Falha ao exportar as notas. Verifique se você tem permissão e tente novamente.');
     } finally {
-      setIsExporting(false); 
+      setIsExporting(false);
     }
   };
 
@@ -177,7 +177,7 @@ export default function Course() {
       </div>
 
       <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
-        <div className="flex flex-col min-w-[500px] mb-4 gap-10">
+        <div className="flex flex-col min-w-[500px] mb-4">
           <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
             <p className="text-center text-2xl font-bold text-[#bab1fc]">
               Questionários
