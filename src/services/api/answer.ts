@@ -43,12 +43,14 @@ const postNewQuiz = async (
 const getQuizAnswers = async (
   id_user: string,
   id_quiz: string,
-  current_try: number
+  current_try: number,
+  show_score?: boolean
 ) => {
   const response = await api.get(`/userquizquestionanswer/quiz/${id_quiz}`, {
     params: {
       id_user,
-      current_try
+      current_try,
+      show_score
     }
   });
   return response.data;

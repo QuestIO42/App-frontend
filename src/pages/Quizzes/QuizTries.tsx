@@ -63,10 +63,13 @@ export default function QuizTries() {
 
     const startQuiz = async () => {
       try {
-        const userQuizArray = await getQuizAnswers(userId, quizId, Number(currentTry));
-        setUserQuizQuestion(userQuizArray);
+        const response = await getQuizAnswers(userId, quizId, Number(currentTry), true);
+        const score = response.score;
+        const max_score = response.quiz_max_score;
+        const userAnswersData = response.answers;
+        setUserQuizQuestion(userAnswersData);
 
-        const questionIds = userQuizArray.map((item: UserQuizQuestionAnswer) => item.id_question);
+        const questionIds = userAnswersData.map((item: UserQuizQuestionAnswer) => item.id_question);
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
 
@@ -84,7 +87,7 @@ export default function QuizTries() {
         });
         setPossibleAnswers(map);
 
-        const existingAnswers: UserAnswer[] = userQuizArray
+        const existingAnswers: UserAnswer[] = userAnswersData
           .map((item: UserQuizQuestionAnswer) => {
             if ((item as any).id_answer) {
               const chosenId = (item as any).id_answer as string;
@@ -114,7 +117,7 @@ export default function QuizTries() {
         const initialVerilog: Record<string, string> = {};
         questionObjects.forEach((question) => {
           if (question.type === 3) {
-            const found = userQuizArray.find((item: UserQuizQuestionAnswer) => item.id_question === question.id);
+            const found = userAnswersData.find((item: UserQuizQuestionAnswer) => item.id_question === question.id);
             if (found && (found as any).text_answer) {
               initialVerilog[question.id] = (found as any).text_answer as string;
             }
@@ -130,7 +133,7 @@ export default function QuizTries() {
     };
 
     startQuiz();
-  }, [quizId, user]);
+  }, [quizId]);
 
   const renderQuestions = (questions: Question[]) => {
     return questions.map((question) => {
@@ -218,7 +221,7 @@ export default function QuizTries() {
                 verilogAnswersRef.current[id_question] = code;
               }}
               disabled={true}
-              score={resultData?.score || 0}
+              score={resultData?.score}
             />
           </div>
         );
