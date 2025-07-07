@@ -14,6 +14,7 @@ interface QuizStatus {
   try: number
   max_tries: number
   remaining_tries: number
+  is_open: boolean
 }
 
 export default function ExercisesGroup({itens} : ExercisesGroupProps) {
@@ -77,12 +78,11 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
             {itens.map((quiz, index) => {
               const status = quizStatusMap[String(quiz.id)];
               const remainingTries = Number(status?.remaining_tries);
-              const isLocked = remainingTries === 0;
-
+              const isLocked = remainingTries === 0 && !status.is_open;
               const Icon = isLocked ? LockIcon : UnlockIcon;
 
               return (
-                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col gap-6 flex-wrap ${isLocked ? "mb-12" : "mb-6"}`}>
+                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mt-8`}>
                   <ExerciseTemplate
                     text={quiz.name}
                     Icon={Icon}
@@ -94,14 +94,14 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                     key={`${quiz.name}-${index}`}
                   />
 
-                  {status && status.remaining_tries === 0 &&(
+                  {status &&(
                     <div className="flex flex-col gap-3">
-                      {Array.from({ length: status.try }).map((_, i) => (
+                      {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
                         <button
                           key={quiz.id + `try-${i}`}
                           onClick={() => handleTriesClick(quiz, i + 1)}
-                          className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer text-cinza transition-all duration-200 ease-in-out
-                                     hover:border-[#777] hover:text-[#777] hover:scale-105">
+                          className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer transition-all duration-200 ease-in-out
+                                     hover:border-[#777] hover:text-cinza hover:scale-105">
                           Tentativa {i+1}
                         </button>
                       ))}

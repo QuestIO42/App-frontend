@@ -10,7 +10,7 @@ interface RadioButtonProps {
 }
 
 const squareStyles = cva(
-  'flex cursor-pointer items-center justify-center border-[3px] h-10 w-10 text-cinza border-roxo-900 text-center font-bold',
+  'flex items-center justify-center border-[3px] h-10 w-10 text-cinza border-roxo-900 text-center font-bold',
   {
     variants: {
       checked: {
@@ -34,7 +34,7 @@ export default function RadioButton ({
   disabled,
 }: RadioButtonProps) {
   return (
-    <label className='flex text-xl items-center cursor-pointer my-4 mr-4'>
+    <label className={`flex text-xl items-center my-4 mr-4 ${disabled ? "" : "cursor-pointer"}`}>
       <input
         type="radio"
         name={name}

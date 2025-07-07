@@ -1,5 +1,4 @@
 import PlayIcon from "../svgComponents/icons/PlayIcon";
-import SaveIcon from "../svgComponents/icons/SaveIcon";
 import WaveformIcon from "../svgComponents/icons/WaveformIcon";
 
 interface IconGroupProps {
@@ -24,11 +23,11 @@ export default function IconGroup(IconGroup: IconGroupProps) {
   return(
     <>
       <div className="flex gap-8 flex-row">
-        <div className={`cursor-pointer flex gap-2 ${IconGroup.disabled ? "" : "transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('waveform')} >
+        <div className={`flex gap-2 ${IconGroup.disabled ? "" : "cursor-pointer transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('waveform')} >
           <WaveformIcon></WaveformIcon>
           <p>waveform</p>
         </div>
-        <div className={`cursor-pointer flex gap-2 ${IconGroup.disabled ? "" : "transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('play')} >
+        <div className={`flex gap-2 ${IconGroup.disabled ? "" : "cursor-pointer transition transform duration-300 active:scale-90"}`} onClick={() => handleClick('play')} >
           <PlayIcon></PlayIcon>
           <p>run</p>
         </div>
