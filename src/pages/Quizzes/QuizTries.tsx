@@ -38,11 +38,14 @@ export default function QuizTries() {
   const [Questions, setQuestions] = useState<Question[]>();
   const [UserAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [possibleAnswers, setPossibleAnswers] = useState<Record<string, Answer[]>>({});
-  const [isLoading, setIsLoading] = useState(true);
   const verilogAnswersRef = useRef<Record<string, string>>({});
+
+  const [score, setScore] = useState(0);
+  const [quizMaxScore, setQuizMaxScore] = useState(0);
 
   const nome = localStorage.getItem('quizName');
   const [quizDesc, setQuizDesc] = useState("Descrição do questionário");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!nome) return;
@@ -64,10 +67,13 @@ export default function QuizTries() {
     const startQuiz = async () => {
       try {
         const response = await getQuizAnswers(userId, quizId, Number(currentTry), true);
-        const score = response.score;
-        const max_score = response.quiz_max_score;
         const userAnswersData = response.answers;
+        // Questões do quiz e respostas do usuário
         setUserQuizQuestion(userAnswersData);
+
+        // Pontuação do usuário e pontuação máxima do quiz
+        setScore(response.score);
+        setQuizMaxScore(response.quiz_max_score);
 
         const questionIds = userAnswersData.map((item: UserQuizQuestionAnswer) => item.id_question);
         const questionObjects = await fetchQuestion(questionIds);
@@ -252,14 +258,17 @@ export default function QuizTries() {
           </div>
 
           <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
-            <div className="flex mt-5 mb-16 px-10 justify-center">
+            <h1 className="text-4xl font-bold text-black">{nome}</h1>
+            <div className="flex my-6 px-10 justify-center">
               <Description text={quizDesc} variant={'purple'} />
             </div>
           </div>
         </div>
 
         <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
+          <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500">
+            <p className="text-[#bab1fc] font-bold">{score}/{quizMaxScore}</p>
+          </div>
           {Questions && renderQuestions(Questions)}
         </div>
         <Footer />
