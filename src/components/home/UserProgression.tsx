@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import ProgressXpBar from '../utility/ProgressXpBar';
 import ProgressXpCircle from '../utility/ProgressXpCircle';
 import { fetchUserRanking } from '@/services/api/ranking';
 import { useAuth } from '@/hooks/useAuth';
@@ -31,9 +30,9 @@ export default function UserProgression() {
 
   return (
     <div className="grid min-h-[193px] min-w-[558px] grid-cols-2 border-4 border-preto-default bg-branco pt-4 pb-3 pl-12 pr-0 shadow-default-preto">
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center justify-center gap-1">
         <h2 className="center text-4xl font-bold text-cinza pt-2">olá, {user?.username}!</h2>
-        <ProgressXpBar text="xp" value={totalXp} />
+        <h3 className='font-bold text-lg text-cinzaClaro'>xp: {totalXp}/{level * XP_PER_LEVEL}</h3>
       </div>
       <div className="ml-auto flex items-center justify-center">
         <ProgressXpCircle level={level} progress={progress} />

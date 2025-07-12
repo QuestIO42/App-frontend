@@ -10,7 +10,7 @@ import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
 import ExercisesGroup from '@/components/course/ExercisesGroup';
 import RankingItem from '@/components/home/RankingItem';
 import Forum from '@/components/course/Forum';
-import { fetchAllQuizes } from '@/services/api/quiz';
+import { fetchAllQuizes, fetchUserQuizProgress } from '@/services/api/quiz';
 import { fetchCourse, exportCourseGrades } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
@@ -28,6 +28,12 @@ export default function Course() {
   const [isExporting, setIsExporting] = useState(false);
   const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
   const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
+  
+  const [quizProgress, setQuizProgress] = useState({
+    userScore: 0,
+    maxScore: 0,
+    percentage: 0,
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -43,6 +49,30 @@ export default function Course() {
           setCourse(courseInfoResponse.data);
           setUserCourseRole(userCourseData.role);
 
+          if (quizesResponse.length > 0) {
+            const progressPromises = quizesResponse.map((quiz: { id: string; }) =>
+              fetchUserQuizProgress(quiz.id, user.id.toString())
+            );
+            const progresses = await Promise.all(progressPromises);
+
+            let totalUserScore = 0;
+            let totalQuizMaxScore = 0;
+
+            progresses.forEach(p => {
+              totalUserScore += p.user_max_score || 0;
+              totalQuizMaxScore += p.quiz_max_score || 0;
+            });
+
+            const percentage = totalQuizMaxScore > 0
+              ? (totalUserScore / totalQuizMaxScore) * 100
+              : 0;
+
+            setQuizProgress({
+              userScore: totalUserScore,
+              maxScore: totalQuizMaxScore,
+              percentage: percentage,
+            });
+          }
         } catch (error) {
           console.error("Failed to fetch course data:", error);
           setUserCourseRole(null);
@@ -142,7 +172,12 @@ export default function Course() {
               {Course.name}
             </h2>
 
-            <ProgressXpBar text="seu progresso" value={75} />
+            <ProgressXpBar
+              text="seu progresso"
+              progress={quizProgress.percentage}
+              value={quizProgress.userScore}
+              maxValue={quizProgress.maxScore}
+            />
           </div>
         )}
 
