@@ -33,7 +33,8 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
           } catch (error) {
             console.error("Erro ao buscar tentativas:", error);
             // Fallback: 0 tentativas restantes
-            return { id: quiz.id, status: { try: 0, max_tries: 1, remaining_tries: 0 } };
+            return { id: quiz.id, status: { try: 0, max_tries: 0, remaining_tries: 1
+             } };
           }
         }))
 

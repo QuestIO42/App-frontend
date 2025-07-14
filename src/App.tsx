@@ -5,7 +5,6 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-
 import Home from './pages/Home/Home'
 import { AuthProvider } from './context/AuthProvider'
 import NotFound from './pages/NotFound/NotFound'
@@ -22,6 +21,7 @@ import ChangePassword from './pages/Login@Registration/ChangePassword'
 import ConfigPass from './pages/Login@Registration/ConfigPass'
 import Quiz from './pages/Quizzes/Quiz'
 import QuizTries from './pages/Quizzes/QuizTries'
+import Waveform from './pages/Quizzes/Waveform'
 
 export default function App() {
   return (
@@ -41,10 +41,10 @@ export default function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/home" element={<Home />} />
             <Route path="/profile/:userId" element={<ProfileScreen />} />
-
             <Route path="/course/:courseId" element={<Course />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
+            <Route path="/course/:courseId/quiz/:quizId/waveform" element={<Waveform />} />
             <Route path="/course/:courseId/quiz/:quizId/try/:currentTry" element={<QuizTries />} />
             <Route path="/test" element={<Teste />} />
             {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
