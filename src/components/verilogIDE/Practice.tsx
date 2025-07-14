@@ -8,7 +8,6 @@ import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
 import CheckIcon from '../svgComponents/icons/CheckIcon';
 import RedCrossIcon from '../svgComponents/icons/RedCrossIcon';
-import { useNavigate } from 'react-router-dom';
 
 interface Size {
   width: string;
@@ -37,7 +36,6 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
   const [questionContent, setQuestionContent] = useState<string>("");
   const [verilogAnswer, setVerilog] = useState(initialCode);
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
-  const [showWaveform, setShowWaveform] = useState(false);
   const [waveformDumps, setWaveformDumps] = useState<any[]>([]);
 
   const colorMap = {
@@ -46,32 +44,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     right: 'text-green-600',
   };
 
-  const navigate = useNavigate();
-
   const hasInitialized = useRef(false);
-
-  useEffect(() => {
-    // A condição para renderizar é:
-    // 1. O usuário quer ver o waveform (showWaveform === true)
-    // 2. Já recebemos os dados da API (waveformDumps.length > 0)
-    if (showWaveform && waveformDumps.length > 0) {
-      // Este efeito executa DEPOIS do React ter renderizado os WaveDromComponents no DOM.
-
-      // Usamos um setTimeout com 0ms para empurrar a execução para o final
-      // da fila de tarefas do navegador. Isso garante que o DOM esteja 100%
-      // atualizado antes de tentarmos processá-lo. É um truque comum
-      // para lidar com bibliotecas que manipulam o DOM diretamente.
-      const timerId = setTimeout(() => {
-        if (window.WaveDrom) {
-          console.log("Practice.tsx: Chamando ProcessAll() porque os dumps estão prontos e visíveis.");
-          window.WaveDrom.ProcessAll();
-        }
-      }, 0);
-
-      // Função de limpeza
-      return () => clearTimeout(timerId);
-    }
-  }, [showWaveform, waveformDumps]);
 
   // Feedback baseado no score
   useEffect(() => {

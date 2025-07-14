@@ -2,12 +2,6 @@ import WaveDromComponent from "@/components/verilogIDE/WaveDromComponent";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-// Interface para o estado esperado da rota
-interface WaveformState {
-  dumps?: any[]; // Use uma tipagem mais específica se possível
-  questionName?: string;
-}
-
 declare global {
   interface Window {
     WaveDrom: {
