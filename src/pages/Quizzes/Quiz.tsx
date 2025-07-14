@@ -150,7 +150,7 @@ export default function Quiz() {
     };
 
     startQuiz();
-  }, [quizId]);
+  }, [quizId, user]);
 
   useEffect(() => {
     if (!UserQuizQuestion) return;
