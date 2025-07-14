@@ -128,7 +128,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
       const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
       const feedbackEntries = Object.values(result.feedback ?? {}) as FeedbackEntry[];
       const dumps = feedbackEntries.filter(entry => entry.dump).map(entry => entry.dump).flat();
-      console.log('API Dumps recebidos:', JSON.stringify(dumps, null, 2));
+      // console.log('API Dumps recebidos:', JSON.stringify(dumps, null, 2));
       setWaveformDumps(dumps);
 
       const firstWithError = feedbackEntries.find((entry: any) => entry?.error);
