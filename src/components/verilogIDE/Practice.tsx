@@ -1,16 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { Question } from '@/interfaces/Quiz';
 import { postVerilogAnswer } from '@/services/api/answer';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import CodeSpace from "@/components/verilogIDE/CodeSpace";
 import ResponseBox from "@/components/verilogIDE/ResponseBox";
 import IconGroup from "@/components/verilogIDE/IconGroup";
-import WaveDromComponent from './WaveformView';
 import CheckIcon from '../svgComponents/icons/CheckIcon';
 import RedCrossIcon from '../svgComponents/icons/RedCrossIcon';
 
-interface Size{
+interface Size {
   width: string;
   height: string;
 }
@@ -30,24 +29,15 @@ interface FeedbackEntry {
   dump?: any;
 }
 
-export default function Practice({ question, id_quiz, initialCode, onChangeCode, disabled, score}: PracticeProps) {
+export default function Practice({ question, id_quiz, initialCode, onChangeCode, disabled, score }: PracticeProps) {
   const divRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState<Size>({width: "0", height: "0"});
+  const [size, setSize] = useState<Size>({ width: "0", height: "0" });
 
-  // Enunciado sem o código base
   const [questionContent, setQuestionContent] = useState<string>("");
-
-  // Código exibido em CodeSpace
   const [verilogAnswer, setVerilog] = useState(initialCode);
-
-  // Feedback exibido em ResponseBox
   const [feedback, setFeedback] = useState<React.ReactNode>("Aguardando execução...");
-
-  // Waveform
-  const [showWaveform, setShowWaveform] = useState(false);
   const [waveformDumps, setWaveformDumps] = useState<any[]>([]);
 
-  // Mapa de cores para o feedback
   const colorMap = {
     wrong: 'text-red-600',
     partial: 'text-yellow-600',
@@ -56,7 +46,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
   const hasInitialized = useRef(false);
 
-  // Para visualização das tentativas corrigidas
+  // Feedback baseado no score
   useEffect(() => {
     if (score !== undefined && score !== null) {
       if (score !== 0) {
@@ -79,6 +69,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     }
   }, [score]);
 
+  // Efeitos para inicialização e resize (inalterados)
   useEffect(() => {
     if (!hasInitialized.current) {
       setVerilog(initialCode);
@@ -88,20 +79,17 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
   useEffect(() => {
     const handleResize = () => {
-      if(divRef.current){
+      if (divRef.current) {
         setSize({
           width: `${divRef.current.offsetWidth}px`,
           height: `${divRef.current.offsetHeight}px`
-        })
+        });
       }
     };
-
     const resizeObserver = new ResizeObserver(handleResize);
-
     if (divRef.current) {
       resizeObserver.observe(divRef.current);
     }
-
     return () => {
       if (divRef.current) {
         resizeObserver.unobserve(divRef.current);
@@ -109,21 +97,16 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     };
   }, []);
 
-  // Separa o enunciado da questão do código base do execício
-  // Código base é inserido direto no CodeSpace
+  // Separa o enunciado do código base
   useEffect(() => {
     if (question.content) {
       const regex = /```verilog\s*([\s\S]*?)\s*```/;
       const match = question.content.match(regex);
-
       if (match) {
         const code = match[1].trim();
-
-        // Só seta o código base se o initialCode estiver vazio
         if (!initialCode) {
           setVerilog(code);
         }
-
         const cleaned = question.content.replace(regex, "").trim();
         setQuestionContent(cleaned);
       } else {
@@ -132,51 +115,26 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     }
   }, [question.content, initialCode]);
 
-  // Função para o ícone de play
+  // Submissão do código Verilog
   const handleVerilogSubmit = async () => {
     if (!question?.id || !id_quiz) {
       setFeedback("Erro: questão ou quiz não encontrados.");
       return;
     }
-
     setFeedback("Executando testes...");
-
-    // Evita causar erros no backend em caso de resposta vazia
-    let verilogToSend = verilogAnswer?.trim();
-
-    // Define um código padrão se estiver vazio
-    if (!verilogToSend) {
-      verilogToSend = "Código Verilog não fornecido.";
-    }
-
+    let verilogToSend = verilogAnswer?.trim() || "Código Verilog não fornecido.";
     try {
-      const result = await postVerilogAnswer(
-        id_quiz,
-        question.id,
-        verilogToSend,
-      );
-
+      const result = await postVerilogAnswer(id_quiz, question.id, verilogToSend);
       const resultClass = colorMap[result.result as keyof typeof colorMap] || 'text-gray-600';
-
-      // Processa o feedback dependendo da estrutura
       const feedbackEntries = Object.values(result.feedback ?? {}) as FeedbackEntry[];
-
-      // Pega os dumps para criar os waveforms
-      const dumps = feedbackEntries
-        .filter(entry => entry.dump)
-        .map(entry => entry.dump)
-        .flat();
-
+      const dumps = feedbackEntries.filter(entry => entry.dump).map(entry => entry.dump).flat();
+      // console.log('API Dumps recebidos:', JSON.stringify(dumps, null, 2));
       setWaveformDumps(dumps);
 
-      // Detecta erro de compilação
       const firstWithError = feedbackEntries.find((entry: any) => entry?.error);
       const hasSyntaxError = !!firstWithError;
-
       let formattedFeedback;
-
       if (hasSyntaxError) {
-        // Apenas uma mensagem de erro exibida
         const { message, error } = firstWithError;
         formattedFeedback = (
           <div className="mb-4">
@@ -187,22 +145,13 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
           </div>
         );
       } else {
-        // Exibe todos os feedbacks de testes
         formattedFeedback = feedbackEntries.map((entry: any, index: number) => (
           <div key={index} className="mb-4">
             <p className="font-semibold text-sm text-preto-default">Mensagem do teste {index + 1}:</p>
             <pre className="text-xs whitespace-pre-wrap text-[#5c5b5b]">{entry.message}</pre>
-
-
-            {entry.dump && (
-              <div className="mt-2 border border-gray-300 p-2 rounded">
-                <WaveDromComponent jsonData={entry.dump} />
-              </div>
-            )}
           </div>
         ));
       }
-
       setFeedback(
         <div className="whitespace-pre-wrap text-[#5c5b5b]">
           <div className="flex">
@@ -222,25 +171,40 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
     }
   };
 
-  // Funções dos ícones
   const handleIconClick = (value: string) => {
-    switch(value){
+    switch (value) {
       case 'waveform':
-        setShowWaveform(prev => !prev);
+        if (waveformDumps && waveformDumps.length > 0) {
+          // Cria um ID único para armazenar os dados temporariamente
+          const sessionId = `waveform-${Date.now()}`;
+
+          // Armazena os dados na sessionStorage
+          sessionStorage.setItem(sessionId, JSON.stringify({
+            dumps: waveformDumps,
+            questionName: question.name
+          }));
+
+          const url = `${window.location.origin}${location.pathname}/waveform?sessionId=${sessionId}`;
+          window.open(url, '_blank');
+        } else {
+          setFeedback("Nenhum dump disponível. Execute a simulação novamente para visualizar os waveforms.");
+        }
         break;
+
       case 'play':
         handleVerilogSubmit();
         break;
-      default:
-        console.log("oh no")
-    }
-  }
 
-  return(
+      default:
+        console.log("Ação de ícone não reconhecida:", value);
+    }
+  };
+
+  return (
     <div className="grid w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto]">
       <div className="w-[90%] mx-auto col-span-4 flex flex-col items-center justify-center">
         <div className="self-start w-fit flex justify-center bg-[#F2953F] px-8 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-[#6b3605]">
-            <p className="text-left text-2xl">Verilog</p>
+          <p className="text-left text-2xl">Verilog</p>
         </div>
 
         {/* Enunciado */}
@@ -256,14 +220,13 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick} disabled={disabled}/>
+                <IconGroup onIconClick={handleIconClick} disabled={disabled} />
               </div>
-
               <CodeSpace
                 verilogLang={verilogAnswer}
                 setVerilog={(novoTexto: string) => {
                   setVerilog(novoTexto);
-                  onChangeCode(question.id, novoTexto); // informa o componente pai
+                  onChangeCode(question.id, novoTexto);
                 }}
                 width={size.width}
                 height="500px"
@@ -278,36 +241,12 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
           <div className="flex justify-start">
             <div className="flex flex-col mb-4 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
               <div className="flex flex-row w-full h-[240px] py-4">
-                  <ResponseBox verilog_code={feedback} width={size.width} height="170px"/>
+                <ResponseBox verilog_code={feedback} width={size.width} height="170px" />
               </div>
             </div>
           </div>
         </div>
-
-        {/* Gráficos Waveform */}
-        {showWaveform && waveformDumps.length > 0 && (
-          <div className="w-full mt-6">
-            <div className="flex justify-start">
-              <div className="flex flex-col mb-4 gap-12 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
-                <div className="flex flex-col w-full py-4">
-                  <p className="font-bold mb-2">Sinais de simulação:</p>
-                  {waveformDumps.map((dump, index) => (
-                    <div key={index}>
-                      {/* <div
-                        key={index} className="mb-4"
-                        dangerouslySetInnerHTML={{
-                          __html: `<script type="WaveDrom">${JSON.stringify(dump)}</script>`,
-                        }}
-                      /> */}
-                      <WaveDromComponent jsonData={dump} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
-  )
+  );
 }
