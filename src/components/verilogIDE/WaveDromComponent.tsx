@@ -14,25 +14,31 @@ interface WaveDromComponentProps {
   waveJson: object;
 }
 
-function WaveDromComponent({ waveJson }: WaveDromComponentProps) {
+function WaveDromComponent({ id, waveJson }: WaveDromComponentProps) {
   const diagramRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.WaveDrom && diagramRef.current) {
+      // Limpa o conteúdo anterior
+      diagramRef.current.innerHTML = '';
+
       const scriptElement = document.createElement('script');
       scriptElement.type = 'WaveDrom';
       scriptElement.textContent = JSON.stringify(waveJson);
+      scriptElement.id = id;
 
-      // Limpa o conteúdo anterior e adiciona o script
-      diagramRef.current.innerHTML = '';
       diagramRef.current.appendChild(scriptElement);
-
-      // Renderiza o diagrama
       window.WaveDrom.ProcessAll();
     }
-  }, [waveJson]);
+  }, [waveJson, id]);
 
-  return <div ref={diagramRef}></div>;
+  return (
+    <div
+      id={`wavedrom-diagram-${id}`}
+      ref={diagramRef}
+      className="inline-block origin-center"
+    ></div>
+  );
 }
 
 export default WaveDromComponent;
