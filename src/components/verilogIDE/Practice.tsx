@@ -187,7 +187,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
           const url = `${window.location.origin}${location.pathname}/waveform?sessionId=${sessionId}`;
           window.open(url, '_blank');
         } else {
-          setFeedback("Execute a simulação para visualizar os waveforms.");
+          setFeedback("Nenhum dump disponível. Execute a simulação novamente para visualizar os waveforms.");
         }
         break;
 
