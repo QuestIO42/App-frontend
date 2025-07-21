@@ -17,11 +17,69 @@ import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchUserRoleInCourse } from '@/services/api/user';
 import { fetchRankingData, RankingUser } from '@/services/api/ranking';
+import { Post } from '@/interfaces/Post';
+import PostThread from '@/components/course/PostThreadCourse';
+import NewPostForm from '@/components/course/NewPostForm';
+import ReplyForm from '@/components/course/ReplyForm';
+// import { fetchPostsByCourse } from '@/services/api/post';
+
+const mockPosts: Post[] = [
+  {
+    id: '1',
+    title: 'Dúvida sobre a Questão 3 do Quiz de Lógica',
+    content: 'Olá pessoal, não entendi muito bem por que a resposta da questão 3 é a alternativa B. Alguém poderia me explicar a lógica por trás do circuito multiplexador neste caso?',
+    creation_date: '2024-07-22T14:30:00Z',
+    public: true,
+    id_user: 'user123',
+    id_parent: null, // <-- Post principal
+    id_course: 'course_id_abc',
+    id_question: 'question_id_xyz',
+  },
+  // --- Respostas para o Post 1 ---
+  {
+    id: '1-reply1',
+    title: '', // Títulos não são necessários para respostas
+    content: 'Acredito que seja por causa da entrada de seleção S1. Quando S1 é 1, a saída reflete a entrada D1, que está conectada em VCC (nível lógico 1), que corresponde à alternativa B.',
+    creation_date: '2024-07-22T15:00:00Z',
+    public: true,
+    id_user: 'user-helper',
+    id_parent: '1', // <-- Resposta para o post com id '1'
+    id_course: 'course_id_abc',
+    id_question: null,
+  },
+  {
+    id: '1-reply2',
+    title: '',
+    content: 'Isso mesmo! O segredo é seguir o caminho do sinal a partir das entradas de seleção.',
+    creation_date: '2024-07-22T15:10:00Z',
+    public: true,
+    id_user: 'user-confirms',
+    id_parent: '1', // <-- Outra resposta para o post '1'
+    id_course: 'course_id_abc',
+    id_question: null,
+  },
+  // --- Fim das respostas ---
+  {
+    id: '2',
+    title: 'Material de Apoio para a Prova 1',
+    content: 'Encontrei um vídeo no YouTube que explica muito bem sobre máquinas de estado. Acho que pode ajudar a todos para a próxima prova. O link é youtube.com/watch?v=example',
+    creation_date: '2024-07-21T18:00:00Z',
+    public: true,
+    id_user: 'user456',
+    id_parent: null, // <-- Post principal
+    id_course: 'course_id_abc',
+    id_question: null,
+  },
+];
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
   const [userCourseRole, setUserCourseRole] = useState<number | null>(null);
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [isLoadingPosts] = useState(false);
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const [replyingToPostId, setReplyingToPostId] = useState<string | null>(null);
   const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -29,6 +87,12 @@ export default function Course() {
   const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
   const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
   
+  const topLevelPosts = posts.filter(p => p.id_parent === null);
+  const replies = posts.filter(p => p.id_parent !== null);
+  const getRepliesForPost = (postId: string) => {
+    return replies.filter(reply => reply.id_parent === postId);
+  };
+
   const [quizProgress, setQuizProgress] = useState({
     userScore: 0,
     maxScore: 0,
@@ -98,6 +162,28 @@ export default function Course() {
     fetchData();
   }, [courseId, user, isAuthLoading]);
 
+  const handleOpenNewPostModal = () => {
+      setIsNewPostModalOpen(true);
+    };
+
+    const handleCloseNewPostModal = () => {
+      setIsNewPostModalOpen(false);
+    };
+
+    const handleOpenReplyModal = (postId: string) => {
+      setReplyingToPostId(postId);
+    };
+
+    const handleCloseReplyModal = () => {
+      setReplyingToPostId(null);
+    };
+
+    const handlePostCreated = (newPost: Post) => {
+      // Adiciona o novo post no topo da lista para feedback imediato
+      setPosts(prevPosts => [newPost, ...prevPosts]);
+      // A lógica de agrupamento será executada automaticamente na próxima renderização
+    };
+
   const isUserTheCourseTeacher = userCourseRole === 2;
 
   if (isCourseLoading || isAuthLoading) {
@@ -154,6 +240,23 @@ export default function Course() {
   return (
     <div className="w-full overflow-x-hidden gap-6 bg-grid-pattern">
       <Header/>
+
+      {isNewPostModalOpen && (
+        <NewPostForm
+          courseId={courseId!}
+          onClose={handleCloseNewPostModal}
+          onPostCreated={handlePostCreated}
+        />
+      )}
+
+      {replyingToPostId && (
+        <ReplyForm
+          courseId={courseId!}
+          parentId={replyingToPostId}
+          onClose={handleCloseReplyModal}
+          onReplyCreated={handlePostCreated}
+        />
+      )}
 
       <div className="flex flex-col mt-12 justify-between items-center w-full">
         <div className="relative w-full flex flex-col justify-end gap-6">
@@ -212,16 +315,45 @@ export default function Course() {
       </div>
 
       <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
-        <div className="flex flex-col min-w-[500px] mb-4">
-          <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
-            <p className="text-center text-2xl font-bold text-[#bab1fc]">
-              Questionários
-            </p>
+        {/* Coluna Principal (Esquerda) */}
+        <div className="flex flex-col flex-1 min-w-[60%]">
+          {/* Seção de Questionários */}
+          <div className="flex flex-col w-full mb-12">
+            <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
+              <p className="text-center text-2xl font-bold text-[#bab1fc]">
+                Questionários
+              </p>
+            </div>
+            <ExercisesGroup itens={Quizes} />
           </div>
 
-          <ExercisesGroup
-            itens={Quizes}
-          />
+          {/* Seção do Fórum/Posts */}
+          <div className="flex flex-col w-full border border-gray-200">
+            <div className="flex justify-between items-center w-full p-4 bg-laranja shadow-default-laranja">
+                <h2 className="text-2xl font-bold text-cinza">Fórum de Discussão</h2>
+                <Button
+                  variant='tertiary'
+                  text="criar novo post"
+                  size="small"
+                  onClick={handleOpenNewPostModal}>
+                </Button>
+            </div>
+            <div className="p-4 bg-gray-100 shadow-default-cinza-300">
+              {topLevelPosts.length > 0 ? (
+                // Renderiza um PostThread para cada post principal
+                topLevelPosts.map(post => (
+                  <PostThread
+                    key={post.id}
+                    post={post}
+                    replies={getRepliesForPost(post.id)} // Passa as respostas filtradas
+                    onReply={handleOpenReplyModal}
+                  />
+                ))
+              ) : (
+                <p className="text-center text-cinza py-4">Ainda não há nenhuma discussão no fórum.</p>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="mr-4 flex flex-col">
