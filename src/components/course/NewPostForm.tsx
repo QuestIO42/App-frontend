@@ -7,11 +7,12 @@ import { Post } from '@/interfaces/Post';
 interface NewPostFormProps {
   onPostCreated: (newPost: Post) => void;
   onClose: () => void;
-  courseId?: string; // Opcional
-  questionId?: string; // Opcional
+  courseId?: string;
+  questionId?: string;
+  quizId?: string;
 }
 
-export default function NewPostForm({ onPostCreated, onClose, courseId, questionId }: NewPostFormProps) {
+export default function NewPostForm({ onPostCreated, onClose, courseId, questionId, quizId  }: NewPostFormProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +20,6 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
   const { user } = useAuth();
 
   useEffect(() => {
-    // Validação para garantir que o componente é usado corretamente
     if (!courseId && !questionId) {
       console.error("NewPostForm requer 'courseId' ou 'questionId'.");
     }
@@ -52,7 +52,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
         payload.id_question = questionId;
       }
       
-      const createdPost = await createPost(payload);
+      const createdPost = await createPost(payload, { quizId });
       onPostCreated(createdPost);
       onClose();
 
@@ -66,7 +66,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-8 w-full max-w-2xl shadow-default-preto">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl shadow-default-preto">
         <h2 className="text-2xl font-bold text-cinza mb-6 underline">Criar Novo Tópico</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -76,7 +76,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-2 border border-gray-300 shadow-default-cinza"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-default-cinza focus:ring-2 focus:ring-laranja focus:border-transparent"
               required
             />
           </div>
@@ -87,7 +87,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
-              className="w-full p-2 border border-gray-300 shadow-default-cinza"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-default-cinza focus:ring-2 focus:ring-laranja focus:border-transparent"
               required
             />
           </div>

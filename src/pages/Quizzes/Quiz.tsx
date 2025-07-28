@@ -5,6 +5,7 @@ import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
 
 import { fetchQuestion } from '@/services/api/quiz';
+import { fetchPostsByQuestion } from '@/services/api/post';
 import { postNewQuiz, getQuizAnswers, updateUserAnswer, submitQuizAnswers, getAllAnswers } from '@/services/api/answer';
 
 import { useAuth } from '@/hooks/useAuth';
@@ -19,11 +20,6 @@ import Practice from '@/components/verilogIDE/Practice';
 import Button from '@/components/utility/Button';
 import { Post } from '@/interfaces/Post';
 import QuestionForumSidebar from '@/components/quiz/Forum/QuestionForumSidebar';
-
-const mockPosts: Post[] = [
-    { id: 'p1', id_question: 'f0122151-a228-4903-888a-994a737f7a78', id_parent: null, title: 'Dúvida no Mux', content: 'Qual a lógica de seleção?', creation_date: '2024-07-24T10:00:00Z', public: true, id_user: 'u1', id_course: 'c1'},
-    { id: 'p2', id_question: 'f0122151-a228-4903-888a-994a737f7a78', id_parent: 'p1', title: '', content: 'A lógica é binária.', creation_date: '2024-07-24T10:05:00Z', public: true, id_user: 'u2', id_course: 'c1'},
-];
 
 interface Answer {
   answer: string;
@@ -53,9 +49,9 @@ export default function Quiz() {
   const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
 
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [, setIsLoadingPosts] = useState(true);
   
-  // <-- 1. NOVOS ESTADOS PARA CONTROLE DA SIDEBAR -->
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
 
@@ -103,11 +99,12 @@ export default function Quiz() {
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
 
-        // --- 6. BUSCAR POSTS RELACIONADOS ---
-        // Descomente quando a função da API estiver pronta
-        // const fetchedPosts = await fetchPostsByQuestionIds(questionIds);
-        // setPosts(fetchedPosts);
-
+        if (questionIds.length > 0 && quizId) {
+            const promises = questionIds.map(id => fetchPostsByQuestion(id, quizId));
+            const postsForAllQuestions = await Promise.all(promises);
+            setPosts(postsForAllQuestions.flat());
+        }
+        
         const mcQuestionIds = questionObjects
           .filter((q) => q.type === 1)
           .map((q) => q.id);
@@ -164,6 +161,7 @@ export default function Quiz() {
         console.error('Erro ao buscar as questões ou alternativas:', error);
       } finally {
         setIsLoading(false);
+        setIsLoadingPosts(false);
       }
     };
 
@@ -415,6 +413,7 @@ export default function Quiz() {
                 posts={posts ?? []}
                 onPostCreated={handlePostCreated}
                 onClose={() => setIsSidebarOpen(false)}
+                quizId={quizId!}
               />
             </div>
           )}

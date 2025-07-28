@@ -8,11 +8,12 @@ interface ReplyFormProps {
   parentId: string;
   onReplyCreated: (newReply: Post) => void;
   onClose: () => void;
-  courseId?: string; // Opcional
-  questionId?: string; // Opcional
+  courseId?: string;
+  questionId?: string;
+  quizId?: string;
 }
 
-export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId, questionId }: ReplyFormProps) {
+export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId, questionId, quizId  }: ReplyFormProps) {
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +41,7 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
 
     try {
       const payload: any = {
-        title: '', // Respostas não têm título
+        title: '',
         content,
         id_user: user.id.toString(),
         id_parent: parentId,
@@ -52,7 +53,7 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
         payload.id_question = questionId;
       }
 
-      const createdReply = await createPost(payload);
+      const createdReply = await createPost(payload, { quizId });
       onReplyCreated(createdReply);
       onClose();
 
@@ -66,7 +67,7 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-8 shadow-default-preto w-full max-w-2xl shadow-default-preto">
+       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl shadow-default-preto">
         <h2 className="text-2xl font-bold text-cinza mb-6 underline">Responder ao Tópico</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
@@ -76,7 +77,7 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
-              className="w-full p-2 border border-gray-300 shadow-default-cinza"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-default-cinza focus:ring-2 focus:ring-laranja focus:border-transparent"
               required
             />
           </div>

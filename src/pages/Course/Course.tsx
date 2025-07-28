@@ -18,69 +18,20 @@ import { useAuth } from '@/hooks/useAuth';
 import { fetchUserRoleInCourse } from '@/services/api/user';
 import { fetchRankingData, RankingUser } from '@/services/api/ranking';
 import { Post } from '@/interfaces/Post';
-import PostThread from '@/components/course/PostThreadCourse';
+import PostThreadCourse from '@/components/course/PostThreadCourse';
 import NewPostForm from '@/components/course/NewPostForm';
 import ReplyForm from '@/components/course/ReplyForm';
-// import { fetchPostsByCourse } from '@/services/api/post';
-
-const mockPosts: Post[] = [
-  {
-    id: '1',
-    title: 'Dúvida sobre a Questão 3 do Quiz de Lógica',
-    content: 'Olá pessoal, não entendi muito bem por que a resposta da questão 3 é a alternativa B. Alguém poderia me explicar a lógica por trás do circuito multiplexador neste caso?',
-    creation_date: '2024-07-22T14:30:00Z',
-    public: true,
-    id_user: 'user123',
-    id_parent: null, // <-- Post principal
-    id_course: 'course_id_abc',
-    id_question: 'question_id_xyz',
-  },
-  // --- Respostas para o Post 1 ---
-  {
-    id: '1-reply1',
-    title: '', // Títulos não são necessários para respostas
-    content: 'Acredito que seja por causa da entrada de seleção S1. Quando S1 é 1, a saída reflete a entrada D1, que está conectada em VCC (nível lógico 1), que corresponde à alternativa B.',
-    creation_date: '2024-07-22T15:00:00Z',
-    public: true,
-    id_user: 'user-helper',
-    id_parent: '1', // <-- Resposta para o post com id '1'
-    id_course: 'course_id_abc',
-    id_question: null,
-  },
-  {
-    id: '1-reply2',
-    title: '',
-    content: 'Isso mesmo! O segredo é seguir o caminho do sinal a partir das entradas de seleção.',
-    creation_date: '2024-07-22T15:10:00Z',
-    public: true,
-    id_user: 'user-confirms',
-    id_parent: '1', // <-- Outra resposta para o post '1'
-    id_course: 'course_id_abc',
-    id_question: null,
-  },
-  // --- Fim das respostas ---
-  {
-    id: '2',
-    title: 'Material de Apoio para a Prova 1',
-    content: 'Encontrei um vídeo no YouTube que explica muito bem sobre máquinas de estado. Acho que pode ajudar a todos para a próxima prova. O link é youtube.com/watch?v=example',
-    creation_date: '2024-07-21T18:00:00Z',
-    public: true,
-    id_user: 'user456',
-    id_parent: null, // <-- Post principal
-    id_course: 'course_id_abc',
-    id_question: null,
-  },
-];
+import { fetchPostsByCourse } from '@/services/api/post';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
   const [userCourseRole, setUserCourseRole] = useState<number | null>(null);
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
-  const [isLoadingPosts] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
   const [replyingToPostId, setReplyingToPostId] = useState<string | null>(null);
-  const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
+  const [isCourseLoading, setIsCourseLoading] = useState(true);
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isExporting, setIsExporting] = useState(false);
@@ -137,14 +88,19 @@ export default function Course() {
               percentage: percentage,
             });
           }
+
+          const fetchedPosts = await fetchPostsByCourse(courseId);
+          setPosts(fetchedPosts);
         } catch (error) {
           console.error("Failed to fetch course data:", error);
           setUserCourseRole(null);
         } finally {
           setIsCourseLoading(false);
+          setIsLoadingPosts(false);
         }
       } else if (!isAuthLoading) {
         setIsCourseLoading(false);
+        setIsLoadingPosts(false);
       }
     }
 
@@ -330,22 +286,24 @@ export default function Course() {
           {/* Seção do Fórum/Posts */}
           <div className="flex flex-col w-full border border-gray-200">
             <div className="flex justify-between items-center w-full p-4 bg-laranja shadow-default-laranja">
-                <h2 className="text-2xl font-bold text-cinza">Fórum de Discussão</h2>
-                <Button
-                  variant='tertiary'
-                  text="criar novo post"
-                  size="small"
-                  onClick={handleOpenNewPostModal}>
-                </Button>
+              <h2 className="text-2xl font-bold text-cinza">Fórum de Discussão</h2>
+              <Button
+                variant='tertiary'
+                text="criar novo post"
+                size="small"
+                onClick={handleOpenNewPostModal}>
+              </Button>
             </div>
             <div className="p-4 bg-gray-100 shadow-default-cinza-300">
-              {topLevelPosts.length > 0 ? (
-                // Renderiza um PostThread para cada post principal
+              {/* --- LÓGICA DE RENDERIZAÇÃO CORRIGIDA --- */}
+              {isLoadingPosts ? (
+                <p className="text-center text-cinza py-4">Carregando posts...</p>
+              ) : topLevelPosts.length > 0 ? (
                 topLevelPosts.map(post => (
-                  <PostThread
+                  <PostThreadCourse
                     key={post.id}
                     post={post}
-                    replies={getRepliesForPost(post.id)} // Passa as respostas filtradas
+                    replies={getRepliesForPost(post.id)}
                     onReply={handleOpenReplyModal}
                   />
                 ))
