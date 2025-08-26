@@ -17,18 +17,33 @@ import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchUserRoleInCourse } from '@/services/api/user';
 import { fetchRankingData, RankingUser } from '@/services/api/ranking';
+import { Post } from '@/interfaces/Post';
+import PostThreadCourse from '@/components/course/PostThreadCourse';
+import NewPostForm from '@/components/course/NewPostForm';
+import ReplyForm from '@/components/course/ReplyForm';
+import { fetchPostsByCourse } from '@/services/api/post';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
   const [Course, setCourse] = useState<CourseData | null>(null);
   const [userCourseRole, setUserCourseRole] = useState<number | null>(null);
-  const [isCourseLoading, setIsCourseLoading] = useState(true); // Loading state
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const [replyingToPostId, setReplyingToPostId] = useState<string | null>(null);
+  const [isCourseLoading, setIsCourseLoading] = useState(true);
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isExporting, setIsExporting] = useState(false);
   const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
   const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
   
+  const topLevelPosts = posts.filter(p => p.id_parent === null);
+  const replies = posts.filter(p => p.id_parent !== null);
+  const getRepliesForPost = (postId: string) => {
+    return replies.filter(reply => reply.id_parent === postId);
+  };
+
   const [quizProgress, setQuizProgress] = useState({
     userScore: 0,
     maxScore: 0,
@@ -73,14 +88,19 @@ export default function Course() {
               percentage: percentage,
             });
           }
+
+          const fetchedPosts = await fetchPostsByCourse(courseId);
+          setPosts(fetchedPosts);
         } catch (error) {
           console.error("Failed to fetch course data:", error);
           setUserCourseRole(null);
         } finally {
           setIsCourseLoading(false);
+          setIsLoadingPosts(false);
         }
       } else if (!isAuthLoading) {
         setIsCourseLoading(false);
+        setIsLoadingPosts(false);
       }
     }
 
@@ -97,6 +117,28 @@ export default function Course() {
         loadRanking();
     fetchData();
   }, [courseId, user, isAuthLoading]);
+
+  const handleOpenNewPostModal = () => {
+      setIsNewPostModalOpen(true);
+    };
+
+    const handleCloseNewPostModal = () => {
+      setIsNewPostModalOpen(false);
+    };
+
+    const handleOpenReplyModal = (postId: string) => {
+      setReplyingToPostId(postId);
+    };
+
+    const handleCloseReplyModal = () => {
+      setReplyingToPostId(null);
+    };
+
+    const handlePostCreated = (newPost: Post) => {
+      // Adiciona o novo post no topo da lista para feedback imediato
+      setPosts(prevPosts => [newPost, ...prevPosts]);
+      // A lógica de agrupamento será executada automaticamente na próxima renderização
+    };
 
   const isUserTheCourseTeacher = userCourseRole === 2;
 
@@ -155,6 +197,23 @@ export default function Course() {
     <div className="w-full overflow-x-hidden gap-6 bg-grid-pattern">
       <Header/>
 
+      {isNewPostModalOpen && (
+        <NewPostForm
+          courseId={courseId!}
+          onClose={handleCloseNewPostModal}
+          onPostCreated={handlePostCreated}
+        />
+      )}
+
+      {replyingToPostId && (
+        <ReplyForm
+          courseId={courseId!}
+          parentId={replyingToPostId}
+          onClose={handleCloseReplyModal}
+          onReplyCreated={handlePostCreated}
+        />
+      )}
+
       <div className="flex flex-col mt-12 justify-between items-center w-full">
         <div className="relative w-full flex flex-col justify-end gap-6">
           <div className="ml-10 md:ml-20">
@@ -212,16 +271,47 @@ export default function Course() {
       </div>
 
       <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
-        <div className="flex flex-col min-w-[500px] mb-4">
-          <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
-            <p className="text-center text-2xl font-bold text-[#bab1fc]">
-              Questionários
-            </p>
+        {/* Coluna Principal (Esquerda) */}
+        <div className="flex flex-col flex-1 min-w-[60%]">
+          {/* Seção de Questionários */}
+          <div className="flex flex-col w-full mb-12">
+            <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
+              <p className="text-center text-2xl font-bold text-[#bab1fc]">
+                Questionários
+              </p>
+            </div>
+            <ExercisesGroup itens={Quizes} />
           </div>
 
-          <ExercisesGroup
-            itens={Quizes}
-          />
+          {/* Seção do Fórum/Posts */}
+          <div className="flex flex-col w-full border border-gray-200">
+            <div className="flex justify-between items-center w-full p-4 bg-laranja shadow-default-laranja">
+              <h2 className="text-2xl font-bold text-cinza">Fórum de Discussão</h2>
+              <Button
+                variant='tertiary'
+                text="criar novo post"
+                size="small"
+                onClick={handleOpenNewPostModal}>
+              </Button>
+            </div>
+            <div className="p-4 bg-gray-100 shadow-default-cinza-300">
+              {/* --- LÓGICA DE RENDERIZAÇÃO CORRIGIDA --- */}
+              {isLoadingPosts ? (
+                <p className="text-center text-cinza py-4">Carregando posts...</p>
+              ) : topLevelPosts.length > 0 ? (
+                topLevelPosts.map(post => (
+                  <PostThreadCourse
+                    key={post.id}
+                    post={post}
+                    replies={getRepliesForPost(post.id)}
+                    onReply={handleOpenReplyModal}
+                  />
+                ))
+              ) : (
+                <p className="text-center text-cinza py-4">Ainda não há nenhuma discussão no fórum.</p>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="mr-4 flex flex-col">

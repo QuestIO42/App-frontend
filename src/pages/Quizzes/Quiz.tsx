@@ -5,6 +5,7 @@ import Header from '@/components/header/Header';
 import Voltar from '@/components/course/Voltar';
 
 import { fetchQuestion } from '@/services/api/quiz';
+import { fetchPostsByQuestion } from '@/services/api/post';
 import { postNewQuiz, getQuizAnswers, updateUserAnswer, submitQuizAnswers, getAllAnswers } from '@/services/api/answer';
 
 import { useAuth } from '@/hooks/useAuth';
@@ -17,6 +18,8 @@ import OpenAnswer from '@/components/quiz/OpenAnswer';
 import ConfirmModal from '@/components/quiz/ConfirmModal';
 import Practice from '@/components/verilogIDE/Practice';
 import Button from '@/components/utility/Button';
+import { Post } from '@/interfaces/Post';
+import QuestionForumSidebar from '@/components/quiz/Forum/QuestionForumSidebar';
 
 interface Answer {
   answer: string;
@@ -45,6 +48,12 @@ export default function Quiz() {
   const [possibleAnswers, setPossibleAnswers] = useState<Record<string, Answer[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const nome = localStorage.getItem('quizName');
+
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [, setIsLoadingPosts] = useState(true);
+  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
 
   const verilogAnswersRef = useRef<Record<string, string>>({});
 
@@ -90,6 +99,12 @@ export default function Quiz() {
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
 
+        if (questionIds.length > 0 && quizId) {
+            const promises = questionIds.map(id => fetchPostsByQuestion(id, quizId));
+            const postsForAllQuestions = await Promise.all(promises);
+            setPosts(postsForAllQuestions.flat());
+        }
+        
         const mcQuestionIds = questionObjects
           .filter((q) => q.type === 1)
           .map((q) => q.id);
@@ -146,6 +161,7 @@ export default function Quiz() {
         console.error('Erro ao buscar as questões ou alternativas:', error);
       } finally {
         setIsLoading(false);
+        setIsLoadingPosts(false);
       }
     };
 
@@ -243,6 +259,15 @@ export default function Quiz() {
     }
   };
 
+  const handleOpenDiscussion = (questionId: string) => {
+    setActiveQuestionId(questionId);
+    setIsSidebarOpen(true);
+  };
+
+  const handlePostCreated = (newPost: Post) => {
+    setPosts(prev => [newPost, ...(prev ?? [])]);
+  };
+
   const renderQuestions = (questions: Question[]) => {
     return questions.map((question) => {
       const userQuizAnswerId = userQuizMap[question.id];
@@ -250,9 +275,14 @@ export default function Quiz() {
         ? submissionResults[userQuizAnswerId]
         : undefined;
 
-      if (question.type === 0) {
-        return (
-          <div className="w-[90%] my-3" key={question.id}>
+      // Container unificado para garantir que o botão e o hover funcionem para todos
+      return (
+        <div key={question.id} className="w-full relative group">
+          
+          {/* SEU CÓDIGO ORIGINAL VAI AQUI DENTRO, SEM ALTERAÇÕES */}
+
+          {question.type === 0 && (
+            <div className="w-[90%] my-3" key={question.id}>
             <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]">
               <p className="text-left text-2xl">Conteúdo</p>
             </div>
@@ -261,94 +291,83 @@ export default function Quiz() {
               <Paragraph title={question.name} text={question.content} />
             </div>
           </div>
-        );
-      }
+          )}
 
-      // Múltipla escolha
-      if (question.type === 1) {
-        const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
+          {question.type === 1 && (() => {
+            const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
+            const userAnswerForThis = UserAnswers.find((ans) => ans.id_question === question.id);
+            const selectedDescription = alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)?.description || '';
+            
+            return (
+              <QuestionBox questionType={1}>
+                <div className="flex flex-col gap-6">
+                  <Paragraph title={question.name} text={question.content} />
+                  <RadioButtonGroup
+                    initialValue={selectedDescription}
+                    handleAnswer={(value: string) => {
+                      const found = alternativesForThis.find((ans) => ans.description === value);
+                      if (!found) return;
+                      handleAnswer(question.id, found.id, found.value ?? undefined, question.type);
+                    }}
+                    values={alternativesForThis.map((ans) => ans.description ?? '')}
+                    name={`question-${question.id}`}
+                    verified={!!resultObj}
+                    correct={resultObj?.result === 'right'}
+                    verifiedValue={selectedDescription}
+                    disabled={isSubmitted}
+                  />
+                </div>
+              </QuestionBox>
+            );
+          })()}
 
-        const userAnswerForThis = UserAnswers.find(
-          (ans) => ans.id_question === question.id
-        );
+          {question.type === 2 && (() => {
+            const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
+            return (
+              <QuestionBox questionType={2}>
+                <div className="flex flex-col gap-4">
+                  <Paragraph title={question.name} text={question.content} />
+                  <OpenAnswer
+                    id_question={question.id}
+                    initialValue={initialText || ''}
+                    handleAnswer={(value: string) => handleAnswer(question.id, value, 0, question.type)}
+                    verified={!!resultObj}
+                    correct={resultObj?.result === 'right'}
+                    disabled={isSubmitted}
+                  />
+                </div>
+              </QuestionBox>
+            );
+          })()}
 
-        const selectedDescription =
-          alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)
-            ?.description || '';
-
-        return (
-          <QuestionBox questionType={1} key={question.id}>
-            <div className="flex flex-col gap-6">
-              <Paragraph title={question.name} text={question.content} />
-
-              <RadioButtonGroup
-                initialValue={selectedDescription}
-                handleAnswer={(value: string) => {
-                  const found = alternativesForThis.find(
-                    (ans) => ans.description === value
-                  );
-                  if (!found) return;
-                  handleAnswer(
-                    question.id,
-                    found.id,
-                    found.value ?? undefined,
-                    question.type
-                  );
+          {question.type === 3 && (
+            <div className="w-full mx-auto my-3">
+              <Practice
+                question={question}
+                id_quiz={quizId}
+                initialCode={verilogAnswersRef.current[question.id] || ''}
+                onChangeCode={(id_question, code) => {
+                  verilogAnswersRef.current[id_question] = code;
                 }}
-                values={alternativesForThis.map((ans) => ans.description ?? '')}
-                name={`question-${question.id}`}
-                verified={!!resultObj}
-                correct={resultObj?.result === 'right'}
-                verifiedValue={selectedDescription}
                 disabled={isSubmitted}
               />
             </div>
-          </QuestionBox>
-        );
-      }
+          )}
 
-      // Questões abertas
-      if (question.type === 2) {
-        const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
-
-        return (
-          <QuestionBox questionType={2} key={question.id}>
-            <div className="flex flex-col gap-4">
-              <Paragraph title={question.name} text={question.content} />
-
-              <OpenAnswer
-                id_question={question.id}
-                initialValue={initialText || ''}
-                handleAnswer={(value: string) =>
-                  handleAnswer(question.id, value, 0, question.type)
-                }
-                verified={!!resultObj}
-                correct={resultObj?.result === 'right'}
-                disabled={isSubmitted}
-              />
-            </div>
-          </QuestionBox>
-        );
-      }
-
-      // Verilog
-      if (question.type === 3) {
-        return (
-          <div key={question.id} className="w-full mx-auto my-3">
-            <Practice
-              question={question}
-              id_quiz={quizId}
-              initialCode={verilogAnswersRef.current[question.id] || ''}
-              onChangeCode={(id_question, code) => {
-                verilogAnswersRef.current[id_question] = code;
-              }}
-              disabled={isSubmitted}
+          {/* Botão que agora funciona para todos os tipos de questão */}
+          <div className="absolute top-4 right-4 z-10">
+             <Button
+                text="Ver Discussão"
+                variant="quaternary"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenDiscussion(question.id);
+                }}
+                className="opacity-0 group-hover:opacity-100 transition-opacity !py-1 !px-3 text-sm"
             />
           </div>
-        );
-      }
-
-      return null;
+        </div>
+      );
     });
   };
 
@@ -362,33 +381,44 @@ export default function Quiz() {
 
   return (
     <>
-      <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
+      {/* --- CORREÇÃO 3: Estrutura de layout simplificada --- */}
+      <div className="w-full min-h-screen bg-grid-pattern">
         <Header />
 
-        <div className="flex flex-col col-span-full justify-start gap-4">
-          <div className="w-30 justify-start">
-            <div className="ml-10 md:ml-20 mt-10">
-              <Voltar />
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-bold text-[#454545]">{nome}</h1>
-            <div className="flex mt-5 mb-16 px-10 justify-center">
+        <div className="flex flex-col px-4 sm:px-8 md:px-12 py-10">
+          <Voltar />
+          <div className="flex flex-col items-center justify-center mt-4">
+            <h1 className="text-4xl font-bold text-[#454545] text-center">{nome}</h1>
+            <div className="flex mt-5 mb-10 px-10 justify-center">
               <Description text={quizDesc} variant={'purple'} />
             </div>
           </div>
         </div>
 
-        <div className="col-span-full w-full mb-16 flex flex-col gap-8 mx-auto items-center justify-center">
-          {Questions && renderQuestions(Questions)}
-
-          <div className={`w-[90%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
-            <Button onClick={() => { setShowSaveModal(true) }} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Salvar Respostas" />
-            <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
+        <main className="flex gap-8 px-4 sm:px-8 md:px-12">
+          {/* Coluna Principal: Questões */}
+          <div className={`transition-all duration-300 flex flex-col gap-8 items-center ${isSidebarOpen ? 'w-full md:w-2/3' : 'w-full'}`}>
+            {Questions && renderQuestions(Questions)}
+            <div className={`w-[90%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
+              <Button onClick={() => setShowSaveModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Salvar Respostas" />
+              <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
+            </div>
           </div>
-        </div>
 
+          {/* Coluna Lateral: Fórum (renderizada condicionalmente) */}
+          {isSidebarOpen && (
+            <div className="w-full md:w-1/3">
+              <QuestionForumSidebar 
+                questionId={activeQuestionId}
+                posts={posts ?? []}
+                onPostCreated={handlePostCreated}
+                onClose={() => setIsSidebarOpen(false)}
+                quizId={quizId!}
+              />
+            </div>
+          )}
+        </main>
+        
         {showSaveModal && (
           <ConfirmModal
             isOpen={showSaveModal}
