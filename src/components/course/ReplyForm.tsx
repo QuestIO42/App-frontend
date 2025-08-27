@@ -41,7 +41,7 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
 
     try {
       const payload: any = {
-        title: '',
+        title: 'Resposta',
         content,
         id_user: user.id.toString(),
         id_parent: parentId,
