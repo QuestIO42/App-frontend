@@ -37,7 +37,7 @@ export default function Home() {
         ]);
 
         const allCoursesData = allCoursesResponse.data;
-        
+
         const userSubscribedIds = new Set(userCoursesResponse.map((c: Course) => c.id));
         const coursesWithStatus = allCoursesData.map((course: Course) => ({
           ...course,
@@ -80,7 +80,7 @@ export default function Home() {
         course.id === courseId ? { ...course, isSubscribed: true } : course
       )
     );
-  };  
+  };
 
   return (
     <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
@@ -89,7 +89,7 @@ export default function Home() {
       <div className="col-span-full w-full">
         <div className="ml-10 md:ml-20 grid grid-cols-2">
           <div className="flex items-start justify-start">
-            <UserProgression username={user?.username} />
+            <UserProgression />
           </div>
           <div className="flex items-end justify-end">
             <CircuitTopRight />

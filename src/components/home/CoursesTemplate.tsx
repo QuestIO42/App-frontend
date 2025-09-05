@@ -62,7 +62,6 @@ export default function CoursesTemplate({
               const users: User[] = await getUsersInCourse(course.id, 2)
               return { courseId: course.id, teacherName: users[0].full_name}
             } catch (error) {
-              console.error(`Erro ao buscar professor para o curso ${course.id}:`, error)
               return { courseId: course.id, teacherName: 'Nenhum professor associado a este curso' }
             }
           })
