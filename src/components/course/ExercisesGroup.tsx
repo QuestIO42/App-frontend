@@ -62,7 +62,6 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
       navigate(`${location.pathname}/quiz/${quiz.id}/try/${tryNumber}`);
     };
 
-
     // Mostrar loading enquanto não há dados de status
     if (Object.keys(quizStatusMap).length === 0) {
       return (
@@ -82,7 +81,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
               const Icon = isLocked ? LockIcon : UnlockIcon;
 
               return (
-                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mt-8`}>
+                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mb-2`}>
                   <ExerciseTemplate
                     text={quiz.name}
                     Icon={Icon}
@@ -95,7 +94,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                   />
 
                   {status &&(
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 mb-6">
                       {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
                         <button
                           key={quiz.id + `try-${i}`}

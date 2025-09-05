@@ -37,7 +37,7 @@ export default function Course() {
   const [isExporting, setIsExporting] = useState(false);
   const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
   const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
-  
+
   const topLevelPosts = posts.filter(p => p.id_parent === null);
   const replies = posts.filter(p => p.id_parent !== null);
   const getRepliesForPost = (postId: string) => {
@@ -275,7 +275,7 @@ export default function Course() {
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
           <div className="flex flex-col w-full mb-12">
-            <div className="flex w-fit min-h-[72px] py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500">
+            <div className="flex w-fit py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500 mb-6">
               <p className="text-center text-2xl font-bold text-[#bab1fc]">
                 Questionários
               </p>
