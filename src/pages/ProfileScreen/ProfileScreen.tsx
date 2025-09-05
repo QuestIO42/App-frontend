@@ -19,12 +19,10 @@ export default function ProfileScreen() {
     const fetchUserCourses = async () => {
       if (userId) {
         try {
-          console.log('useEffect chamado')
           const userCourses = await fetchAllUserCourses(userId)
           setUserCourses(userCourses)
-          console.log('Cursos do usuário:', userCourses)
         } catch (error) {
-          console.error('Erro ao obter cursos do usuário:', error)
+          setUserCourses([])
         }
       }
     }
@@ -41,16 +39,15 @@ export default function ProfileScreen() {
   }
 
   return (
-    <div className="w-full overflow-x-hidden bg-grid-pattern">
+    <div className="bg-grid-pattern">
       <Header/>
 
-      <main className="flex flex-col items-center justify-center gap-20 mb-24 mt-20">
-        <div className="relative flex items-center justify-center gap-24">
+      <main className="flex flex-col items-center justify-center gap-12 py-20 px-10 md:px-20">
+        <div className="flex flex-row items-start justify-center gap-12">
           <UserProfile/>
           <UserStatistics/>
 
           <Button
-            className="absolute -right-40 top-0"
             text="logout"
             size="small"
             variant="quaternary"
@@ -58,7 +55,7 @@ export default function ProfileScreen() {
           ></Button>
         </div>
 
-        <div className="w-[90%]">
+        <div className="w-full">
           <UserCourses courses={userCourses}></UserCourses>
         </div>
       </main>

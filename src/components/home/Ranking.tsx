@@ -1,4 +1,5 @@
-import RewardIcon from '../svgComponents/icons/RewardIcon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrophy } from '@fortawesome/free-solid-svg-icons'
 
 interface RankingProps {
   children: React.ReactNode
@@ -12,7 +13,7 @@ export default function Ranking(Children: RankingProps) {
         <p className="mr-2 text-center text-2xl font-bold text-amarelo">
           Ranking Geral
         </p>
-        <RewardIcon></RewardIcon>
+        <FontAwesomeIcon icon={faTrophy} className="text-amarelo text-3xl" />
       </div>
       <div className="h-auto max-w-[360px] bg-roxo-500 px-4 py-2 shadow-default-roxo-500">
         {Children.children}

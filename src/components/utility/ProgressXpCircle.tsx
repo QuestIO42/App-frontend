@@ -1,6 +1,8 @@
 interface ProgressCircleXp {
   level: number // número que fica no centro do circulo
   progress: number // deve representar o preenchimento do circulo
+  width?: string,
+  height?: string
 }
 /* Há uma adaptção interessante aqui. Fazer -progress para que o circulo comece
 no local adequado, como está no figma. */
@@ -12,6 +14,8 @@ no local adequado, como está no figma. */
 export default function ProgressXpCircle({
   level,
   progress,
+  width = "8em",
+  height = "8em"
 }: ProgressCircleXp) {
   const radius = 90
   const stroke = 20
@@ -21,7 +25,7 @@ export default function ProgressXpCircle({
   const size = (normalizedRadius + stroke) * 2
 
   return (
-      <svg width="8em" height="8em"  viewBox={`0 0 ${size} ${size}`}>
+      <svg width={width} height={height}  viewBox={`0 0 ${size} ${size}`}>
         <defs>
           <filter id="shadow">
             <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="black" />
@@ -29,7 +33,7 @@ export default function ProgressXpCircle({
         </defs>
         <circle
           strokeWidth={stroke}
-          stroke={'#F2DB3F'}
+          stroke={'#f8e0c9ff'}
           fill="transparent"
           r={normalizedRadius}
           cx={size / 2}
