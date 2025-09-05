@@ -51,7 +51,7 @@ export default function Quiz() {
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [, setIsLoadingPosts] = useState(true);
-  
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
 
@@ -104,7 +104,7 @@ export default function Quiz() {
             const postsForAllQuestions = await Promise.all(promises);
             setPosts(postsForAllQuestions.flat());
         }
-        
+
         const mcQuestionIds = questionObjects
           .filter((q) => q.type === 1)
           .map((q) => q.id);
@@ -278,7 +278,7 @@ export default function Quiz() {
       // Container unificado para garantir que o botão e o hover funcionem para todos
       return (
         <div key={question.id} className="w-full relative group">
-          
+
           {/* SEU CÓDIGO ORIGINAL VAI AQUI DENTRO, SEM ALTERAÇÕES */}
 
           {question.type === 0 && (
@@ -297,7 +297,7 @@ export default function Quiz() {
             const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
             const userAnswerForThis = UserAnswers.find((ans) => ans.id_question === question.id);
             const selectedDescription = alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)?.description || '';
-            
+
             return (
               <QuestionBox questionType={1}>
                 <div className="flex flex-col gap-6">
@@ -395,11 +395,11 @@ export default function Quiz() {
           </div>
         </div>
 
-        <main className="flex gap-8 px-4 sm:px-8 md:px-12">
+        <main className="flex gap-8 pb-12 px-4 sm:px-8 md:px-12">
           {/* Coluna Principal: Questões */}
           <div className={`transition-all duration-300 flex flex-col gap-8 items-center ${isSidebarOpen ? 'w-full md:w-2/3' : 'w-full'}`}>
             {Questions && renderQuestions(Questions)}
-            <div className={`w-[90%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
+            <div className={`w-[80%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
               <Button onClick={() => setShowSaveModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Salvar Respostas" />
               <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
             </div>
@@ -408,7 +408,7 @@ export default function Quiz() {
           {/* Coluna Lateral: Fórum (renderizada condicionalmente) */}
           {isSidebarOpen && (
             <div className="w-full md:w-1/3">
-              <QuestionForumSidebar 
+              <QuestionForumSidebar
                 questionId={activeQuestionId}
                 posts={posts ?? []}
                 onPostCreated={handlePostCreated}
@@ -418,7 +418,7 @@ export default function Quiz() {
             </div>
           )}
         </main>
-        
+
         {showSaveModal && (
           <ConfirmModal
             isOpen={showSaveModal}
