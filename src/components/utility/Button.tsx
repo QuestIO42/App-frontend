@@ -15,7 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
   fieldName?: string;
   courseId?: string;
-  
+
   // Download de arquivos
   download?: boolean;
   downloadUrl?: boolean;

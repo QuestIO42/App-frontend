@@ -1,16 +1,12 @@
-import BookIcon from '../svgComponents/icons/BookIcon'
-import BuildingIcon from '../svgComponents/icons/BuildingIcon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons'
 
 export default function StudentInformation() {
   return (
-    <ul className="mr-auto flex flex-col items-center gap-6 text-xl font-bold text-cinza">
-      <li className="mr-auto flex gap-2">
-        <BuildingIcon></BuildingIcon>
-        <p className="">Universidade Federal de São Carlos</p>
-      </li>
-      <li className="mr-auto flex gap-2">
-        <BookIcon></BookIcon>
-        <p className="">Engenharia da Computação</p>
+    <ul className="flex flex-col items-center justify-center gap-6 text-lg leading-[1.9] text-cinza my-3">
+      <li className="flex gap-4">
+        <FontAwesomeIcon icon={faBuildingColumns} className="text-[#47bf85] text-3xl" />
+        <p>Universidade Federal de São Carlos</p>
       </li>
     </ul>
   )
