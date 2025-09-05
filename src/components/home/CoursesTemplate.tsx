@@ -1,4 +1,4 @@
-import { ElementType } from 'react'
+import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import ModalSquareForm from '../utility/ModalSquareForm'
@@ -16,7 +16,7 @@ interface CourseWithSubscription extends Course {
 
 interface CoursesTemplateProps {
   title: string;
-  Icon: ElementType;
+  Icon: ReactNode;
   IsRectangle: boolean;
   courses?: CourseWithSubscription[];
   labs?: Lab[];
@@ -86,9 +86,9 @@ export default function CoursesTemplate({
 
   return (
     <div className="flex flex-col items-start justify-start gap-10">
-      <div className="mr-auto flex items-center justify-center gap-3">
-        <Icon width="48" height="48" />
-        <h2 className="mr-auto text-4xl font-bold text-cinza">{title}</h2>
+      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
+        {Icon}
+        <h2 className="mr-2 text-2xl font-bold text-[#555]">{title}</h2>
       </div>
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
@@ -105,20 +105,23 @@ export default function CoursesTemplate({
                   key={course.id}
                   courseName={course.name}
                   courseTeacher={teachers[course.id]}
+                  borderColor="roxo-900"
                 >
-                  <div className={`bg-red-700 ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}></div>
+                  <div className={`bg-roxo-500 flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}>
+                    {!course.isSubscribed && (
+                      <Button
+                        text="Inscrever-se"
+                        size="small"
+                        className="w-[80%] z-10 p-2 shadow-none border-roxo-900 hover:bg-roxo-900 hover:shadow-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSubscribe(course.id)
+                        }}
+                      />
+                    )}
+                  </div>
                 </ModalSquareForm>
               </div>
-
-              {!course.isSubscribed && (
-                <Button
-                  text="Inscrever-se"
-                  variant="secondary"
-                  size="medium"
-                  className="w-full"
-                  onClick={() => handleSubscribe(course.id)}
-                />
-              )}
             </div>
           ))
         ) : hasLabs ? (

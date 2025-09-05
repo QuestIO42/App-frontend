@@ -51,7 +51,7 @@ export default function UserCourses({ courses }: UserCoursesProps) {
 
   return (
     <div className="flex flex-col items-start justify-start">
-      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#777] bg-[#DDD] shadow-default-cinza gap-4">
+      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
         <FontAwesomeIcon icon={faBookmark} className="text-3xl" />
         <h2 className="text-left text-2xl font-bold">Meus Cursos</h2>
       </div>
