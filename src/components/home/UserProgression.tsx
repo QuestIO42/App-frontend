@@ -35,7 +35,7 @@ export default function UserProgression() {
       </div>
 
       <div className="flex flex-col items-start justify-center gap-1">
-        <h2 className="text-4xl font-bold text-black uppercase">olá, {user?.username}!</h2>
+        <h2 className="text-4xl font-bold text-black tracking-wider uppercase">olá, {user?.username}!</h2>
         <h3 className='text-lg text-gray-400'>{user?.email}</h3>
       </div>
     </div>
