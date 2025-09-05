@@ -1,4 +1,4 @@
-import { createContext, useState, useLayoutEffect } from 'react'
+import { createContext, useState, useLayoutEffect, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
@@ -85,86 +85,78 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [accessToken])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (import.meta.env.VITE_APP_ENV !== 'development') {
       const refreshInterceptor = api.interceptors.response.use(
-        (response) => response,
+        response => response,
         async (error) => {
-          const originalRequest = error.config
+          const originalRequest = error.config;
 
-          if (error.response.status === 401) {
-            if (
-              error.response.data.code === 'token_not_valid' ||
-              error.response.data.message === 'Token expired.'
-            ) {
+          if (!error.response || error.response.status !== 401) {
+            return Promise.reject(error);
+          }
 
-              const currentRefreshToken = Cookies.get('refreshToken')
+          const data = error.response.data;
 
-              if (!currentRefreshToken) {
-                console.warn('Refresh token ausente. Fazendo signOut...');
-                signOut();
-                return Promise.reject(new Error('Refresh token ausente'));
-              }
+          if (data.code !== 'token_not_valid' && data.message !== 'Token expired.') {
+            signOut();
+            return Promise.reject(error);
+          }
 
-              if (!isRefreshing) {
-                isRefreshing = true
-                api
-                  .post('/auth/token/refresh', { refresh: Cookies.get('refreshToken') })
-                  .then((response) => {
-                    const { access: accessToken } = response.data
-                    setToken(accessToken)
-                    // console.log('accessToken', accessToken)
-                    Cookies.set('accessToken', accessToken)
-                    // Atualiza o header Authorization com o novo token de acesso
-                    api.defaults.headers['Authorization'] =
-                      `Bearer ${accessToken}`
+          const refreshToken = Cookies.get('refreshToken');
+          if (!refreshToken) {
+            console.warn('Refresh token ausente, deslogando...');
+            signOut();
+            return Promise.reject(error);
+          }
 
-                    failedRequestQueue.forEach((request) =>
-                      request.onSuccess(accessToken)
-                    )
-                    failedRequestQueue = []
-                  })
+          if (!isRefreshing) {
+            isRefreshing = true;
 
-                  .catch((err) => {
-                    failedRequestQueue.forEach((request) =>
-                      request.onFailure(err)
-                    )
-                    failedRequestQueue = []
-                  })
-                  .finally(() => {
-                    isRefreshing = false
-                  })
-              }
+            try {
+              const response = await api.post('/auth/token/refresh', { refresh: refreshToken });
+              const newAccessToken = response.data.access;
 
-              return new Promise((resolve, reject) => {
-                failedRequestQueue.push({
-                  onSuccess: (accessToken: string) => {
-                    if (accessToken) {
-                      originalRequest.headers['Authorization'] =
-                        `Bearer ${accessToken}`
-                      resolve(api(originalRequest))
-                    } else {
-                      console.error('Access token is null')
-                      reject(new Error('Access token is null'))
-                    }
-                  },
-                  onFailure: (err: AxiosError) => {
-                    reject(err)
-                  },
-                })
-              })
-            } else {
-              signOut()
+              setToken(newAccessToken);
+              Cookies.set('accessToken', newAccessToken, {
+                sameSite: 'Lax',
+                secure: import.meta.env.PROD,
+              });
+
+              api.defaults.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+              // Resolve todas as requisições que estavam na fila
+              failedRequestQueue.forEach(req => req.onSuccess(newAccessToken));
+            } catch (err: unknown) {
+              const axiosError = err as AxiosError;
+              failedRequestQueue.forEach(req => req.onFailure(axiosError));
+              signOut();
+            } finally {
+              failedRequestQueue = [];
+              isRefreshing = false;
             }
           }
-          return Promise.reject(error)
+
+          // Retorna uma promise para a requisição original aguardar o refresh
+          return new Promise((resolve, reject) => {
+            failedRequestQueue.push({
+              onSuccess: (token: string) => {
+                originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                resolve(api(originalRequest));
+              },
+              onFailure: (err: AxiosError) => {
+                reject(err);
+              },
+            });
+          });
         }
-      )
+      );
+
       return () => {
-        api.interceptors.response.eject(refreshInterceptor)
-      }
+        api.interceptors.response.eject(refreshInterceptor);
+      };
     }
-  }, [accessToken])
+  }, [accessToken]);
 
   async function signIn({ login, password }: SignInCredentials) {
     try {
