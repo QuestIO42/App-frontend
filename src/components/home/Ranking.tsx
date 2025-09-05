@@ -15,7 +15,7 @@ export default function Ranking(Children: RankingProps) {
           Ranking Geral
         </p>
       </div>
-      <div className="h-auto max-w-[360px] bg-roxo-500 p-4 shadow-default-roxo-500">
+      <div className="h-auto max-w-[360px] bg-roxo-500 p-5 shadow-default-roxo-500">
         {Children.children}
       </div>
     </div>
