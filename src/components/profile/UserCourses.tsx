@@ -75,7 +75,7 @@ export default function UserCourses({ courses }: UserCoursesProps) {
                 key={course.id}
                 courseName={course.name}
                 courseTeacher={teachers[course.id]}
-                borderColor="roxo-900"
+                borderColor="#3e347b"
               >
                 <div className="h-[266px] w-[266px] bg-roxo-500"></div>
               </ModalSquareForm>

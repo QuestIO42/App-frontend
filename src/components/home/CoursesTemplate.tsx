@@ -105,14 +105,14 @@ export default function CoursesTemplate({
                   key={course.id}
                   courseName={course.name}
                   courseTeacher={teachers[course.id]}
-                  borderColor="roxo-900"
+                  borderColor={course.isSubscribed ? '#3e347b' : '#cacacaff'}
                 >
-                  <div className={`bg-roxo-500 flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}>
+                  <div className={`${course.isSubscribed ? "bg-roxo-500 " : "bg-[#ececec]"} flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}`}>
                     {!course.isSubscribed && (
                       <Button
                         text="Inscrever-se"
                         size="small"
-                        className="w-[80%] z-10 p-2 shadow-none border-roxo-900 hover:bg-roxo-900 hover:shadow-none"
+                        className="w-[80%] z-10 p-2 shadow-none text-roxo-300 bg-[#5a4ac233] border-roxo-300 hover:bg-roxo-300 hover:shadow-none opacity-0 group-hover:opacity-100 transition-all duration-300"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleSubscribe(course.id)
