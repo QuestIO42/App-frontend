@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import { Course } from '@/interfaces/Course'
 import { User } from '@/interfaces/User'
 import { getUsersInCourse } from '@/services/api/user'
-import BookmarkIcon from '../svgComponents/icons/BookmarkIcon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 import ModalSquareForm from '../utility/ModalSquareForm'
 
 interface UserCoursesProps {
@@ -50,19 +51,19 @@ export default function UserCourses({ courses }: UserCoursesProps) {
 
   return (
     <div className="flex flex-col items-start justify-start">
-      <div className="mr-auto flex items-center justify-center gap-3">
-        <BookmarkIcon/>
-        <h2 className="text-left text-4xl font-bold text-cinza">Meus Cursos</h2>
+      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#777] bg-[#DDD] shadow-default-cinza gap-4">
+        <FontAwesomeIcon icon={faBookmark} className="text-3xl" />
+        <h2 className="text-left text-2xl font-bold">Meus Cursos</h2>
       </div>
 
       {/* Caso usuário não esteja em nenhum curso */}
       {!hasCourses && (
-        <p className="ml-2 text-xl text-gray-600 mt-6">
-          Você ainda não está matriculado em nenhum curso
+        <p className="ml-2 text-xl text-gray-600 mt-8 p-5 border border-gray-400 bg-white">
+          Você ainda não está matriculado em nenhum curso!
         </p>
       )}
 
-      <div className="ml-5 flex flex-wrap items-start justify-start gap-16 mt-10">
+      <div className="ml-4 flex flex-wrap items-start justify-start gap-16 mt-12">
         {hasCourses
           && courses.map((course) => (
             <div
@@ -73,8 +74,10 @@ export default function UserCourses({ courses }: UserCoursesProps) {
               <ModalSquareForm
                 key={course.id}
                 courseName={course.name}
-                courseTeacher={teachers[course.id]}>
-                <div className="h-[266px] w-[266px] bg-red-700"></div>
+                courseTeacher={teachers[course.id]}
+                borderColor="roxo-900"
+              >
+                <div className="h-[266px] w-[266px] bg-roxo-500"></div>
               </ModalSquareForm>
             </div>
           ))
