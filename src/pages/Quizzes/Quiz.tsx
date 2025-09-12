@@ -275,96 +275,135 @@ export default function Quiz() {
         ? submissionResults[userQuizAnswerId]
         : undefined;
 
-      // Container unificado para garantir que o botão e o hover funcionem para todos
+      // Tipo da questão
+      let bgColor: string;
+      let shadowColor: string;
+      let textColor: string;
+
+      const getTitle = (type: number) => {
+        switch (type) {
+          case 1:
+            return 'Múltipla Escolha';
+          case 2:
+            return 'Resposta Aberta';
+          case 3:
+            return 'Verilog';
+          default:
+            return 'Conteúdo';
+        }
+      };
+
+      switch (question.type) {
+        case 1:
+          bgColor = "bg-roxo-300";
+          shadowColor = "shadow-default-roxo-500";
+          textColor = "text-[#bab1fc]";
+          break;
+        case 2:
+          bgColor = "bg-verde-300";
+          shadowColor = "shadow-default-verde-900";
+          textColor = "text-[#2f6e4e]";
+          break;
+        case 3:
+          bgColor = "bg-[#F2953F]";
+          shadowColor = "shadow-default-laranja";
+          textColor = "text-[#6b3605]";
+          break;
+        default:
+          bgColor = "bg-[#DDDDDD]";
+          shadowColor = "shadow-default-cinza";
+          textColor = "text-[#777]";
+          break;
+      }
+
       return (
         <div key={question.id} className="w-full relative group">
+          <div className="w-full my-3" key={question.id}>
+            <div className="w-full flex flex-row justify-between">
+              <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold ${bgColor} ${shadowColor} ${textColor}`}>
+                  <p className="text-left text-2xl">{getTitle(question.type)}</p>
+              </div>
 
-          {/* SEU CÓDIGO ORIGINAL VAI AQUI DENTRO, SEM ALTERAÇÕES */}
-
-          {question.type === 0 && (
-            <div className="w-[90%] my-3" key={question.id}>
-            <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]">
-              <p className="text-left text-2xl">Conteúdo</p>
-            </div>
-
-            <div className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
-              <Paragraph title={question.name} text={question.content} />
-            </div>
-          </div>
-          )}
-
-          {question.type === 1 && (() => {
-            const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
-            const userAnswerForThis = UserAnswers.find((ans) => ans.id_question === question.id);
-            const selectedDescription = alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)?.description || '';
-
-            return (
-              <QuestionBox questionType={1}>
-                <div className="flex flex-col gap-6">
-                  <Paragraph title={question.name} text={question.content} />
-                  <RadioButtonGroup
-                    initialValue={selectedDescription}
-                    handleAnswer={(value: string) => {
-                      const found = alternativesForThis.find((ans) => ans.description === value);
-                      if (!found) return;
-                      handleAnswer(question.id, found.id, found.value ?? undefined, question.type);
+              {/* Botão que agora funciona para todos os tipos de questão */}
+              <div className="mr-2">
+                <Button
+                    text="Abrir Fórum"
+                    size="medium"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenDiscussion(question.id);
                     }}
-                    values={alternativesForThis.map((ans) => ans.description ?? '')}
-                    name={`question-${question.id}`}
-                    verified={!!resultObj}
-                    correct={resultObj?.result === 'right'}
-                    verifiedValue={selectedDescription}
-                    disabled={isSubmitted}
-                  />
-                </div>
-              </QuestionBox>
-            );
-          })()}
-
-          {question.type === 2 && (() => {
-            const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
-            return (
-              <QuestionBox questionType={2}>
-                <div className="flex flex-col gap-4">
-                  <Paragraph title={question.name} text={question.content} />
-                  <OpenAnswer
-                    id_question={question.id}
-                    initialValue={initialText || ''}
-                    handleAnswer={(value: string) => handleAnswer(question.id, value, 0, question.type)}
-                    verified={!!resultObj}
-                    correct={resultObj?.result === 'right'}
-                    disabled={isSubmitted}
-                  />
-                </div>
-              </QuestionBox>
-            );
-          })()}
-
-          {question.type === 3 && (
-            <div className="w-full mx-auto my-3">
-              <Practice
-                question={question}
-                id_quiz={quizId}
-                initialCode={verilogAnswersRef.current[question.id] || ''}
-                onChangeCode={(id_question, code) => {
-                  verilogAnswersRef.current[id_question] = code;
-                }}
-                disabled={isSubmitted}
-              />
+                    className={`text-xl ${isSidebarOpen ? "hidden" : "flex"}`}
+                />
+              </div>
             </div>
-          )}
 
-          {/* Botão que agora funciona para todos os tipos de questão */}
-          <div className="absolute top-4 right-4 z-10">
-             <Button
-                text="Ver Discussão"
-                variant="quaternary"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleOpenDiscussion(question.id);
-                }}
-                className="opacity-0 group-hover:opacity-100 transition-opacity !py-1 !px-3 text-sm"
-            />
+            {question.type === 0 && (
+                <div className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
+                  <Paragraph title={question.name} text={question.content} />
+                </div>
+            )}
+
+            {question.type === 1 && (() => {
+              const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
+              const userAnswerForThis = UserAnswers.find((ans) => ans.id_question === question.id);
+              const selectedDescription = alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)?.description || '';
+
+              return (
+                <QuestionBox>
+                  <div className="flex flex-col gap-6">
+                    <Paragraph title={question.name} text={question.content} />
+                    <RadioButtonGroup
+                      initialValue={selectedDescription}
+                      handleAnswer={(value: string) => {
+                        const found = alternativesForThis.find((ans) => ans.description === value);
+                        if (!found) return;
+                        handleAnswer(question.id, found.id, found.value ?? undefined, question.type);
+                      }}
+                      values={alternativesForThis.map((ans) => ans.description ?? '')}
+                      name={`question-${question.id}`}
+                      verified={!!resultObj}
+                      correct={resultObj?.result === 'right'}
+                      verifiedValue={selectedDescription}
+                      disabled={isSubmitted}
+                    />
+                  </div>
+                </QuestionBox>
+              );
+            })()}
+
+            {question.type === 2 && (() => {
+              const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
+              return (
+                <QuestionBox>
+                  <div className="flex flex-col gap-4">
+                    <Paragraph title={question.name} text={question.content} />
+                    <OpenAnswer
+                      id_question={question.id}
+                      initialValue={initialText || ''}
+                      handleAnswer={(value: string) => handleAnswer(question.id, value, 0, question.type)}
+                      verified={!!resultObj}
+                      correct={resultObj?.result === 'right'}
+                      disabled={isSubmitted}
+                    />
+                  </div>
+                </QuestionBox>
+              );
+            })()}
+
+            {question.type === 3 && (
+              <div className="w-full mx-auto">
+                <Practice
+                  question={question}
+                  id_quiz={quizId}
+                  initialCode={verilogAnswersRef.current[question.id] || ''}
+                  onChangeCode={(id_question, code) => {
+                    verilogAnswersRef.current[id_question] = code;
+                  }}
+                  disabled={isSubmitted}
+                />
+              </div>
+            )}
           </div>
         </div>
       );
@@ -381,7 +420,6 @@ export default function Quiz() {
 
   return (
     <>
-      {/* --- CORREÇÃO 3: Estrutura de layout simplificada --- */}
       <div className="w-full min-h-screen bg-grid-pattern">
         <Header />
 
@@ -395,7 +433,7 @@ export default function Quiz() {
           </div>
         </div>
 
-        <main className="flex gap-8 pb-12 px-4 sm:px-8 md:px-12">
+        <main className="flex gap-8 pb-12 px-4 sm:px-8 md:px-20">
           {/* Coluna Principal: Questões */}
           <div className={`transition-all duration-300 flex flex-col gap-8 items-center ${isSidebarOpen ? 'w-full md:w-2/3' : 'w-full'}`}>
             {Questions && renderQuestions(Questions)}

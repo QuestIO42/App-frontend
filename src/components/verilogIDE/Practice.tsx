@@ -202,11 +202,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
   return (
     <div className="grid w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto]">
-      <div className="w-[90%] mx-auto col-span-4 flex flex-col items-center justify-center">
-        <div className="self-start w-fit flex justify-center bg-[#F2953F] px-8 py-2 mb-6 font-bold border-preto-default shadow-default-laranja text-[#6b3605]">
-          <p className="text-left text-2xl">Verilog</p>
-        </div>
-
+      <div className="w-full mx-auto col-span-4 flex flex-col items-center justify-center">
         {/* Enunciado */}
         <div className="w-full flex flex-col gap-4 items-center px-8 py-12 border-2 border-[#a8a8a8] bg-white">
           <h1 className="text-3xl font-bold text-preto-default uppercase">{question.name}</h1>
