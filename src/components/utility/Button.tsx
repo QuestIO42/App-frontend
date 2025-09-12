@@ -39,7 +39,7 @@ const buttonVariants = cva(
         secondary:
           'border-verde-300 bg-white text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
-          'border-[#97581F] bg-white text-cinza shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
+          'border-[#97581F] bg-white text-[#97581F] shadow-default-laranja hover:text-branco hover:bg-[#97581F] hover:shadow-default-laranja-900',
         quaternary:
           'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
         default:
@@ -47,7 +47,7 @@ const buttonVariants = cva(
       },
       size: {
         small: 'text-base',
-        medium: 'text-xl',
+        medium: 'text-lg',
         large: 'text-3xl',
       },
       buttonDisabled: {

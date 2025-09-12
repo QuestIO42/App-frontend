@@ -274,7 +274,7 @@ export default function Course() {
         {/* Coluna Principal (Esquerda) */}
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
-          <div className="flex flex-col w-full mb-12">
+          <div className="flex flex-col w-full mb-8">
             <div className="flex w-fit py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500 mb-6">
               <p className="text-center text-2xl font-bold text-[#bab1fc]">
                 Questionários
@@ -284,18 +284,18 @@ export default function Course() {
           </div>
 
           {/* Seção do Fórum/Posts */}
-          <div className="flex flex-col w-full border border-gray-200">
-            <div className="flex justify-between items-center w-full p-4 bg-laranja shadow-default-laranja">
-              <h2 className="text-2xl font-bold text-cinza">Fórum de Discussão</h2>
+          <div className="flex flex-col w-full pr-12">
+            <div className="flex justify-between items-center w-full p-6 bg-laranja shadow-default-laranja">
+              <h2 className="text-2xl font-bold text-[#97581F]">Fórum de Discussão</h2>
               <Button
                 variant='tertiary'
-                text="criar novo post"
-                size="small"
+                text="Novo Post"
+                size="medium"
                 onClick={handleOpenNewPostModal}>
               </Button>
             </div>
+
             <div className="p-4 bg-gray-100 shadow-default-cinza-300">
-              {/* --- LÓGICA DE RENDERIZAÇÃO CORRIGIDA --- */}
               {isLoadingPosts ? (
                 <p className="text-center text-cinza py-4">Carregando posts...</p>
               ) : topLevelPosts.length > 0 ? (
@@ -323,7 +323,7 @@ export default function Course() {
             )}
           </Ranking>
 
-          <Forum />
+          {/* <Forum /> */}
         </div>
       </div>
 
