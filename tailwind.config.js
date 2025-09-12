@@ -53,7 +53,7 @@ export default {
         'default-preto': '0 0 0 0px #FFFFFF, 8px 8px #1E1E1E',
         'default-preto-900': '0 0 0 0px #FFFFFF, 8px 8px #000000',
         'default-laranja': '0 0 0 0px #FFFFFF, 8px 8px #97581F',
-        'default-laranja-900': '0 0 0 0px #FFFFFF, 8px 8px #744318ff',
+        'default-laranja-900': '0 0 0 0px #FFFFFF, 8px 8px #754011ff',
         'default-vermelho-300': '0 0 0 0px #FFFFFF, 8px 8px #F2543F',
         'default-vermelho-900': '0 0 0 0px #FFFFFF, 8px 8px #752c22',
       },

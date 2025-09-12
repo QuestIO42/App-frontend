@@ -1,4 +1,7 @@
 import { Post } from '@/interfaces/Post';
+import { useEffect, useState } from 'react';
+import { getUser } from '@/services/api/user';
+import { User } from '@/interfaces/User';
 import PostItem from './PostItemCourse';
 import Button from '../utility/Button';
 
@@ -9,41 +12,53 @@ interface PostThreadProps {
 }
 
 function ReplyItem({ post }: { post: Post }) {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userData = await getUser(post.id_user);
+      setUser(userData);
+    }
+    fetchUser();
+  }, [post.id_user]);
+
   return (
-    <div className="bg-gray-200 p-3 shadow-default-cinza-300">
-      <p className="text-gray-800">{post.content}</p>
-      <div className="text-xs text-gray-600 mt-2">
-        <span>Respondido em: {new Date(post.creation_date).toLocaleDateString()}</span>
+    <div className="bg-gray-200/50 p-6 border border-gray-200">
+      { user &&
+        <p className="text-gray-400">{user.username}</p>
+      }
+
+      <p className="text-black mt-2">{post.content}</p>
+
+      <div className="text-sm text-gray-400 mt-6">
+        <span>{new Date(post.creation_date).toLocaleDateString()}</span>
       </div>
     </div>
   );
 }
 
-
 export default function PostThread({ post, replies, onReply }: PostThreadProps) {
   return (
-    <div className="bg-white p-4 mb-6">
-      {/* Renderiza o Post Principal */}
+    <div className="mb-16">
       <PostItem post={post} />
 
-      {/* --- 2. Adicionar Botão de Resposta --- */}
-      <div className="flex justify-end mt-2">
-        <Button
-          variant="tertiary"
-          size="small"
-          text="Responder"
-          onClick={() => onReply(post.id)} // Dispara a função passando o ID do post pai
-        />
-      </div>
-
-      {/* Renderiza as respostas aninhadas */}
       {replies.length > 0 && (
-        <div className="mt-4 pl-8 space-y-3">
+        <div className="mt-4 pl-8 space-y-4">
           {replies.map(reply => (
             <ReplyItem key={reply.id} post={reply} />
           ))}
         </div>
       )}
+
+      <div className="flex justify-end mt-4">
+        <Button
+          variant="tertiary"
+          size="medium"
+          text="Responder"
+          className="border-laranja py-2 text-[#754011] bg-laranja shadow-default-laranja"
+          onClick={() => onReply(post.id)}
+        />
+      </div>
     </div>
   );
 }

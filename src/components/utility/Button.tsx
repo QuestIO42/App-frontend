@@ -39,7 +39,7 @@ const buttonVariants = cva(
         secondary:
           'border-verde-300 bg-white text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
-          'border-[#97581F] bg-white text-[#97581F] shadow-default-laranja hover:text-branco hover:bg-[#97581F] hover:shadow-default-laranja-900',
+          'border-[#97581F] text-branco bg-[#97581F] shadow-default-laranja-900 hover:scale-105 py-2',
         quaternary:
           'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
         default:

@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchAllQuizes, fetchUserQuizProgress } from '@/services/api/quiz';
+import { fetchCourse, exportCourseGrades } from '@/services/api/course';
+import { Quiz } from '@/interfaces/Quiz';
+import { Course as CourseData } from '@/interfaces/Course';
+import { useAuth } from '@/hooks/useAuth';
+import { fetchUserRoleInCourse } from '@/services/api/user';
+import { fetchRankingData, RankingUser } from '@/services/api/ranking';
+import { Post } from '@/interfaces/Post';
+import { fetchPostsByCourse } from '@/services/api/post';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
 import Ranking from '@/components/home/Ranking';
@@ -9,19 +18,9 @@ import Button from '@/components/utility/Button';
 import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
 import ExercisesGroup from '@/components/course/ExercisesGroup';
 import RankingItem from '@/components/home/RankingItem';
-import Forum from '@/components/course/Forum';
-import { fetchAllQuizes, fetchUserQuizProgress } from '@/services/api/quiz';
-import { fetchCourse, exportCourseGrades } from '@/services/api/course';
-import { Quiz } from '@/interfaces/Quiz';
-import { Course as CourseData } from '@/interfaces/Course';
-import { useAuth } from '@/hooks/useAuth';
-import { fetchUserRoleInCourse } from '@/services/api/user';
-import { fetchRankingData, RankingUser } from '@/services/api/ranking';
-import { Post } from '@/interfaces/Post';
 import PostThreadCourse from '@/components/course/PostThreadCourse';
 import NewPostForm from '@/components/course/NewPostForm';
 import ReplyForm from '@/components/course/ReplyForm';
-import { fetchPostsByCourse } from '@/services/api/post';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
@@ -245,7 +244,6 @@ export default function Course() {
             <>
               <Button
                 upload
-                // Rota
                 uploadUrl="/user"
                 fieldName="file"
                 courseId={courseId!}
@@ -271,7 +269,6 @@ export default function Course() {
       </div>
 
       <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
-        {/* Coluna Principal (Esquerda) */}
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
           <div className="flex flex-col w-full mb-8">
@@ -287,12 +284,7 @@ export default function Course() {
           <div className="flex flex-col w-full pr-12">
             <div className="flex justify-between items-center w-full p-6 bg-laranja shadow-default-laranja">
               <h2 className="text-2xl font-bold text-[#97581F]">Fórum de Discussão</h2>
-              <Button
-                variant='tertiary'
-                text="Novo Post"
-                size="medium"
-                onClick={handleOpenNewPostModal}>
-              </Button>
+              <Button variant='tertiary' text="Novo Post" size="medium" onClick={handleOpenNewPostModal} />
             </div>
 
             <div className="p-4 bg-gray-100 shadow-default-cinza-300">
@@ -322,8 +314,6 @@ export default function Course() {
               <RankingItem users={rankingUsers} />
             )}
           </Ranking>
-
-          {/* <Forum /> */}
         </div>
       </div>
 

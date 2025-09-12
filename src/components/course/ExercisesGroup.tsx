@@ -65,7 +65,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     // Mostrar loading enquanto não há dados de status
     if (Object.keys(quizStatusMap).length === 0) {
       return (
-        <div className="mt-10 mr-4 p-5 border border-cinza bg-white text-cinza">
+        <div className="mt-10 mr-12 p-5 border border-cinza bg-white text-cinza">
           Carregando quizzes...
         </div>
       )
