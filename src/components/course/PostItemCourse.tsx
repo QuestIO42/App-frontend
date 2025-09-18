@@ -20,16 +20,16 @@ export default function PostItemCourse({ post }: PostItemCourseProps) {
 
   return (
     <div className="bg-white p-6 w-full border border-gray-200">
-      { user &&
-        <p className="text-gray-400">{user.username}</p>
-      }
+      <div className="flex flex-row items-center justify-between text-gray-400 text-sm">
+        { user &&
+          <p >{user.username}</p>
+        }
+
+        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
+      </div>
 
       <h3 className="flex flex-wrap text-xl font-bold text-black pb-2 mt-4 border-b border-gray-200">{post.title}</h3>
       <p className="text-cinza mt-2">{post.content}</p>
-
-      <div className="text-sm text-laranja mt-6 flex justify-start items-center">
-        <span>{new Date(post.creation_date).toLocaleDateString()}</span>
-      </div>
     </div>
   );
 }

@@ -24,15 +24,15 @@ function ReplyItem({ post }: { post: Post }) {
 
   return (
     <div className="bg-gray-200/50 p-6 border border-gray-200">
-      { user &&
-        <p className="text-gray-400">{user.username}</p>
-      }
+      <div className="flex flex-row items-center justify-between text-gray-400 text-sm">
+        { user &&
+          <p >{user.username}</p>
+        }
 
-      <p className="text-black mt-2">{post.content}</p>
-
-      <div className="text-sm text-gray-400 mt-6">
-        <span>{new Date(post.creation_date).toLocaleDateString()}</span>
+        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
       </div>
+
+      <p className="text-black mt-3">{post.content}</p>
     </div>
   );
 }
