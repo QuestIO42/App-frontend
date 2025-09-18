@@ -46,7 +46,6 @@ export default function App() {
             <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
             <Route path="/course/:courseId/quiz/:quizId/waveform" element={<Waveform />} />
             <Route path="/course/:courseId/quiz/:quizId/try/:currentTry" element={<QuizTries />} />
-            <Route path="/test" element={<Teste />} />
             {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
             {/* <Route path="/exercises" element={<Exercises />} /> */}
             {/* <Route path="/exercises/:quizId" element={<Practice />} /> */}

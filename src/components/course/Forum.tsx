@@ -3,7 +3,7 @@ export default function Forum() {
   return (
     <div className=" min-h-[271px] max-w-[360px] my-10 items-center justify-center bg-laranja shadow-default-laranja">
       <p className="mr-2 text-center items-center mt-6 text-3xl font-bold text-cinza">
-          fórum
+          Fórum
       </p>
 
       <hr className="border-t-2 border-gray-700 mx-8 mb-5"/>
@@ -12,8 +12,8 @@ export default function Forum() {
         Dúvidas? Acrescente um novo tópico de discussão ao fórum!
       </p>
 
-      <div className="flex  justify-center">
-        <Button variant='tertiary' text="entrar" size="small"></Button>
+      <div className="flex justify-center">
+        <Button variant='tertiary' text="Entrar" size="small"></Button>
       </div>
     </div>
   )

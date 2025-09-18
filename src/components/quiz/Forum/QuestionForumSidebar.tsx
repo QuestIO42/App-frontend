@@ -31,7 +31,7 @@ export default function QuestionForumSidebar({ questionId, posts, onPostCreated,
   const getRepliesForPost = (postId: string) => replies.filter(reply => reply.id_parent === postId);
 
   return (
-    <aside className="sticky top-24 w-full h-[80vh] bg-gray-50 border-l border-gray-200 p-4 rounded-lg shadow-lg flex flex-col">
+    <aside className="sticky mt-3 top-24 w-full h-[80vh] bg-gray-50 border-l border-gray-200 p-8 shadow-lg flex flex-col">
       {isCreatingPost && (
         <NewPostForm
           questionId={questionId}
@@ -56,14 +56,16 @@ export default function QuestionForumSidebar({ questionId, posts, onPostCreated,
         />
       )}
 
-      <div className="flex justify-between items-center mb-4 pb-2 border-b">
-        <h3 className="text-xl font-bold text-gray-700">Discussão</h3>
-        <div className="flex gap-2">
-          <Button variant="primary" text="Nova Dúvida" onClick={() => setIsCreatingPost(true)} className="text-sm !py-1 !px-3" />
-          <Button variant="secondary" text="Fechar" onClick={onClose} className="text-sm !py-1 !px-3" />
+      <div className="flex flex-col flex-wrap justify-center items-start mb-8">
+        <h3 className="w-full text-xl font-bold text-black pb-2 mb-5 border-b">Discussão</h3>
+
+        <div className="flex gap-6">
+          <Button variant="primary" text="Novo Post" onClick={() => setIsCreatingPost(true)} className="text-sm" />
+          <Button variant="quaternary" text="Fechar" onClick={onClose} className="text-sm" />
         </div>
       </div>
-      <div className="flex-grow overflow-y-auto pr-2">
+
+      <div className="flex-grow overflow-y-auto">
         {topLevelPosts.length > 0 ? (
           topLevelPosts.map(post => (
             <PostThreadQuiz

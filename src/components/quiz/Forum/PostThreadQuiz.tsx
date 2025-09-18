@@ -1,27 +1,39 @@
 import { Post } from '@/interfaces/Post';
+import { useEffect, useState } from 'react';
+import { getUser } from '@/services/api/user';
+import { User } from '@/interfaces/User';
 import Button from '../../utility/Button';
 
 // Um componente simples para o item do post
-function PostItemQuiz({ post }: { post: Post }) {
+function PostItemQuiz({ post, user }: { post: Post; user?: User }) {
   return (
-    <div className="bg-white p-3 shadow-sm mb-2 border border-gray-200 rounded-md">
-      <h4 className="font-bold text-gray-800">{post.title}</h4>
-      <p className="text-gray-700 text-sm mt-1">{post.content}</p>
-      <div className="text-xs text-gray-500 mt-2">
-        <span>Postado em: {new Date(post.creation_date).toLocaleDateString()}</span>
+    <div className="">
+      <div className="flex flex-row items-center justify-between text-gray-400 text-sm">
+        { user &&
+          <p >{user.username}</p>
+        }
+
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
+      <h4 className="font-bold text-gray-800 mb-2 mt-3">{post.title}</h4>
+      <p className="text-cinza text-sm">{post.content}</p>
     </div>
   );
 }
 
 // Um componente simples para a resposta
-function ReplyItem({ post }: { post: Post }) {
+function ReplyItem({ post, user }: { post: Post; user?: User }) {
   return (
-    <div className="bg-gray-100 p-2 rounded-md shadow-inner">
-      <p className="text-gray-800 text-sm">{post.content}</p>
-      <div className="text-xs text-gray-500 mt-1">
-        <span>Respondido em: {new Date(post.creation_date).toLocaleDateString()}</span>
+    <div className="bg-gray-100 p-4 shadow-inner">
+      <div className="flex flex-row items-center justify-between text-gray-400 text-sm">
+        { user &&
+          <p >{user.username}</p>
+        }
+
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
+      <p className="text-cinza text-sm mt-3">{post.content}</p>
+
     </div>
   );
 }
@@ -33,25 +45,47 @@ interface PostThreadQuizProps {
 }
 
 export default function PostThreadQuiz({ post, replies, onReply }: PostThreadQuizProps) {
+  const [users, setUsers] = useState<Record<string, User>>({});
+
+  useEffect(() => {
+      async function fetchUsers() {
+        const postIds = [post.id_user, ...replies.map(r => r.id_user)];
+        const uniqueIds = Array.from(new Set(postIds));
+
+        const usersData: Record<string, User> = {};
+        await Promise.all(
+          uniqueIds.map(async (id) => {
+            const userData = await getUser(id);
+            usersData[id] = userData;
+          })
+        );
+        setUsers(usersData);
+      }
+
+      fetchUsers();
+    }, [post, replies]);
+
   return (
-    <div className="bg-white p-3 rounded-lg shadow-md mb-4 border border-gray-200">
-      <PostItemQuiz post={post} />
-      <div className="flex justify-end mt-1">
-        <Button
-          variant="tertiary"
-          size="small"
-          text="Responder"
-          className="text-xs py-1 px-2"
-          onClick={() => onReply(post.id)}
-        />
-      </div>
+    <div className="bg-white p-4 shadow-md mb-4 border border-gray-200">
+      <PostItemQuiz post={post} user={users[post.id_user]}/>
+
       {replies.length > 0 && (
-        <div className="mt-3 pl-4 border-l-2 border-purple-300 space-y-2">
+        <div className="mt-6 pl-4 border-l-2 border-purple-300 space-y-2">
           {replies.map(reply => (
-            <ReplyItem key={reply.id} post={reply} />
+            <ReplyItem key={reply.id} post={reply} user={users[reply.id_user]}/>
           ))}
         </div>
       )}
+
+      <div className="flex justify-end my-3 mr-2">
+        <Button
+          variant="primary"
+          size="small"
+          text="Responder"
+          className="text-sm"
+          onClick={() => onReply(post.id)}
+        />
+      </div>
     </div>
   );
 }

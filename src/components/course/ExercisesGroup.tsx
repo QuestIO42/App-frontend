@@ -65,14 +65,14 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     // Mostrar loading enquanto não há dados de status
     if (Object.keys(quizStatusMap).length === 0) {
       return (
-        <div className="mt-10 mr-4 p-5 border border-cinza bg-white text-cinza">
+        <div className="mt-10 mr-12 p-5 border border-cinza bg-white text-cinza">
           Carregando quizzes...
         </div>
       )
     }
 
     return(
-      <div className="mr-10">
+      <div className="mr-12">
           <div className="flex flex-col">
             {itens.map((quiz, index) => {
               const status = quizStatusMap[String(quiz.id)];

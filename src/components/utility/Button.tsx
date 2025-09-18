@@ -35,19 +35,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'border-roxo-300 bg-white shadow-default-roxo-300 text-roxo-300 hover:bg-roxo-300 hover:text-branco hover:shadow-default-roxo-500',
+          'bg-roxo-300 text-white shadow-default-roxo-500 px-8 py-2 text-xl border border-roxo-300 transition-all duration-300 hover:scale-105',
         secondary:
           'border-verde-300 bg-white text-verde-300 shadow-default-verde-300 text-cinza hover:bg-verde-300 hover:text-branco hover:shadow-default-verde-900',
         tertiary:
-          'border-[#97581F] bg-white text-cinza shadow-default-laranja text-cinza hover:bg-laranja-300 hover:text-branco hover:bg-[#97581F] hover:shadow-default-orange-700',
+          'border-[#97581F] text-branco bg-[#97581F] shadow-default-laranja-900 hover:scale-105 py-2',
         quaternary:
-          'border-vermelho-300 bg-white text-vermelho-300 shadow-default-vermelho-300 hover:bg-vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',
+          'bg-vermelho-300 text-white shadow-default-vermelho-900 px-8 py-2 text-xl border border-vermelho-300 transition-all duration-300 hover:scale-105',
         default:
           'border-[#DDDDDD] bg-white shadow-default-cinza-300 text-[#999] hover:bg-[#DDDDDD] hover:text-[#777] hover:shadow-default-cinza'
       },
       size: {
         small: 'text-base',
-        medium: 'text-xl',
+        medium: 'text-lg',
         large: 'text-3xl',
       },
       buttonDisabled: {

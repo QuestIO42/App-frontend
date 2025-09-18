@@ -27,14 +27,8 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content) {
-      setError('O conteúdo da resposta não pode estar vazio.');
-      return;
-    }
-    if (!user) {
-      setError('Você precisa estar logado para responder.');
-      return;
-    }
+    if (!content) return setError('O conteúdo da resposta não pode estar vazio.');
+    if (!user) return setError('Você precisa estar logado para responder.');
 
     setIsSubmitting(true);
     setError('');
@@ -43,20 +37,22 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
       const payload: any = {
         title: 'Resposta',
         content,
-        id_user: user.id.toString(),
-        id_parent: parentId,
+        id_user: String(user.id),
+        id_parent: String(parentId),
+        id_course: courseId || undefined,
+        id_question: questionId || undefined
       };
 
-      if (courseId) {
-        payload.id_course = courseId;
-      } else if (questionId) {
-        payload.id_question = questionId;
+      const createdReply = await createPost(payload, { quizId });
+
+      if (!createdReply.id || !createdReply.id_parent) {
+        console.error('Resposta criada sem id ou id_parent:', createdReply);
+        setError('Erro interno: resposta não foi criada corretamente.');
+        return;
       }
 
-      const createdReply = await createPost(payload, { quizId });
       onReplyCreated(createdReply);
       onClose();
-
     } catch (apiError) {
       setError('Falha ao enviar a resposta. Tente novamente.');
       console.error(apiError);
