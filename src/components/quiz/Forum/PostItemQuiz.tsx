@@ -10,7 +10,7 @@ export default function PostItemQuiz({ post }: PostItemQuizProps) {
       <h4 className="font-bold text-gray-800">{post.title}</h4>
       <p className="text-gray-700 text-sm mt-1">{post.content}</p>
       <div className="text-xs text-gray-500 mt-2">
-        <span>Postado em: {new Date(post.creation_date).toLocaleDateString()}</span>
+        <span>Postado em: {new Date(post.creation_date).toLocaleDateString('pt-BR')}</span>
       </div>
     </div>
   );

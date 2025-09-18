@@ -25,7 +25,7 @@ export default function PostItemCourse({ post }: PostItemCourseProps) {
           <p >{user.username}</p>
         }
 
-        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
 
       <h3 className="flex flex-wrap text-xl font-bold text-black pb-2 mt-4 border-b border-gray-200">{post.title}</h3>

@@ -13,7 +13,7 @@ function PostItemQuiz({ post, user }: { post: Post; user?: User }) {
           <p >{user.username}</p>
         }
 
-        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
       <h4 className="font-bold text-gray-800 mb-2 mt-3">{post.title}</h4>
       <p className="text-cinza text-sm">{post.content}</p>
@@ -30,7 +30,7 @@ function ReplyItem({ post, user }: { post: Post; user?: User }) {
           <p >{user.username}</p>
         }
 
-        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
       <p className="text-cinza text-sm mt-3">{post.content}</p>
 
@@ -72,7 +72,7 @@ export default function PostThreadQuiz({ post, replies, onReply }: PostThreadQui
       {replies.length > 0 && (
         <div className="mt-6 pl-4 border-l-2 border-purple-300 space-y-2">
           {replies.map(reply => (
-            <ReplyItem key={reply.id} post={reply} user={users[post.id_user]}/>
+            <ReplyItem key={reply.id} post={reply} user={users[reply.id_user]}/>
           ))}
         </div>
       )}

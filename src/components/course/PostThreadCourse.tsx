@@ -29,7 +29,7 @@ function ReplyItem({ post }: { post: Post }) {
           <p >{user.username}</p>
         }
 
-        <p>{new Date(post.creation_date).toLocaleDateString()}</p>
+        <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
 
       <p className="text-black mt-3">{post.content}</p>
