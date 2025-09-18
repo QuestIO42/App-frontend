@@ -50,7 +50,7 @@ export default function PostThread({ post, replies, onReply }: PostThreadProps) 
         </div>
       )}
 
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-4 px-2">
         <Button
           variant="tertiary"
           size="medium"

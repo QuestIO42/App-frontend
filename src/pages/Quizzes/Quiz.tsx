@@ -275,11 +275,6 @@ export default function Quiz() {
         ? submissionResults[userQuizAnswerId]
         : undefined;
 
-      // Tipo da questão
-      let bgColor: string;
-      let shadowColor: string;
-      let textColor: string;
-
       const getTitle = (type: number) => {
         switch (type) {
           case 1:
@@ -293,34 +288,11 @@ export default function Quiz() {
         }
       };
 
-      switch (question.type) {
-        case 1:
-          bgColor = "bg-roxo-300";
-          shadowColor = "shadow-default-roxo-500";
-          textColor = "text-[#bab1fc]";
-          break;
-        case 2:
-          bgColor = "bg-verde-300";
-          shadowColor = "shadow-default-verde-900";
-          textColor = "text-[#2f6e4e]";
-          break;
-        case 3:
-          bgColor = "bg-[#F2953F]";
-          shadowColor = "shadow-default-laranja";
-          textColor = "text-[#6b3605]";
-          break;
-        default:
-          bgColor = "bg-[#DDDDDD]";
-          shadowColor = "shadow-default-cinza";
-          textColor = "text-[#777]";
-          break;
-      }
-
       return (
         <div key={question.id} className="w-full relative group">
           <div className="w-full my-3" key={question.id}>
             <div className="w-full flex flex-row justify-between">
-              <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold ${bgColor} ${shadowColor} ${textColor}`}>
+              <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]`}>
                   <p className="text-left text-2xl">{getTitle(question.type)}</p>
               </div>
 
@@ -328,12 +300,12 @@ export default function Quiz() {
               <div className="mr-2">
                 <Button
                     text="Abrir Fórum"
-                    size="medium"
+                    variant="tertiary"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleOpenDiscussion(question.id);
                     }}
-                    className={`text-xl ${isSidebarOpen ? "hidden" : "flex"}`}
+                    className={`text-xl border-laranja py-2 text-[#754011] bg-laranja shadow-default-laranja ${isSidebarOpen ? "hidden" : "flex"}`}
                 />
               </div>
             </div>
@@ -437,9 +409,9 @@ export default function Quiz() {
           {/* Coluna Principal: Questões */}
           <div className={`transition-all duration-300 flex flex-col gap-8 items-center ${isSidebarOpen ? 'w-full md:w-2/3' : 'w-full'}`}>
             {Questions && renderQuestions(Questions)}
-            <div className={`w-[80%] flex-wrap gap-12 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
-              <Button onClick={() => setShowSaveModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Salvar Respostas" />
-              <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="bg-white py-3" variant="primary" text="Finalizar Questionário" />
+            <div className={`w-full flex-wrap gap-8 mr-5 items-center justify-center sm:justify-end ${isSubmitted ? "hidden" : "flex"}`}>
+              <Button onClick={() => setShowSaveModal(true)} disabled={isSubmitted} className="py-3" variant="primary" text="Salvar Respostas" />
+              <Button onClick={() => setShowConfirmModal(true)} disabled={isSubmitted} className="py-3" variant="primary" text="Finalizar Questionário" />
             </div>
           </div>
 

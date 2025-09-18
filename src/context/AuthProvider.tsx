@@ -72,6 +72,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         async (error) => {
           const originalRequest = error.config;
 
+          // Se a requisição já foi tentada antes, não tentar de novo
+          if (originalRequest._retry) {
+            return Promise.reject(error)
+          }
+          originalRequest._retry = true
+
           if (!error.response || error.response.status !== 401) {
             return Promise.reject(error);
           }
@@ -97,12 +103,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
               // Resolve todas as requisições que estavam na fila
               failedRequestQueue.forEach(req => req.onSuccess(newAccessToken));
+              failedRequestQueue = []
             } catch (err: unknown) {
               const axiosError = err as AxiosError;
               failedRequestQueue.forEach(req => req.onFailure(axiosError));
+              failedRequestQueue = []
               signOut();
             } finally {
-              failedRequestQueue = [];
               isRefreshing = false;
             }
           }
