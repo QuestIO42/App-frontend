@@ -68,6 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           Cookies.set('accessToken', newAccessToken, {
             sameSite: 'Lax',
             secure: import.meta.env.PROD,
+            expires: 7,
           })
 
           scheduleRefresh(newAccessToken) // Agenda o próximo refresh
@@ -81,6 +82,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  // Refresh imediato se token expirado
+  async function refreshAccessTokenIfNeeded(): Promise<string | null> {
+    const token = Cookies.get('accessToken')
+    const refreshToken = Cookies.get('refreshToken')
+    if (!token || !refreshToken) return null
+
+    const { exp } = jwtDecode<{ exp: number }>(token)
+    if (Date.now() < exp * 1000) return token
+
+    try {
+      const response = await api.post('/auth/token/refresh', { refresh: refreshToken })
+      const newAccessToken = response.data.access
+      Cookies.set('accessToken', newAccessToken, {
+        sameSite: 'Lax',
+        secure: import.meta.env.PROD,
+        expires: 7,
+      })
+      scheduleRefresh(newAccessToken)
+      return newAccessToken
+    } catch (error) {
+      console.error('Erro ao renovar token automaticamente:', error)
+      signOut()
+      return null
+    }
+  }
+
   useLayoutEffect(() => {
     const fetchUser = async () => {
       if (!accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
@@ -89,10 +116,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
 
     try {
-      if (accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
-        const { sub } = jwtDecode<{ sub: string }>(accessToken)
-        await fetchPerson(sub)
-        scheduleRefresh(accessToken)
+      if (import.meta.env.VITE_APP_ENV !== 'development') {
+        const validToken = await refreshAccessTokenIfNeeded()
+        if (validToken) {
+          const { sub } = jwtDecode<{ sub: string }>(validToken)
+          await fetchPerson(sub)
+        } else {
+          setUser(null)
+        }
       } else {
         setUser(mockUser)
       }
@@ -141,6 +172,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
               Cookies.set('accessToken', newAccessToken, {
                 sameSite: 'Lax',
                 secure: import.meta.env.PROD,
+                expires: 7,
               });
 
               scheduleRefresh(newAccessToken)
@@ -194,11 +226,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.set('accessToken', accessToken, {
           sameSite: 'Lax',
           secure: true,
+          expires: 7,
         })
 
         Cookies.set('refreshToken', refreshToken, {
           sameSite: 'Lax',
           secure: true,
+          expires: 30,
         })
 
         const { sub } = jwtDecode<{ sub: string }>(accessToken)
