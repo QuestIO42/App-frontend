@@ -6,7 +6,7 @@ export const mockVirtualLabs: Lab[] = [
     name: "DE10-standard",
     description: "Laboratório de atendimento por agendamento",
     type: "Agendamento",
-    image: "./labs/DE10.png",
+    image: "./images/DE10.png",
     alt: "Laboratório disponível apenas para e-mails ufscar.br"
   },
   {
@@ -14,7 +14,7 @@ export const mockVirtualLabs: Lab[] = [
     name: "Tang Primer 20K",
     description: "Laboratório de atendimento por fila",
     type: "Fila - Inscritos no GitHub",
-    image: "./labs/tangprimer.png",
+    image: "./images/tangprimer.png",
     alt: "Laboratório disponível apenas para estudantes matriculados"
   },
 ]
