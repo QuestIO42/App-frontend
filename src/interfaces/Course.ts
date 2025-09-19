@@ -1,4 +1,3 @@
-
 export interface Course{
   isSubscribed: boolean
   id: string
@@ -9,4 +8,5 @@ export interface Course{
   begin_date: string
   end_date: string
   open: boolean
+  cover_image?: string | null
 }
