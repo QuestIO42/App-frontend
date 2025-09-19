@@ -1,4 +1,4 @@
-import { createContext, useState, useLayoutEffect, useEffect } from 'react'
+import { createContext, useState, useLayoutEffect, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '@/services/api/api'
 import { AxiosError } from 'axios'
@@ -36,9 +36,50 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null)
+
   const accessToken = Cookies.get('accessToken')
 
   const isAuthenticated = import.meta.env.VITE_APP_ENV == 'development' ? true : !!accessToken
+
+  // Agendamento da renovação automática do token
+  function scheduleRefresh(accessToken: string) {
+    try {
+      const { exp } = jwtDecode<{ exp: number }>(accessToken)
+      const expiresIn = exp * 1000 - Date.now()
+
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
+
+      refreshTimerRef.current = setTimeout(async () => {
+        try {
+          const refreshToken = Cookies.get('refreshToken')
+          if (!refreshToken) {
+            signOut()
+            return
+          }
+
+          const response = await api.post('/auth/token/refresh', {
+            refresh: refreshToken,
+          })
+          const newAccessToken = response.data.access
+
+          Cookies.set('accessToken', newAccessToken, {
+            sameSite: 'Lax',
+            secure: import.meta.env.PROD,
+          })
+
+          scheduleRefresh(newAccessToken) // Agenda o próximo refresh
+        } catch (error) {
+          console.error('Erro ao renovar token automaticamente:', error)
+          signOut()
+        }
+      }, expiresIn - 30_000) // 30s antes de expirar
+    } catch (error) {
+      console.error('Erro ao agendar refresh:', error)
+    }
+  }
 
   useLayoutEffect(() => {
     const fetchUser = async () => {
@@ -51,6 +92,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (accessToken && import.meta.env.VITE_APP_ENV !== 'development') {
         const { sub } = jwtDecode<{ sub: string }>(accessToken)
         await fetchPerson(sub)
+        scheduleRefresh(accessToken)
       } else {
         setUser(mockUser)
       }
@@ -100,6 +142,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 sameSite: 'Lax',
                 secure: import.meta.env.PROD,
               });
+
+              scheduleRefresh(newAccessToken)
 
               // Resolve todas as requisições que estavam na fila
               failedRequestQueue.forEach(req => req.onSuccess(newAccessToken));
@@ -159,6 +203,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const { sub } = jwtDecode<{ sub: string }>(accessToken)
         await fetchPerson(sub)
+        scheduleRefresh(accessToken)
         navigate('/home')
       }
     } catch (error) {
@@ -182,6 +227,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         logout()
       }
     } finally {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
       setUser(null)
       Cookies.remove('accessToken')
       Cookies.remove('refreshToken')
@@ -191,12 +239,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const configPass = async (verificationCode: string) => {
     try {
-      api.get(`auth/reset-password/${verificationCode}`).then((response) => {
-        console.log(response)
-        navigate(`/change-password/${verificationCode}`)
-      })
+      const response = await api.get(`auth/reset-password/${verificationCode}`)
+      console.log(response)
+      navigate(`/change-password/${verificationCode}`)
     } catch (error) {
-      console.error('Erro no login:', error)
+      console.error('Erro ao validar código de reset:', error)
     }
   }
 
