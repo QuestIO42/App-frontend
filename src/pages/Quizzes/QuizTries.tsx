@@ -147,93 +147,102 @@ export default function QuizTries() {
         (answer) => answer.id_question === question.id
       );
 
-      if (question.type === 0) {
-        return (
-          <div className="w-[90%] my-3" key={question.id}>
-            <div className="w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]">
-              <p className="text-left text-2xl">Conteúdo</p>
+      const getTitle = (type: number) => {
+        switch (type) {
+          case 1:
+            return 'Múltipla Escolha';
+          case 2:
+            return 'Resposta Aberta';
+          case 3:
+            return 'Verilog';
+          default:
+            return 'Conteúdo';
+        }
+      };
+
+      return (
+        <div key={question.id} className="w-full relative group">
+          <div className="w-full my-3" key={question.id}>
+            <div className="w-full flex flex-row justify-between">
+              <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]`}>
+                  <p className="text-left text-2xl">{getTitle(question.type)}</p>
+              </div>
             </div>
 
-            <div className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
-              <Paragraph title={question.name} text={question.content} />
-            </div>
+            {question.type === 0 && (
+              <div className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
+                <Paragraph title={question.name} text={question.content} />
+              </div>
+            )}
+
+            {question.type === 1 && (() => {
+              const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
+              const userAnswerForThis = UserAnswers.find(
+                (ans) => ans.id_question === question.id
+              );
+
+              const selectedDescription =
+                alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)
+                  ?.description || '';
+
+              return (
+                <QuestionBox key={question.id}>
+                  <div className="flex flex-col gap-6">
+                    <Paragraph title={question.name} text={question.content} />
+
+                    <RadioButtonGroup
+                      initialValue={selectedDescription}
+                      handleAnswer={() => {}}
+                      values={alternativesForThis.map((ans) => ans.description ?? '')}
+                      name={`question-${question.id}`}
+                      verified={!!resultData}
+                      correct={resultData ? resultData.score !== 0 : false}
+                      verifiedValue={selectedDescription}
+                      disabled={true}
+                    />
+                  </div>
+                </QuestionBox>
+              );
+            })()}
+
+            {question.type === 2 && (() => {
+              const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
+
+              return (
+                <QuestionBox key={question.id}>
+                  <div className="flex flex-col gap-4">
+                    <Paragraph title={question.name} text={question.content} />
+
+                    <OpenAnswer
+                      id_question={question.id}
+                      initialValue={initialText || ''}
+                      handleAnswer={() =>{}}
+                      verified={!!resultData}
+                      correct={resultData ? resultData.score !== 0 : false}
+                      disabled={true}
+                    />
+                  </div>
+                </QuestionBox>
+              );
+            })()}
+
+            {question.type === 3 && (
+              <div key={question.id} className="w-full mx-auto">
+                <Practice
+                  question={question}
+                  id_quiz={quizId}
+                  initialCode={verilogAnswersRef.current[question.id] || ''}
+                  onChangeCode={(id_question, code) => {
+                    verilogAnswersRef.current[id_question] = code;
+                  }}
+                  disabled={true}
+                  score={resultData?.score}
+                />
+              </div>
+            )}
           </div>
-        );
-      }
-
-      // Múltipla escolha
-      if (question.type === 1) {
-        const alternativesForThis: Answer[] = possibleAnswers[question.id] || [];
-
-        const userAnswerForThis = UserAnswers.find(
-          (ans) => ans.id_question === question.id
-        );
-
-        const selectedDescription =
-          alternativesForThis.find((ans) => ans.id === userAnswerForThis?.answer)
-            ?.description || '';
-
-        return (
-          <QuestionBox questionType={1} key={question.id}>
-            <div className="flex flex-col gap-6">
-              <Paragraph title={question.name} text={question.content} />
-
-              <RadioButtonGroup
-                initialValue={selectedDescription}
-                handleAnswer={() => {}}
-                values={alternativesForThis.map((ans) => ans.description ?? '')}
-                name={`question-${question.id}`}
-                verified={!!resultData}
-                correct={resultData ? resultData.score !== 0 : false}
-                verifiedValue={selectedDescription}
-                disabled={true}
-              />
-            </div>
-          </QuestionBox>
-        );
-      }
-
-      // Questões abertas
-      if (question.type === 2) {
-        const initialText = UserAnswers.find((ans) => ans.id_question === question.id)?.answer;
-
-        return (
-          <QuestionBox questionType={2} key={question.id}>
-            <div className="flex flex-col gap-4">
-              <Paragraph title={question.name} text={question.content} />
-
-              <OpenAnswer
-                id_question={question.id}
-                initialValue={initialText || ''}
-                handleAnswer={() =>{}}
-                verified={!!resultData}
-                correct={resultData ? resultData.score !== 0 : false}
-                disabled={true}
-              />
-            </div>
-          </QuestionBox>
-        );
-      }
-
-      // Verilog
-      if (question.type === 3) {
-        return (
-          <div key={question.id} className="w-full mx-auto my-3">
-            <Practice
-              question={question}
-              id_quiz={quizId}
-              initialCode={verilogAnswersRef.current[question.id] || ''}
-              onChangeCode={(id_question, code) => {
-                verilogAnswersRef.current[id_question] = code;
-              }}
-              disabled={true}
-              score={resultData?.score}
-            />
-          </div>
-        );
-      }
-
-      return null;
+        </div>
+      )
     });
   };
 
@@ -247,7 +256,7 @@ export default function QuizTries() {
 
   return (
     <>
-      <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-6 bg-grid-pattern">
+      <div className="w-full min-h-screen bg-grid-pattern overflow-x-hidden">
         <Header />
 
         <div className="flex flex-col col-span-full justify-start gap-4">
@@ -265,11 +274,14 @@ export default function QuizTries() {
           </div>
         </div>
 
-        <div className="col-span-full w-full mb-16 flex flex-col gap-12 mx-auto items-center justify-center">
-          <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500">
-            <p className="text-[#bab1fc] font-bold">{score}/{quizMaxScore}</p>
+        <div className="flex gap-8 pb-12 px-4 sm:px-8 md:px-20">
+          <div className="w-full transition-all duration-300 flex flex-col gap-8 items-center">
+            <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500">
+              <p className="text-[#bab1fc] font-bold">{score}/{quizMaxScore}</p>
+            </div>
+
+            {Questions && renderQuestions(Questions)}
           </div>
-          {Questions && renderQuestions(Questions)}
         </div>
         <Footer />
       </div>

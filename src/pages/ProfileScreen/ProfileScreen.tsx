@@ -29,7 +29,7 @@ export default function ProfileScreen() {
   }, [])
 
   return (
-    <div className="bg-grid-pattern">
+    <div className="bg-grid-pattern overflow-x-hidden">
       <Header/>
 
       <main className="flex flex-col items-center justify-center gap-12 py-16 px-10 md:px-20">
