@@ -37,6 +37,8 @@ export default function CoursesTemplate({
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const BASE_IMAGE_URL = "https://questio.vlab.dc.ufscar.br/";
+
   // Função que é chamada ao clicar em "Inscrever-se"
   const handleSubscribe = async (courseId: string) => {
     if (!user) return;
@@ -93,7 +95,10 @@ export default function CoursesTemplate({
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
         {hasCourses ? (
-          courses.map((course) => (
+          courses.map((course) => {
+            const imagePath = course.cover_image?.replace("/media/", "") || "";
+
+            return (
             <div key={course.id} className="flex flex-col gap-3 items-center">
               <div
                 // O card só é clicável se o usuário estiver inscrito
@@ -109,8 +114,8 @@ export default function CoursesTemplate({
                 >
                   <div
                     className={`flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}
-                      ${course.cover_image ? `bg-cover bg-center` : course.isSubscribed ? 'bg-roxo-500' : 'bg-[#ececec]' }`}
-                    style={course.cover_image ? { backgroundImage: `url(${course.cover_image})` } : {}}
+                      ${course.cover_image ? 'bg-cover bg-center bg-no-repeat' : course.isSubscribed ? 'bg-roxo-500' : 'bg-[#ececec]' }`}
+                    style={course.cover_image ? { backgroundImage: `url(${BASE_IMAGE_URL}${imagePath})` } : {}}
                   >
                     {!course.isSubscribed && (
                       <Button
@@ -127,7 +132,7 @@ export default function CoursesTemplate({
                 </ModalSquareForm>
               </div>
             </div>
-          ))
+          )})
         ) : hasLabs ? (
           labs!.map((lab) => (
             <div
