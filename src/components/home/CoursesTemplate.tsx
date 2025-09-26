@@ -1,14 +1,16 @@
 import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import ModalSquareForm from '../utility/ModalSquareForm'
 import { Course } from '@/interfaces/Course'
 import { Lab } from '@/interfaces/Lab'
 import { User } from '@/interfaces/User'
 import { getUsersInCourse } from '@/services/api/user'
-import Button from '../utility/Button'
 import { useAuth } from '@/hooks/useAuth'
 import { subscribeToCourse } from '@/services/api/course'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import Button from '../utility/Button'
+import ModalSquareForm from '../utility/ModalSquareForm'
 
 interface CourseWithSubscription extends Course {
   isSubscribed: boolean;
@@ -20,6 +22,7 @@ interface CoursesTemplateProps {
   IsRectangle: boolean;
   courses?: CourseWithSubscription[];
   labs?: Lab[];
+  createButton?: string;
   onSubscriptionChange?: (courseId: string) => void;
 }
 
@@ -29,6 +32,7 @@ export default function CoursesTemplate({
   IsRectangle,
   courses = [],
   labs = [],
+  createButton = "",
   onSubscriptionChange = () => {},
 }: CoursesTemplateProps) {
   const hasCourses = courses && courses.length > 0;
@@ -88,9 +92,18 @@ export default function CoursesTemplate({
 
   return (
     <div className="flex flex-col items-start justify-start gap-10">
-      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
-        {Icon}
-        <h2 className="mr-2 text-2xl font-bold text-[#555]">{title}</h2>
+      <div className="flex flex-row gap-8">
+        <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
+          {Icon}
+          <h2 className="mr-2 text-2xl font-bold text-[#555]">{title}</h2>
+        </div>
+
+        {createButton && user?.role === 2 &&
+          <button onClick={() => {navigate('/create/course')}} className="flex min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-105">
+            <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-3xl" />
+            <h2 className="mr-2 text-2xl font-bold text-[#2f6e4e]">{createButton}</h2>
+          </button>
+        }
       </div>
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
@@ -110,18 +123,18 @@ export default function CoursesTemplate({
                   key={course.id}
                   courseName={course.name}
                   courseTeacher={teachers[course.id]}
-                  borderColor={course.isSubscribed ? '#3e347b' : '#cacacaff'}
+                  borderColor={course.isSubscribed ? '#9c96a1ff' : '#cacacaff'}
                 >
                   <div
                     className={`flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}
-                      ${course.cover_image ? 'bg-cover bg-center bg-no-repeat' : course.isSubscribed ? 'bg-roxo-500' : 'bg-[#ececec]' }`}
+                      ${course.cover_image ? 'bg-cover bg-center bg-no-repeat' : 'bg-[#ececec]'}`}
                     style={course.cover_image ? { backgroundImage: `url(${BASE_IMAGE_URL}${imagePath})` } : {}}
                   >
                     {!course.isSubscribed && (
                       <Button
                         text="Inscrever-se"
                         size="small"
-                        className="w-[80%] z-10 p-2 shadow-none text-roxo-300 bg-[#5a4ac233] border-roxo-300 hover:shadow-none opacity-0 group-hover:opacity-100 transition-all duration-300"
+                        className="w-[80%] z-10 p-2 shadow-none text-cinza bg-gray-300 border-cinza hover:shadow-none opacity-0 group-hover:opacity-100 transition-all duration-300"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleSubscribe(course.id)

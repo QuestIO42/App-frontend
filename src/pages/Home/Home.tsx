@@ -107,6 +107,7 @@ export default function Home() {
               title="Cursos disponíveis"
               IsRectangle={false}
               courses={courses}
+              createButton={"Criar curso"}
               onSubscriptionChange={handleSubscriptionChange}
             ></CoursesTemplate>
 
