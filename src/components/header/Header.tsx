@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth'
 export default function Header() {
   const { user } = useAuth()
   return (
-    <header className="col-span-full flex h-[100px] w-full items-center justify-between bg-roxo-900 px-10 md:px-20">
+    <header className="col-span-full flex h-[100px] w-full items-center justify-between bg-roxo-900 px-8 md:px-20">
       <div className="flex flex-1 items-center">
         <Logo
           className="text-verde-300 transition-all duration-300 ease-in-out hover:text-verde-900 active:scale-90 active:text-verde-300"
@@ -21,7 +21,7 @@ export default function Header() {
         <SearchBar></SearchBar>
       </div> */}
 
-      <div className="flex flex-1 items-center justify-end gap-4">
+      <div className="flex flex-1 items-center justify-end gap-2">
         <NotificationIcon/>
 
         <Link to={`/profile/${user?.id}`} className="group">

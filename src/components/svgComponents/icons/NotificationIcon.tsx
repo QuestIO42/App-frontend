@@ -8,7 +8,7 @@ const NotificationIcon: React.FC<NotificationIconProps> = ({ className }) => {
   return (
     <svg
       className={className}
-      width="49"
+      width="48"
       height="48"
       viewBox="0 0 49 48"
       fill="none"
