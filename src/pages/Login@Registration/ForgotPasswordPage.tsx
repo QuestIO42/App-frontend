@@ -1,24 +1,18 @@
 import ForgotPasswordForm from '@/components/forgotPassword/ForgotPasswordForm'
 import Logo from '@/components/svgComponents/Logo'
-import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
-import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 
 export default function ForgotPassword() {
-  //export default async function recoverPassword({email}: RegisterCredentials){
-  // const response = await api.post('/auth/forgot-password-request',{
-  // email
-  //})
-  //}
 
   return (
-    <div className="min-w-screen flex min-h-screen items-center justify-center">
-      <Logo
-        link="/"
-        className="absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-900"
-      />
+    <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6 pb-16">
+      <div className="w-full absolute top-0 z-50 p-7 sm:p-12">
+        <Logo
+          link="https://www.vlab.dc.ufscar.br"
+          className="w-[52px] sm:w-[64px] aspect-square cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
+        />
+      </div>
+
       <ForgotPasswordForm />
-      <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomRight>
     </div>
   )
 }
