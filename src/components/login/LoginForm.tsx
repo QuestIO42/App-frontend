@@ -83,7 +83,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="relative h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded p-12 xl:min-w-[32rem]">
+    <div className="relative h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-[90%] sm:min-w-[36rem]">
       <FormTitle title="Login"/>
 
       <form
