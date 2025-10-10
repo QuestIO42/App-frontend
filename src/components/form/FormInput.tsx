@@ -13,12 +13,13 @@ const FormInput: React.FC<FormInputProps> = ({
   registerProps,
 }) => {
   return (
-    <div className="mb-4">
-      <label className="mb-2 block font-mono text-sm font-semibold text-preto-texto sm:text-[12px] md:text-base lg:text-base">
+    <div className="mb-4 w-full">
+      <label className="mb-2 block font-mono text-sm font-semibold text-roxo-900 sm:text-[12px] md:text-base lg:text-base">
         {label}
       </label>
+
       <input
-        className={`border-2 border-roxo-300 px-2 py-1 text-base font-semibold text-preto-texto shadow-default-roxo-300 focus:border-roxo-900 focus:shadow-roxo-900 sm:border-[2.5px] sm:px-3 sm:text-lg md:border-4 md:px-4 md:text-xl lg:text-2xl`}
+        className={`w-full border-2 border-roxo-300 p-2 text-base font-semibold text-roxo-900 shadow-default-roxo-300 focus:outline-none focus:ring-0 focus:border-roxo-300 md:text-xl`}
         type={type}
         {...registerProps}
       />

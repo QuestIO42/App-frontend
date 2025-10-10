@@ -8,19 +8,18 @@ import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
 export default function Login() {
   console.log(import.meta.env.VITE_API_URL)
   return (
-    <div className="min-w-screen relative flex min-h-screen items-center justify-center">
+    <div className="min-w-screen min-h-screen relative flex items-center justify-center">
       <Logo
         link="https://www.vlab.dc.ufscar.br"
-        className="hover:text-roxo-escuro absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out"
+        className="w-16 h-16 absolute left-12 top-12 z-10 cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
       />
-      <div className="mb-14 sm:mb-0">
-        <LoginForm />
-      </div>
 
-      <CircuitTopLeft className="absolute left-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitBottomLeft className="absolute bottom-5 left-0 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitTopRight className="absolute right-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <LoginForm />
+
+      <CircuitTopLeft className="absolute left-0 top-28 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitBottomLeft className="absolute bottom-16 left-0 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitTopRight className="absolute right-0 top-32 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitBottomRight className="absolute bottom-0 right-0 hidden max-h-[50%] max-w-[50%] xl:block" />
     </div>
   )
 }
