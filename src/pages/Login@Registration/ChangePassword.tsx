@@ -1,17 +1,17 @@
 import { updateUser } from '@/services/api/user'
+import { z } from 'zod'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@/hooks/useAuth'
 import Logo from '@/components/svgComponents/Logo'
 import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
 import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import FormTitle from '@/components/form/FormTitle'
 import ModalSquareForm from '@/components/utility/ModalSquareForm'
-import { useNavigate, useParams } from 'react-router-dom'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
-import { useAuth } from '@/hooks/useAuth'
 
 // Verificação das condições de senha
 const ChangePasswordSchema = z
@@ -68,49 +68,54 @@ export default function ChangePasswordForm() {
   }
 
   return (
-    <div className="min-w-screen flex min-h-screen items-center justify-center">
-      <Logo
-        link="/"
-        className="absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-900"
-      />
-      <div className="mb-14 mt-14">
-        <ModalSquareForm>
-          <div className="relative flex flex-col items-center justify-center p-10 md:px-10 md:py-5 xl:min-w-[32rem]">
-            <FormTitle title="Redefinir senha" />
-            <form
-              onSubmit={handleSubmit(handlePassword)}
-              className="mt-12 flex flex-col items-center justify-center"
-            >
-              <FormInput
-                registerProps={register('password')}
-                type="password"
-                label="senha"
-              />
-
-              {errors.password && (
-                <ErrorMessage error={errors.password.message} />
-              )}
-              <FormInput
-                registerProps={register('confirmPassword')}
-                type="password"
-                label="confirmar senha"
-              />
-              {errors.confirmPassword && (
-                <ErrorMessage error={errors.confirmPassword.message} />
-              )}
-              {errors.root && <ErrorMessage error={errors.root.message} />}
-              <Button
-                disabled={isSubmitting}
-                className="mt-4"
-                text="Alterar Senha"
-              />
-            </form>
-          </div>
-        </ModalSquareForm>
+    <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6">
+      <div className="w-full absolute top-0 z-50 p-7 sm:p-12">
+        <Logo
+          link="https://www.vlab.dc.ufscar.br"
+          className="w-[52px] sm:w-[64px] aspect-square cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
+        />
       </div>
 
-      <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomRight>
+      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+        <FormTitle title="Nova senha" />
+
+        <form
+          onSubmit={handleSubmit(handlePassword)}
+          className="mt-8 w-full flex flex-col items-center justify-center"
+        >
+          <div className="w-full flex flex-col items-start">
+            <FormInput
+              registerProps={register('password')}
+              type="password"
+              label="senha"
+            />
+
+            {errors.password && (
+              <ErrorMessage error={errors.password.message} />
+            )}
+          </div>
+
+          <div className="w-full flex flex-col items-start mt-5">
+            <FormInput
+              registerProps={register('confirmPassword')}
+              type="password"
+              label="confirmar senha"
+            />
+
+            {errors.confirmPassword && (
+              <ErrorMessage error={errors.confirmPassword.message} />
+            )}
+          </div>
+
+          {errors.root && <ErrorMessage error={errors.root.message} />}
+
+          <Button
+            disabled={isSubmitting}
+            className="mt-6 mb-4 w-full"
+            text="Alterar Senha"
+          />
+        </form>
+      </div>
     </div>
   )
 }
