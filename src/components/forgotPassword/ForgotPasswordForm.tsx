@@ -51,7 +51,7 @@ export default function ForgotPasswordForm() {
         {showRecoveryLink && <RecoveryLink text="Link de Recuperação enviado"/>}
       </div>
 
-      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-8 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
         <FormTitle title="Recuperar senha"/>
 
         <p className="w-full text-cinzaClaro mt-3 text-start text-sm">

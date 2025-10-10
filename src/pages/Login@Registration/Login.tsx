@@ -11,7 +11,7 @@ export default function Login() {
       <HeaderLinks />
       <LoginForm />
 
-      <CircuitTop className="absolute left-0 top-36 hidden max-h-[40%] max-w-[22%] xl:block" />
+      <CircuitTop className="absolute left-0 top-32 hidden max-h-[40%] max-w-[22%] xl:block" />
       <CircuitLeft className="absolute bottom-0 left-0 hidden max-h-[40%] max-w-[25%] xl:block" />
       <CircuitRight className="absolute right-0 top-32 hidden max-h-[30%] max-w-[25%] xl:block" />
       <CircuitBottom className="absolute bottom-0 right-0 hidden max-h-[55%] max-w-[22%] xl:block" />

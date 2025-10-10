@@ -72,7 +72,7 @@ export default function ChangePasswordForm() {
     <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6">
       <HeaderLinks />
 
-      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-8 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
         <FormTitle title="Nova senha" />
 
         <form
@@ -113,7 +113,7 @@ export default function ChangePasswordForm() {
         </form>
       </div>
 
-      <CircuitTop className="absolute left-0 top-36 hidden max-h-[40%] max-w-[22%] xl:block" />
+      <CircuitTop className="absolute left-0 top-32 hidden max-h-[40%] max-w-[22%] xl:block" />
       <CircuitLeft className="absolute bottom-0 left-0 hidden max-h-[40%] max-w-[25%] xl:block" />
       <CircuitRight className="absolute right-0 top-32 hidden max-h-[30%] max-w-[25%] xl:block" />
       <CircuitBottom className="absolute bottom-0 right-0 hidden max-h-[55%] max-w-[22%] xl:block" />
