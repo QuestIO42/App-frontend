@@ -1,14 +1,12 @@
 import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { registerUser } from '@/services/api/auth'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../utility/Button'
 import FormInput from '../form/FormInput'
 import FormTitle from '../form/FormTitle'
-import ModalSquareForm from '../utility/ModalSquareForm'
-import AlreadyHasAAccount from './AlreadyHasAAcconunt'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
-import { registerUser } from '@/services/api/auth'
-import { useNavigate } from 'react-router-dom'
 
 const RegisterFormSchema = z.object({
   username: z
@@ -93,51 +91,69 @@ export default function RegisterForm() {
   }
 
   return (
-    <ModalSquareForm>
-      <div className="relative flex flex-col items-center justify-center p-10 md:px-10 md:py-5 xl:min-w-[32rem]">
-        <FormTitle title="Cadastro" />
-        <form
-          onSubmit={handleSubmit(handleRegister)}
-          className="mt-16 flex flex-col items-center justify-center"
-        >
+    <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-36 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+      <FormTitle title="Criar conta" />
+
+      <form
+        onSubmit={handleSubmit(handleRegister)}
+        className="mt-8 w-full flex flex-col items-center justify-center"
+      >
+        <div className="w-full flex flex-col items-start">
           <FormInput
             registerProps={register('username')}
             type="text"
             label="nome de usuário"
           />
           {errors.username && <ErrorMessage error={errors.username.message} />}
+        </div>
 
+        <div className="w-full flex flex-col items-start mt-5">
           <FormInput
             registerProps={register('full_name')}
             type="text"
             label="nome completo"
           />
           {errors.full_name && <ErrorMessage error={errors.full_name.message} />}
+        </div>
+
+        <div className="w-full flex flex-col items-start mt-5">
           <FormInput
             registerProps={register('email')}
             type="text"
             label="e-mail"
           />
           {errors.email && <ErrorMessage error={errors.email.message} />}
+        </div>
+
+        <div className="w-full flex flex-col items-start mt-5">
           <FormInput
             registerProps={register('password')}
             type="password"
             label="senha"
           />
           {errors.password && <ErrorMessage error={errors.password.message} />}
+        </div>
+
+        <div className="w-full flex flex-col items-start mt-5">
           <FormInput
             registerProps={register('confirmPassword')}
             type="password"
             label="confirmar senha"
           />
-          {errors.confirmPassword && (
-            <ErrorMessage error={errors.confirmPassword.message} />
-          )}
-          {errors.root && <ErrorMessage error={errors.root.message} />}
-          <Button disabled={isSubmitting} className="mt-4" text="Cadastrar" />
-          <AlreadyHasAAccount />
-        </form>
-      </div>
-    </ModalSquareForm>
+          {errors.confirmPassword && (<ErrorMessage error={errors.confirmPassword.message} />)}
+        </div>
+
+        {errors.root && <ErrorMessage error={errors.root.message} />}
+
+        <Button disabled={isSubmitting} className="mt-6 w-full" text="Cadastrar" />
+
+        <p className="mt-8 flex flex-wrap items-center justify-center gap-1 text-center text-sm text-roxo-500">
+          <span>Já tem uma conta?</span>
+          <Link className="font-semibold text-roxo-300 transition-colors hover:text-roxo-900" to={'/'}>
+            Entrar
+          </Link>
+        </p>
+      </form>
+    </div>
   )
 }

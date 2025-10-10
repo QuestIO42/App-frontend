@@ -2,12 +2,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/hooks/useAuth'
+import { Link } from 'react-router-dom'
 import FormInput from '../form/FormInput'
 import Button from '../utility/Button'
 import ForgotPassword from '../form/ForgotPassword'
 import FormTitle from '../form/FormTitle'
-import ModalSquareForm from '../utility/ModalSquareForm'
-import Cadastration from './Cadastration'
 import ErrorMessage from '../form/ErrorMessage'
 
 const emailSchema = z
@@ -83,7 +82,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="relative h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-[90%] sm:min-w-[36rem]">
+    <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
       <FormTitle title="Login"/>
 
       <form
@@ -125,7 +124,15 @@ export default function LoginForm() {
           text="Entrar"
         />
 
-        <Cadastration />
+        <p className="mt-8 flex flex-wrap items-center justify-center gap-1 text-center text-sm text-roxo-500">
+          <span>Ainda não é cadastrado?</span>
+          <Link
+            to="/register"
+            className="font-semibold text-roxo-300 transition-colors hover:text-roxo-900"
+          >
+            Cadastre-se
+          </Link>
+        </p>
       </form>
     </div>
   )
