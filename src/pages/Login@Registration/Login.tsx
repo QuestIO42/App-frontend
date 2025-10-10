@@ -1,20 +1,14 @@
 import LoginForm from '@/components/login/LoginForm'
-import Logo from '@/components/svgComponents/Logo'
 import CircuitBottomLeft from '@/components/svgComponents/circuit/CircuitBottomLeft'
 import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
 import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
+import HeaderLinks from '@/components/header/HeaderLinks'
 
 export default function Login() {
-  console.log(import.meta.env.VITE_API_URL)
   return (
     <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6">
-      <div className="w-full absolute top-0 z-50 p-7 sm:p-12">
-        <Logo
-          link="https://www.vlab.dc.ufscar.br"
-          className="w-[52px] sm:w-[64px] aspect-square cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
-        />
-      </div>
+      <HeaderLinks />
 
       <LoginForm />
 

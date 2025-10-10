@@ -4,14 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/hooks/useAuth'
-import Logo from '@/components/svgComponents/Logo'
-import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
-import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
 import FormTitle from '@/components/form/FormTitle'
-import ModalSquareForm from '@/components/utility/ModalSquareForm'
 import FormInput from '@/components/form/FormInput'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Button from '@/components/utility/Button'
+import HeaderLinks from '@/components/header/HeaderLinks'
 
 // Verificação das condições de senha
 const ChangePasswordSchema = z
@@ -69,12 +66,7 @@ export default function ChangePasswordForm() {
 
   return (
     <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6">
-      <div className="w-full absolute top-0 z-50 p-7 sm:p-12">
-        <Logo
-          link="https://www.vlab.dc.ufscar.br"
-          className="w-[52px] sm:w-[64px] aspect-square cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
-        />
-      </div>
+      <HeaderLinks />
 
       <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-16 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
         <FormTitle title="Nova senha" />
