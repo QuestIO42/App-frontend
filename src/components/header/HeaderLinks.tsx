@@ -25,7 +25,7 @@ export default function HeaderLinks({
   return (
     <header className={`w-full flex items-center justify-between sm:justify-start absolute top-0 z-50 p-5 sm:p-12 ${menuOpen ? "bg-[#f8f7fc] sm:bg-transparent" : "bg-transparent"}`}>
       {/* Logo */}
-      <div className="flex items-center mr-6">
+      <div className="flex items-center mr-8">
         <Logo
           link="https://www.vlab.dc.ufscar.br"
           className="w-[48px] sm:w-[64px] aspect-square cursor-pointer text-roxo-300 transition duration-300 ease-in-out hover:text-roxo-900"
@@ -56,7 +56,7 @@ export default function HeaderLinks({
 
       {/* Menu mobile */}
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-[#f8f7fc] shadow-md flex flex-col items-center pt-1 sm:hidden">
+        <div className="absolute top-full left-0 w-full bg-[#f8f7fc] shadow-md flex flex-col items-center pt-1 px-5 sm:hidden">
           {links.map((link) => (
             <Link
               key={link.href}
