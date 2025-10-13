@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@/hooks/useAuth'
+import { Link } from 'react-router-dom'
 import FormInput from '../form/FormInput'
 import Button from '../utility/Button'
 import ForgotPassword from '../form/ForgotPassword'
 import FormTitle from '../form/FormTitle'
-import ModalSquareForm from '../utility/ModalSquareForm'
-import Cadastration from './Cadastration'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import ErrorMessage from '../form/ErrorMessage'
-import { useAuth } from '@/hooks/useAuth'
 
 const emailSchema = z
   .string()
@@ -83,48 +82,58 @@ export default function LoginForm() {
   }
 
   return (
-    <ModalSquareForm>
-      <div className="relative flex h-auto flex-col items-center justify-center p-10 md:px-10 md:py-10 xl:min-w-[30rem]">
-        <FormTitle title="Login"></FormTitle>
-        <form
-          onSubmit={handleSubmit(handleLogin)}
-          className="mt-8 flex flex-col items-center justify-center sm:mt-12 md:mt-16"
-        >
-          <div className="flex flex-col items-start">
-            <FormInput
-              registerProps={register('credentials')}
-              type="text"
-              label="usuário ou e-mail"
-            />
-            {errors.credentials && (
-              <ErrorMessage error={errors.credentials.message} />
-            )}
-          </div>
-          <div className="flex flex-col items-start">
-            <FormInput
-              registerProps={register('password')}
-              type="password"
-              label="senha"
-            />
-            {errors.password && (
-              <ErrorMessage error={errors.password.message} />
-            )}
-          </div>
+    <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-8 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+      <FormTitle title="Login"/>
 
-          <ForgotPassword />
-          <div className="ml-auto mr-auto">
-            {errors.root && <ErrorMessage error={errors.root.message} />}
-          </div>
-
-          <Button
-            disabled={isSubmitting}
-            type="submit"
-            className="mt-4"
-            text="login"
+      <form
+        onSubmit={handleSubmit(handleLogin)}
+        className="mt-8 w-full flex flex-col items-center justify-center sm:mt-12"
+      >
+        <div className="w-full flex flex-col items-start">
+          <FormInput
+            registerProps={register('credentials')}
+            type="text"
+            label="Usuário ou e-mail"
           />
-          <Cadastration />
-        </form>
-      </div>
-    </ModalSquareForm>
+          {errors.credentials && (
+            <ErrorMessage error={errors.credentials.message} />
+          )}
+        </div>
+
+        <div className="w-full flex flex-col items-start mt-6">
+          <FormInput
+            registerProps={register('password')}
+            type="password"
+            label="Senha"
+          />
+          {errors.password && (
+            <ErrorMessage error={errors.password.message} />
+          )}
+        </div>
+
+        <ForgotPassword />
+
+        <div className="ml-auto mr-auto">
+          {errors.root && <ErrorMessage error={errors.root.message} />}
+        </div>
+
+        <Button
+          disabled={isSubmitting}
+          type="submit"
+          className="mt-4 w-full"
+          text="Entrar"
+        />
+
+        <p className="mt-8 flex flex-wrap items-center justify-center gap-1 text-center text-sm text-roxo-500">
+          <span>Ainda não é cadastrado?</span>
+          <Link
+            to="/register"
+            className="font-semibold text-roxo-300 transition-colors hover:text-roxo-900"
+          >
+            Cadastre-se
+          </Link>
+        </p>
+      </form>
+    </div>
   )
 }

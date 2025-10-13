@@ -1,26 +1,20 @@
 import LoginForm from '@/components/login/LoginForm'
-import Logo from '@/components/svgComponents/Logo'
-import CircuitBottomLeft from '@/components/svgComponents/circuit/CircuitBottomLeft'
-import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
-import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
-import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight'
+import CircuitLeft from '@/components/svgComponents/circuit/CircuitLeft'
+import CircuitRight from '@/components/svgComponents/circuit/CircuitRight'
+import CircuitTop from '@/components/svgComponents/circuit/CircuitTop'
+import CircuitBottom from '@/components/svgComponents/circuit/CircuitBottom'
+import HeaderLinks from '@/components/header/HeaderLinks'
 
 export default function Login() {
-  console.log(import.meta.env.VITE_API_URL)
   return (
-    <div className="min-w-screen relative flex min-h-screen items-center justify-center">
-      <Logo
-        link="https://www.vlab.dc.ufscar.br"
-        className="hover:text-roxo-escuro absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out"
-      />
-      <div className="mb-14 sm:mb-0">
-        <LoginForm />
-      </div>
+    <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6">
+      <HeaderLinks />
+      <LoginForm />
 
-      <CircuitTopLeft className="absolute left-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitBottomLeft className="absolute bottom-5 left-0 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitTopRight className="absolute right-0 top-5 hidden max-h-[50%] max-w-[50%] xl:block" />
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[50%] max-w-[50%] xl:block" />
+      <CircuitTop className="absolute left-0 top-32 hidden max-h-[40%] max-w-[22%] xl:block" />
+      <CircuitLeft className="absolute bottom-0 left-0 hidden max-h-[40%] max-w-[25%] xl:block" />
+      <CircuitRight className="absolute right-0 top-32 hidden max-h-[30%] max-w-[25%] xl:block" />
+      <CircuitBottom className="absolute bottom-0 right-0 hidden max-h-[55%] max-w-[22%] xl:block" />
     </div>
   )
 }

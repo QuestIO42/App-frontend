@@ -1,14 +1,13 @@
-import Button from '../utility/Button'
-import ModalSquareForm from '../utility/ModalSquareForm'
-import FormTitle from '../form/FormTitle'
-import Information from './Information'
+import { useState } from 'react'
 import { forgotPassword } from '@/services/api/auth'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Button from '../utility/Button'
+import FormTitle from '../form/FormTitle'
 import ErrorMessage from '../form/ErrorMessage'
 import RecoveryLink from '../login/RecoveryLink'
-import { useState } from 'react'
+import FormInput from '../form/FormInput'
 
 const EmailSchema = z.object({
   email: z
@@ -48,41 +47,30 @@ export default function ForgotPasswordForm() {
 
   return (
     <>
-   <div className="relative flex flex-col gap-16 mt-14 items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
-    <div className="absolute top-[-63px]">
-    {showRecoveryLink && <RecoveryLink
-      text="Link de Recuperação enviado"
-       />}
-       </div>
-    <ModalSquareForm>
-      <div className="relative flex flex-col items-center justify-center p-5 lg:px-14 lg:py-10 xl:min-w-[30rem]">
-        <FormTitle title="Recuperar senha"></FormTitle>
-        <Information></Information>
+      <div className="absolute top-24">
+        {showRecoveryLink && <RecoveryLink text="Link de Recuperação enviado"/>}
+      </div>
 
-        <form className="mt-4 flex flex-col items-center justify-center sm:mt-10 md:mt-8" onSubmit={handleSubmit(handleClick)}>
-          <div className="mb-4">
-            <label className="mb-2 block font-mono text-sm font-semibold text-preto-texto sm:text-[12px] md:text-base lg:text-base">
-              {"email"}
-            </label>
+      <div className="h-auto bg-[#f8f7fc] flex flex-col items-center justify-center border border-roxo-300 rounded mt-8 sm:mt-0 p-8 sm:p-12 min-w-full sm:min-w-[36rem]">
+        <FormTitle title="Recuperar senha"/>
 
-            <input
-              {...register('email', {
-                required: 'O campo do e-mail é obrigatório'
-              })}
-              className={`border-2 border-roxo-300 px-2 py-1  text-base font-semibold text-preto-texto shadow-default-roxo-300 focus:border-roxo-900 focus:shadow-roxo-900 sm:border-[2.5px] sm:px-3 sm:text-lg md:border-4 md:px-4 md:text-xl lg:text-2xl`}
+        <p className="w-full text-cinzaClaro mt-3 text-start text-sm">
+          Informe o e-mail da sua conta
+        </p>
+
+        <form className="mt-8 w-full flex flex-col items-center justify-center" onSubmit={handleSubmit(handleClick)}>
+          <div className="w-full flex flex-col items-start">
+            <FormInput
+              registerProps={register('email')}
               type="text"
+              label="E-mail"
             />
-
-            <div className="ml-auto mt-4 mr-auto">
-              {errors.email &&  <ErrorMessage error={errors.email.message}/>}
-            </div>
-
+            {errors.email &&  <ErrorMessage error={errors.email.message}/>}
           </div>
-          <Button type="submit" disabled={isSubmitting} className="mt-4" text="Enviar"></Button>
+
+          <Button type="submit" disabled={isSubmitting} className="my-4 w-full" text="Enviar"></Button>
         </form>
       </div>
-    </ModalSquareForm>
-    </div>
     </>
   )
 }

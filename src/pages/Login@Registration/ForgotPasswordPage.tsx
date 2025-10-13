@@ -1,24 +1,21 @@
 import ForgotPasswordForm from '@/components/forgotPassword/ForgotPasswordForm'
-import Logo from '@/components/svgComponents/Logo'
-import CircuitBottomRight from '@/components/svgComponents/circuit/CircuitBottomRight'
-import CircuitTopLeft from '@/components/svgComponents/circuit/CircuitTopLeft'
+import CircuitLeft from '@/components/svgComponents/circuit/CircuitLeft'
+import CircuitRight from '@/components/svgComponents/circuit/CircuitRight'
+import CircuitTop from '@/components/svgComponents/circuit/CircuitTop'
+import CircuitBottom from '@/components/svgComponents/circuit/CircuitBottom'
+import HeaderLinks from '@/components/header/HeaderLinks'
 
 export default function ForgotPassword() {
-  //export default async function recoverPassword({email}: RegisterCredentials){
-  // const response = await api.post('/auth/forgot-password-request',{
-  // email
-  //})
-  //}
 
   return (
-    <div className="min-w-screen flex min-h-screen items-center justify-center">
-      <Logo
-        link="/"
-        className="absolute left-8 top-4 z-10 cursor-pointer text-cinza transition duration-300 ease-in-out hover:text-roxo-900"
-      />
+    <div className="min-w-screen min-h-screen bg-grid-pattern relative flex flex-col items-center justify-center px-6 pb-16">
+      <HeaderLinks />
       <ForgotPasswordForm />
-      <CircuitTopLeft className="md:text absolute left-0 top-5 hidden max-h-[30%] max-w-[30%] xl:block" />
-      <CircuitBottomRight className="absolute bottom-5 right-0 hidden max-h-[30%] max-w-[30%] xl:block"></CircuitBottomRight>
+
+      <CircuitTop className="absolute left-0 top-32 hidden max-h-[40%] max-w-[22%] xl:block" />
+      <CircuitLeft className="absolute bottom-0 left-0 hidden max-h-[40%] max-w-[25%] xl:block" />
+      <CircuitRight className="absolute right-0 top-32 hidden max-h-[30%] max-w-[25%] xl:block" />
+      <CircuitBottom className="absolute bottom-0 right-0 hidden max-h-[55%] max-w-[22%] xl:block" />
     </div>
   )
 }
