@@ -86,9 +86,29 @@ export default function Home() {
     <div className="min-h-screen w-full overflow-x-hidden bg-grid-pattern">
       <Header />
 
-      <div className="w-full px-10 md:px-16 flex flex-row mt-16 gap-12">
-          <div className="flex flex-1 bg-black items-start justify-start">
+      <div className="w-full px-10 md:px-16 flex flex-row my-16 gap-12">
+          <div className="flex flex-col flex-1 items-start justify-start">
             <UserProgression />
+
+            <div className="flex flex-col items-start justify-start gap-20 mt-24">
+              {/* Cursos */}
+              <CoursesTemplate
+                Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-3xl" />}
+                title="Cursos disponíveis"
+                IsRectangle={false}
+                courses={courses}
+                createButton={"Criar curso"}
+                onSubscriptionChange={handleSubscriptionChange}
+              ></CoursesTemplate>
+
+              {/* Laboratórios */}
+              <CoursesTemplate
+                Icon={<FontAwesomeIcon icon={faFlask} className="text-[#555] text-3xl" />}
+                title="Laboratórios virtuais"
+                IsRectangle={true}
+                labs={mockVirtualLabs}
+              ></CoursesTemplate>
+            </div>
           </div>
 
           <div className="">
@@ -104,30 +124,10 @@ export default function Home() {
 
       <div className="relative col-span-full row-auto w-full">
         <div className="ml-10 md:ml-20 flex items-start justify-between">
-          <div className="mr-10 flex flex-col items-start justify-start gap-20">
-            {/* Cursos */}
-            <CoursesTemplate
-              Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-3xl" />}
-              title="Cursos disponíveis"
-              IsRectangle={false}
-              courses={courses}
-              createButton={"Criar curso"}
-              onSubscriptionChange={handleSubscriptionChange}
-            ></CoursesTemplate>
 
-            {/* Laboratórios */}
-            <CoursesTemplate
-              Icon={<FontAwesomeIcon icon={faFlask} className="text-[#555] text-3xl" />}
-              title="Laboratórios virtuais"
-              IsRectangle={true}
-              labs={mockVirtualLabs}
-            ></CoursesTemplate>
-          </div>
         </div>
-
-        <CircuitHome className="absolute bottom-0 right-0 -z-10"></CircuitHome>
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }

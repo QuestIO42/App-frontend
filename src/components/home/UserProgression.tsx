@@ -29,7 +29,7 @@ export default function UserProgression() {
   }, []);
 
   return (
-    <div className="flex flex-row flex-wrap border-4 p-8 gap-8 border-preto-default bg-branco shadow-default-preto">
+    <div className="flex flex-row flex-wrap p-8 gap-8 border-2 border-[#DDDDDD] bg-cinza-300 shadow-default-cinza-300">
       <div className="hidden items-center justify-center sm:flex">
         <ProgressXpCircle level={level} progress={progress} />
       </div>

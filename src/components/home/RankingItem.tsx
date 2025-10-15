@@ -10,7 +10,7 @@ export default function RankingItem({ users }: UserListProps) {
     <>
       {users.slice(0, 10).map((user, index) => (
         <div key={`${user.full_name}-${index}`} className="flex items-stretch min-h-[80px] gap-5 px-2 py-2">
-          <div className="flex items-center justify-center font-bold text-roxo-900 text-2xl">
+          <div className="flex items-center justify-center font-bold text-roxo-300 text-2xl">
             {String(index + 1).padStart(2, '0')}
           </div>
 
