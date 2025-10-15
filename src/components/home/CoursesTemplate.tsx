@@ -95,13 +95,13 @@ export default function CoursesTemplate({
       <div className="flex flex-row gap-8">
         <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
           {Icon}
-          <h2 className="mr-2 text-2xl font-bold text-[#555]">{title}</h2>
+          <h2 className="mr-2 text-xl font-bold text-[#555]">{title}</h2>
         </div>
 
         {createButton && user?.role === 2 &&
-          <button onClick={() => {navigate('/create/course')}} className="flex min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-105">
-            <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-3xl" />
-            <h2 className="mr-2 text-2xl font-bold text-[#2f6e4e]">{createButton}</h2>
+          <button onClick={() => {navigate('/create/course')}} className="flex min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
+            <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-2xl" />
+            <h2 className="mr-2 text-xl font-bold text-[#2f6e4e]">{createButton}</h2>
           </button>
         }
       </div>

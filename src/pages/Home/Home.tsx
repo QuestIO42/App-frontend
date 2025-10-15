@@ -86,14 +86,14 @@ export default function Home() {
     <div className="min-h-screen w-full overflow-x-hidden bg-grid-pattern">
       <Header />
 
-      <div className="w-full px-10 md:px-16 flex flex-row my-16 gap-12">
+      <div className="w-full px-8 md:px-16 flex flex-col my-12 xl:my-16 gap-12 xl:flex-row">
           <div className="flex flex-col flex-1 items-start justify-start">
             <UserProgression />
 
             <div className="flex flex-col items-start justify-start gap-20 mt-24">
               {/* Cursos */}
               <CoursesTemplate
-                Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-3xl" />}
+                Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-2xl" />}
                 title="Cursos disponíveis"
                 IsRectangle={false}
                 courses={courses}
@@ -103,7 +103,7 @@ export default function Home() {
 
               {/* Laboratórios */}
               <CoursesTemplate
-                Icon={<FontAwesomeIcon icon={faFlask} className="text-[#555] text-3xl" />}
+                Icon={<FontAwesomeIcon icon={faFlask} className="text-[#555] text-2xl" />}
                 title="Laboratórios virtuais"
                 IsRectangle={true}
                 labs={mockVirtualLabs}
@@ -120,13 +120,7 @@ export default function Home() {
               )}
             </Ranking>
           </div>
-      </div>
-
-      <div className="relative col-span-full row-auto w-full">
-        <div className="ml-10 md:ml-20 flex items-start justify-between">
-
         </div>
-      </div>
       <Footer />
     </div>
   );

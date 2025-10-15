@@ -29,14 +29,14 @@ export default function UserProgression() {
   }, []);
 
   return (
-    <div className="flex flex-row flex-wrap p-8 gap-8 border-2 border-[#DDDDDD] bg-cinza-300 shadow-default-cinza-300">
+    <div className="flex flex-row flex-wrap w-full xl:w-fit p-8 gap-8 border-2 border-[#DDDDDD] bg-cinza-300 shadow-default-cinza-300">
       <div className="hidden items-center justify-center sm:flex">
         <ProgressXpCircle level={level} progress={progress} />
       </div>
 
       <div className="flex flex-col items-start justify-center gap-1">
-        <h2 className="text-4xl font-bold text-black tracking-wider uppercase">olá, {user?.username}!</h2>
-        <h3 className='text-lg text-gray-400'>{user?.email}</h3>
+        <h2 className="text-2xl xl:text-4xl font-bold text-black tracking-wider uppercase">olá, {user?.username}!</h2>
+        <h3 className="text-[14px] xl:text-lg text-gray-400">{user?.email}</h3>
       </div>
     </div>
   );
