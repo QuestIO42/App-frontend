@@ -7,9 +7,9 @@ export default function Description({variant, text} : DescriptionProps) {
   const getVariant=(variant :any) => {
   switch(variant) {
     case 'orange':
-      return 'bg-laranja shadow-default-laranja text-cinza'
+      return 'bg-laranja shadow-default-laranja text-cinza-900'
     case 'green':
-      return 'bg-verde-300 shadow-default-verde-900 text-cinza'
+      return 'bg-verde-300 shadow-default-verde-900 text-cinza-900'
     case 'purple':
       return 'bg-roxo-300 shadow-default-roxo-description text-amarelo'
     case 'default': {

@@ -29,7 +29,7 @@ export default function PostItemCourse({ post }: PostItemCourseProps) {
       </div>
 
       <h3 className="flex flex-wrap text-xl font-bold text-black pb-2 mt-4 border-b border-gray-200">{post.title}</h3>
-      <p className="text-cinza mt-2">{post.content}</p>
+      <p className="text-cinza-900 mt-2">{post.content}</p>
     </div>
   );
 }

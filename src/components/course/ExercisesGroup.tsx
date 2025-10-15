@@ -65,7 +65,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     // Mostrar loading enquanto não há dados de status
     if (Object.keys(quizStatusMap).length === 0) {
       return (
-        <div className="mt-10 mr-12 p-5 border border-cinza bg-white text-cinza">
+        <div className="mt-10 mr-12 p-5 border border-cinza-900 bg-white text-cinza-900">
           Carregando quizzes...
         </div>
       )
@@ -100,7 +100,7 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                           key={quiz.id + `try-${i}`}
                           onClick={() => handleTriesClick(quiz, i + 1)}
                           className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer transition-all duration-200 ease-in-out
-                                     hover:border-[#777] hover:text-cinza hover:scale-105">
+                                     hover:border-[#777] hover:text-cinza-900 hover:scale-105">
                           Tentativa {i+1}
                         </button>
                       ))}

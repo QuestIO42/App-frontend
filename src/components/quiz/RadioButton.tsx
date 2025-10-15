@@ -10,7 +10,7 @@ interface RadioButtonProps {
 }
 
 const squareStyles = cva(
-  'flex items-center justify-center border-[3px] h-10 w-10 text-cinza border-roxo-900 text-center font-bold',
+  'flex items-center justify-center border-[3px] h-10 w-10 text-cinza-900 border-roxo-900 text-center font-bold',
   {
     variants: {
       checked: {
@@ -52,7 +52,7 @@ export default function RadioButton ({
         <span>{label}</span>
       </span>
 
-      <span className="ml-6 text-cinza">{value}</span>
+      <span className="ml-6 text-cinza-900">{value}</span>
     </label>
   )
 }

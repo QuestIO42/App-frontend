@@ -64,10 +64,10 @@ export default function ReplyForm({ parentId, onReplyCreated, onClose, courseId,
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
        <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl shadow-default-preto">
-        <h2 className="text-2xl font-bold text-cinza mb-6 underline">Responder ao Tópico</h2>
+        <h2 className="text-2xl font-bold text-cinza-900 mb-6 underline">Responder ao Tópico</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label htmlFor="content" className="block text-cinza font-bold mb-2">Sua Resposta</label>
+            <label htmlFor="content" className="block text-cinza-900 font-bold mb-2">Sua Resposta</label>
             <textarea
               id="content"
               value={content}

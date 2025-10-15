@@ -134,7 +134,7 @@ export default function CoursesTemplate({
                       <Button
                         text="Inscrever-se"
                         size="small"
-                        className="w-[80%] z-10 p-2 shadow-none text-cinza bg-gray-300 border-cinza hover:shadow-none opacity-0 group-hover:opacity-100 transition-all duration-300"
+                        className="w-[80%] z-10 p-2 shadow-none text-cinza-900 bg-gray-300 border-cinza hover:shadow-none opacity-0 group-hover:opacity-100 transition-all duration-300"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleSubscribe(course.id)

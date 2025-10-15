@@ -35,7 +35,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
       setError('Você precisa estar logado para criar um post.');
       return;
     }
-    
+
     setIsSubmitting(true);
     setError('');
 
@@ -51,7 +51,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
       } else if (questionId) {
         payload.id_question = questionId;
       }
-      
+
       const createdPost = await createPost(payload, { quizId });
       onPostCreated(createdPost);
       onClose();
@@ -67,10 +67,10 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl shadow-default-preto">
-        <h2 className="text-2xl font-bold text-cinza mb-6 underline">Criar Novo Tópico</h2>
+        <h2 className="text-2xl font-bold text-cinza-900 mb-6 underline">Criar Novo Tópico</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="title" className="block text-cinza font-bold mb-2">Título</label>
+            <label htmlFor="title" className="block text-cinza-900 font-bold mb-2">Título</label>
             <input
               type="text"
               id="title"
@@ -81,7 +81,7 @@ export default function NewPostForm({ onPostCreated, onClose, courseId, question
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="content" className="block text-cinza font-bold mb-2">Conteúdo</label>
+            <label htmlFor="content" className="block text-cinza-900 font-bold mb-2">Conteúdo</label>
             <textarea
               id="content"
               value={content}

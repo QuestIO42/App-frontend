@@ -226,7 +226,7 @@ export default function Course() {
 
         {Course && (
           <div className="flex flex-col justify-center mx-10">
-            <h2 className="mb-8 mt-10 text-5xl text-center font-bold text-cinza">
+            <h2 className="mb-8 mt-10 text-5xl text-center font-bold text-cinza-900">
               {Course.name}
             </h2>
 
@@ -259,7 +259,7 @@ export default function Course() {
                 disabled={isExporting}
                 courseId={courseId!}
                 variant='quaternary'
-                className="mr-[90px] text-cinza bg-white text-xl"
+                className="mr-[90px] text-cinza-900 bg-white text-xl"
                 text={isExporting ? "Exportando..." : "exportar notas"}
                 size="small"
               ></Button>
@@ -289,7 +289,7 @@ export default function Course() {
 
             <div className="p-4 bg-gray-100 shadow-default-cinza-300">
               {isLoadingPosts ? (
-                <p className="text-center text-cinza py-4">Carregando posts...</p>
+                <p className="text-center text-cinza-900 py-4">Carregando posts...</p>
               ) : topLevelPosts.length > 0 ? (
                 topLevelPosts.map(post => (
                   <PostThreadCourse
@@ -300,7 +300,7 @@ export default function Course() {
                   />
                 ))
               ) : (
-                <p className="text-center text-cinza py-4">Ainda não há nenhuma discussão no fórum.</p>
+                <p className="text-center text-cinza-900 py-4">Ainda não há nenhuma discussão no fórum.</p>
               )}
             </div>
           </div>

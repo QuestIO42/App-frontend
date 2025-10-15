@@ -26,7 +26,7 @@ export default function Test({
 
       <div className="ml-20 mr-20 col-span-full flex flex-col items-center">
         <div className="bg-white min-w-[500px] p-8 m-8 border border-black">
-          <h1 className="text-6xl font-bold text-cinza text-center mb-16">{title}</h1>
+          <h1 className="text-6xl font-bold text-cinza-900 text-center mb-16">{title}</h1>
           <div className="m-8 pb-16 flex-col flex gap-10">
             {text.map((phrase, index) => (
               <p key={index}>{phrase}</p>

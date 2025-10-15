@@ -50,7 +50,7 @@ export default function Exercises() {
         </div>
 
         <div className="absolute left-1/2 flex -translate-x-1/2 transform flex-col justify-center">
-          <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza">
+          <h2 className="mb-8 mt-10 text-6xl font-bold text-cinza-900">
             Lista de Exercícios
           </h2>
         </div>

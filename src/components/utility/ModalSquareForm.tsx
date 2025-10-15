@@ -18,10 +18,10 @@ export default function ModalSquareForm({ children, courseName, courseTeacher, I
 
       </div>
 
-        <p className="flex-wrap w-[260px] mt-8 text-xl text-left font-bold text-cinza hover:underline">
+        <p className="flex-wrap w-[260px] mt-8 text-xl text-left font-bold text-cinza-900 hover:underline">
           { courseName }
         </p>
-        <p className="flex-wrap w-[260px] mt-1 text-left font-bold text-cinzaClaro">
+        <p className="flex-wrap w-[260px] mt-1 text-left font-bold text-cinza-500">
           { courseTeacher }
         </p>
     </div>

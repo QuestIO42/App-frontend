@@ -83,19 +83,23 @@ export default function Home() {
   };
 
   return (
-    <div className="grid min-h-screen w-full overflow-x-hidden grid-cols-4 grid-rows-[auto,1fr,auto] gap-24 bg-grid-pattern">
+    <div className="min-h-screen w-full overflow-x-hidden bg-grid-pattern">
       <Header />
 
-      <div className="relative col-span-full w-full">
-        <div className="mx-10 md:mx-20 flex flex-row">
-          <div className="flex items-start justify-start">
+      <div className="w-full px-10 md:px-16 flex flex-row mt-16 gap-12">
+          <div className="flex flex-1 bg-black items-start justify-start">
             <UserProgression />
           </div>
 
-          <div className="absolute right-0 flex items-end justify-end hidden xl:flex">
-            <CircuitTopRight />
+          <div className="">
+            <Ranking>
+              {isRankingLoading ? (
+                <p>Carregando ranking...</p>
+              ) : (
+                <RankingItem users={rankingUsers} />
+              )}
+            </Ranking>
           </div>
-        </div>
       </div>
 
       <div className="relative col-span-full row-auto w-full">
@@ -119,14 +123,6 @@ export default function Home() {
               labs={mockVirtualLabs}
             ></CoursesTemplate>
           </div>
-
-          <Ranking>
-            {isRankingLoading ? (
-              <p>Carregando ranking...</p>
-            ) : (
-              <RankingItem users={rankingUsers} />
-            )}
-          </Ranking>
         </div>
 
         <CircuitHome className="absolute bottom-0 right-0 -z-10"></CircuitHome>

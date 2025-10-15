@@ -46,10 +46,10 @@ export default function Paragraph({ title, text }: ParagraphProps) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}
         components={{
-          h1: ({ children }) => <h1 className="text-3xl text-cinza font-bold mb-3">{children}</h1>,
-          h2: ({ children }) => <h2 className="text-2xl text-cinza font-bold mb-2">{children}</h2>,
-          h3: ({ children }) => <h3 className="text-xl text-cinza font-bold mb-1">{children}</h3>,
-          p: ({ children }) => <p className="text-cinza">{children}</p>,
+          h1: ({ children }) => <h1 className="text-3xl text-cinza-900 font-bold mb-3">{children}</h1>,
+          h2: ({ children }) => <h2 className="text-2xl text-cinza-900 font-bold mb-2">{children}</h2>,
+          h3: ({ children }) => <h3 className="text-xl text-cinza-900 font-bold mb-1">{children}</h3>,
+          p: ({ children }) => <p className="text-cinza-900">{children}</p>,
           a: ({ href, children }) => (
             <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
               {children}
@@ -68,8 +68,8 @@ export default function Paragraph({ title, text }: ParagraphProps) {
           img: ({ node, ...props }) => (
             <img {...props} className="max-w-full h-auto rounded-md my-4 self-center" />
           ),
-          ul: ({ children }) => <ul className="list-disc pl-12 space-y-1 text-cinza">{children}</ul>,
-          ol: ({ children }) => <ol className="list-decimal pl-12 space-y-1 text-cinza">{children}</ol>,
+          ul: ({ children }) => <ul className="list-disc pl-12 space-y-1 text-cinza-900">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal pl-12 space-y-1 text-cinza-900">{children}</ol>,
           code: ({ node, inline, className, children, ...props }: CustomCodeProps) => {
             const match = /language-(\w+)/.exec(className || '')
             if (!inline && match) {

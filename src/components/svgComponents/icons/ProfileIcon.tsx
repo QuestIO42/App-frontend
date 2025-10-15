@@ -8,8 +8,6 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({ className }) => {
   return (
     <svg
       className={`fill-current ${className}`}
-      width="48"
-      height="48"
       viewBox="0 0 48 48"
       xmlns="http://www.w3.org/2000/svg"
     >

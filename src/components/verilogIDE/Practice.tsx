@@ -213,7 +213,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
 
         {/* Área de código */}
         <div className="w-full flex flex-col justify-start mt-6">
-          <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza">
+          <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza-900">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
                 <IconGroup onIconClick={handleIconClick} disabled={disabled} />
@@ -235,7 +235,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
         {/* Console */}
         <div className="w-full mt-6">
           <div className="flex justify-start">
-            <div className="flex flex-col mb-4 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza">
+            <div className="flex flex-col mb-4 bg-white border-[3px] px-6 py-1 border-preto-default shadow-default-preto text-cinza-900">
               <div className="flex flex-row w-full h-[240px] py-4">
                 <ResponseBox verilog_code={feedback} width={size.width} height="170px" />
               </div>

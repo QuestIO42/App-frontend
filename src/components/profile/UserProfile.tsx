@@ -19,7 +19,7 @@ export default function UserProfile() {
     <div className="flex-1 flex h-auto flex-col items-center justify-center border-4 border-preto-default bg-branco p-8 shadow-default-preto md:min-w-[25rem] gap-3">
       <h2 className="w-full text-center text-2xl font-bold text-[#47bf85] tracking-wider uppercase p-5 border border-[#47bf85] bg-[#f0fff8]">minha conta</h2>
       <ProfileIcon className="mt-8 h-[160px] w-[160px] text-verde-300"></ProfileIcon>
-      <h2 className="text-4xl font-bold text-cinza">{user?.username}</h2>
+      <h2 className="text-4xl font-bold text-cinza-900">{user?.username}</h2>
       <StudentInformation />
 
       <Button

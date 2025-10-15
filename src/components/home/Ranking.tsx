@@ -8,14 +8,15 @@ interface RankingProps {
 
 export default function Ranking(Children: RankingProps) {
   return (
-    <div className={`flex flex-col gap-6 mr-10 md:mr-20`}>
-      <div className="flex min-w-[360px] py-4 px-6 items-center justify-center bg-roxo-300 shadow-default-roxo-500 gap-4">
+    <div className="flex flex-col gap-6 mr-2">
+      <div className="flex min-w-[400px] py-4 px-6 items-center justify-center bg-roxo-300 shadow-default-roxo-500 gap-4">
         <FontAwesomeIcon icon={faTrophy} className="text-amarelo text-3xl" />
         <p className="mr-2 text-center text-2xl font-bold text-amarelo">
           Ranking Geral
         </p>
       </div>
-      <div className="h-auto max-w-[360px] bg-roxo-500 p-5 shadow-default-roxo-500">
+
+      <div className="h-auto max-w-[400px] bg-[#F9F9F9] p-5 shadow-default-cinza-300 border-2 border-[#DDDDDD]">
         {Children.children}
       </div>
     </div>

@@ -15,7 +15,7 @@ export default function RankingItem({ users }: UserListProps) {
           </div>
 
           <div className="flex items-center justify-center flex-shrink-0 text-verde-300 text-3xl">
-            <ProfileIcon />
+            <ProfileIcon className="w-11 aspect-square" />
           </div>
 
           <div className="flex flex-1 flex-col items-start">

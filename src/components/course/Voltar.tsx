@@ -7,7 +7,7 @@ export default function Voltar() {
     <div>
       <button
         onClick={() => navigate(-1)}
-        className="text-2xl hover:underline font-bold text-cinzaClaro"
+        className="text-2xl hover:underline font-bold text-cinza-500"
       >&lt; voltar
       </button>
     </div>

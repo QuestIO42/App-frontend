@@ -16,7 +16,7 @@ function PostItemQuiz({ post, user }: { post: Post; user?: User }) {
         <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
       <h4 className="font-bold text-gray-800 mb-2 mt-3">{post.title}</h4>
-      <p className="text-cinza text-sm">{post.content}</p>
+      <p className="text-cinza-900 text-sm">{post.content}</p>
     </div>
   );
 }
@@ -32,7 +32,7 @@ function ReplyItem({ post, user }: { post: Post; user?: User }) {
 
         <p>{new Date(post.creation_date).toLocaleDateString('pt-BR')}</p>
       </div>
-      <p className="text-cinza text-sm mt-3">{post.content}</p>
+      <p className="text-cinza-900 text-sm mt-3">{post.content}</p>
 
     </div>
   );

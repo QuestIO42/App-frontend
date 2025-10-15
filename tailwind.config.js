@@ -30,8 +30,11 @@ export default {
           300: 'var(--verde-300)',
           900: 'var(--verde-900)',
         },
-        cinza: 'var(--cinza)',
-        cinzaClaro: 'var(--cinzaClaro)',
+        cinza: {
+          300: 'var(--cinza-300)',
+          500: 'var(--cinza-500)',
+          900: 'var(--cinza-900)',
+        },
         preto: {
           texto: 'var(--preto-texto)',
           default: 'var(--preto)',
