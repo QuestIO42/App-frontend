@@ -34,6 +34,7 @@ let failedRequestQueue: {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const navigate = useNavigate()
 
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -143,9 +144,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const refreshInterceptor = api.interceptors.response.use(
         response => response,
         async (error) => {
+          if (isLoggingOut) {
+            return Promise.reject(error)
+          }
+
           const originalRequest = error.config;
 
-          // Se a requisição já foi tentada antes, não tentar de novo
           if (originalRequest._retry) {
             return Promise.reject(error)
           }
@@ -157,8 +161,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
           const refreshToken = Cookies.get('refreshToken');
           if (!refreshToken) {
-            console.warn('Refresh token ausente, deslogando...');
-            signOut();
+            console.warn('Refresh token ausente. A requisição falhará.');
             return Promise.reject(error);
           }
 
@@ -177,20 +180,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
               scheduleRefresh(newAccessToken)
 
-              // Resolve todas as requisições que estavam na fila
               failedRequestQueue.forEach(req => req.onSuccess(newAccessToken));
               failedRequestQueue = []
             } catch (err: unknown) {
               const axiosError = err as AxiosError;
               failedRequestQueue.forEach(req => req.onFailure(axiosError));
               failedRequestQueue = []
-              signOut();
+              return Promise.reject(err)
             } finally {
               isRefreshing = false;
             }
           }
 
-          // Retorna uma promise para a requisição original aguardar o refresh
           return new Promise((resolve, reject) => {
             failedRequestQueue.push({
               onSuccess: (token: string) => {
@@ -209,12 +210,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.interceptors.response.eject(refreshInterceptor);
       };
     }
-  }, []);
+  }, [isLoggingOut]);
+
 
   async function signIn({ login, password }: SignInCredentials) {
     try {
       if (import.meta.env.VITE_APP_ENV === 'development') {
-        // Em desenvolvimento, simula um usuário autenticado
         setUser(mockUser)
         Cookies.set('accessToken', 'fake-token')
         navigate('/home')
@@ -256,6 +257,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
+    setIsLoggingOut(true);
+
     try {
       if (import.meta.env.VITE_APP_ENV !== 'development') {
         logout()
@@ -268,6 +271,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       Cookies.remove('accessToken')
       Cookies.remove('refreshToken')
       navigate('/')
+
+      setTimeout(() => {
+        setIsLoggingOut(false)
+      }, 500);
     }
   }
 

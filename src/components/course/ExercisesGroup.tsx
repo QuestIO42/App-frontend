@@ -46,11 +46,12 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
       }
 
       fetchTries()
-    }, [])
+    }, [itens])
 
     // Função: Navega para a página do quiz escolhido
     const handleClick = (quiz: Quiz) => {
       localStorage.setItem("quizName", quiz.name)
+      console.log(quiz.description)
       localStorage.setItem("quizDesc", quiz.description)
       navigate(location.pathname + "/quiz/" + quiz.id)
     }
