@@ -31,7 +31,7 @@ export default function UserStatistics() {
   }, []);
 
   return (
-    <div className="flex-1 flex h-auto flex-col items-center justify-center border-4 border-preto-default bg-branco p-8 shadow-default-preto md:min-w-[25rem] gap-3">
+    <div className="flex-1 flex h-auto flex-col items-center justify-center border-2 bg-cinza-300 shadow-default-cinza-300 p-8 md:min-w-[25rem] gap-3">
       <h2 className="w-full text-center text-2xl font-bold text-laranja tracking-wider uppercase p-5 border border-laranja bg-[#f8e0c9]/60">estatísticas</h2>
 
       <div className="flex flex-col w-full mt-6 justify-center gap-3">

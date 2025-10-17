@@ -51,9 +51,9 @@ export default function UserCourses({ courses }: UserCoursesProps) {
 
   return (
     <div className="flex flex-col items-start justify-start">
-      <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
-        <FontAwesomeIcon icon={faBookmark} className="text-3xl" />
-        <h2 className="text-left text-2xl font-bold">Meus Cursos</h2>
+      <div className="flex w-full sm:w-fit min-w-[250px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
+        <FontAwesomeIcon icon={faBookmark} className="text-2xl" />
+        <h2 className="text-lg sm:text-xl font-bold text-[#555]">Meus Cursos</h2>
       </div>
 
       {/* Caso usuário não esteja em nenhum curso */}
@@ -65,7 +65,8 @@ export default function UserCourses({ courses }: UserCoursesProps) {
 
       <div className="ml-4 flex flex-wrap items-start justify-start gap-16 mt-12">
         {hasCourses
-          && courses.map((course) => (
+          && courses.map((course) => {
+            return (
             <div
               key={course.id}
               onClick={() => navigate(`/Course/${course.id}`)}
@@ -77,10 +78,11 @@ export default function UserCourses({ courses }: UserCoursesProps) {
                 courseTeacher={teachers[course.id]}
                 borderColor="#3e347b"
               >
-                <div className="h-[266px] w-[266px] bg-roxo-500"></div>
+                <div className={`h-[266px] w-[266px] bg-roxo-500 ${course.cover_image ? 'bg-cover bg-center bg-no-repeat' : 'bg-[#ececec]'}`}
+                  style={course.cover_image ? { backgroundImage: `url(${course.cover_image})` } : {}}/>
               </ModalSquareForm>
             </div>
-          ))
+          )})
         }
       </div>
     </div>

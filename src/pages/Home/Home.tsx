@@ -3,8 +3,6 @@ import Header from '@/components/header/Header';
 import CoursesTemplate from '@/components/home/CoursesTemplate';
 import Ranking from '@/components/home/Ranking';
 import UserProgression from '@/components/home/UserProgression';
-import CircuitHome from '@/components/svgComponents/circuit/CircuitHome';
-import CircuitTopRight from '@/components/svgComponents/circuit/CircuitTopRight';
 import RankingItem from '@/components/home/RankingItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGraduationCap, faFlask } from '@fortawesome/free-solid-svg-icons'
@@ -90,7 +88,7 @@ export default function Home() {
           <div className="w-full flex flex-col flex-1 items-start justify-start">
             <UserProgression />
 
-            <div className="w-full flex flex-col items-start justify-start gap-20 mt-16 xl:mt-24">
+            <div className="w-full flex flex-col items-start justify-start gap-20 mt-12 xl:mt-24">
               {/* Cursos */}
               <CoursesTemplate
                 Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-2xl" />}

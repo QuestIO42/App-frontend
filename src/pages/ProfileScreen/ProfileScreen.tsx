@@ -32,7 +32,7 @@ export default function ProfileScreen() {
     <div className="bg-grid-pattern overflow-x-hidden">
       <Header/>
 
-      <main className="flex flex-col items-center justify-center gap-12 py-16 px-10 md:px-20">
+      <main className="flex flex-col items-center justify-center gap-12 py-12 md:py-16 px-8 md:px-20">
         <div className="w-full flex flex-row flex-wrap items-stretch justify-center gap-12">
           <UserProfile/>
           <UserStatistics/>
