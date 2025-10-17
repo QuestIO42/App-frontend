@@ -9,9 +9,7 @@ export default function ProgressXpBar({ value, text, progress, maxValue }: Progr
   return (
     <div className="my-2 flex flex-col items-center justify-center gap-2">
       <p className="mr-auto font-bold text-gray-400">{text}</p>
-      <div
-        className="bg-gray-20 h-4 w-full border-2 border-gray-300"
-      >
+      <div className="bg-white h-4 w-full border-2 border-gray-300">
         <div className="h-full bg-laranja" style={{ width: `${progress}%` }}></div>{' '}
       </div>
 

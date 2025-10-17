@@ -6,18 +6,15 @@ import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchUserRoleInCourse } from '@/services/api/user';
-import { fetchRankingData, RankingUser } from '@/services/api/ranking';
 import { Post } from '@/interfaces/Post';
 import { fetchPostsByCourse } from '@/services/api/post';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
-import Ranking from '@/components/home/Ranking';
 import ProgressXpBar from '@/components/utility/ProgressXpBar';
 import Voltar from '@/components/course/Voltar';
 import Button from '@/components/utility/Button';
 import CircuitCourse from '@/components/svgComponents/circuit/CircuitCourse';
 import ExercisesGroup from '@/components/course/ExercisesGroup';
-import RankingItem from '@/components/home/RankingItem';
 import PostThreadCourse from '@/components/course/PostThreadCourse';
 import NewPostForm from '@/components/course/NewPostForm';
 import ReplyForm from '@/components/course/ReplyForm';
@@ -34,8 +31,6 @@ export default function Course() {
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isExporting, setIsExporting] = useState(false);
-  const [rankingUsers, setRankingUsers] = useState<RankingUser[]>([]);
-  const [isRankingLoading, setIsRankingLoading] = useState<boolean>(true);
 
   const topLevelPosts = posts.filter(p => p.id_parent === null);
   const replies = posts.filter(p => p.id_parent !== null);
@@ -103,17 +98,6 @@ export default function Course() {
       }
     }
 
-    const loadRanking = async () => {
-      setIsRankingLoading(true);
-      const users = await fetchRankingData(10);
-
-      const filteredUsers = users.filter(user => user.total_xp > 0);
-
-      setRankingUsers(filteredUsers);
-      setIsRankingLoading(false);
-    };
-
-        loadRanking();
     fetchData();
   }, [courseId, user, isAuthLoading]);
 
@@ -213,25 +197,15 @@ export default function Course() {
         />
       )}
 
-      <div className="flex flex-col mt-12 justify-between items-center w-full">
-        <div className="relative w-full flex flex-col justify-end gap-6">
-          <div className="ml-10 md:ml-20">
-            <Voltar/>
-          </div>
-
-          <div className="absolute -bottom-44 left-0 w-full">
-            <CircuitCourse />
-          </div>
-        </div>
-
+      <div className="flex flex-col mt-8 md:mt-12 justify-between items-center w-full">
         {Course && (
-          <div className="flex flex-col justify-center mx-10">
-            <h2 className="mb-8 mt-10 text-5xl text-center font-bold text-cinza-900">
+          <div className="w-full max-w-[1200px] flex flex-col justify-center px-8">
+            <h2 className="w-full my-8 text-5xl text-center font-bold text-cinza-900">
               {Course.name}
             </h2>
 
             <ProgressXpBar
-              text="seu progresso"
+              text="Seu progresso"
               progress={quizProgress.percentage}
               value={quizProgress.userScore}
               maxValue={quizProgress.maxScore}
@@ -268,20 +242,21 @@ export default function Course() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-start justify-between gap-12 ml-10 md:ml-20 mt-4 mb-12">
+      <div className="flex flex-wrap items-start justify-between gap-12 px-8 md:px-20 mb-20">
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
           <div className="flex flex-col w-full mb-8">
-            <div className="flex w-fit py-4 px-8 items-center justify-start bg-roxo-300 shadow-default-roxo-500 mb-6">
-              <p className="text-center text-2xl font-bold text-[#bab1fc]">
+            <div className="flex w-full sm:w-fit py-4 px-8 items-center justify-center bg-roxo-300 shadow-default-roxo-500 mb-6">
+              <p className="text-lg sm:text-xl font-bold text-[#bab1fc]">
                 Questionários
               </p>
             </div>
+
             <ExercisesGroup itens={Quizes} />
           </div>
 
           {/* Seção do Fórum/Posts */}
-          <div className="flex flex-col w-full pr-12">
+          <div className="flex flex-col w-full">
             <div className="flex justify-between items-center w-full p-6 bg-laranja shadow-default-laranja">
               <h2 className="text-2xl font-bold text-[#97581F]">Fórum de Discussão</h2>
               <Button variant='tertiary' text="Novo Post" size="medium" onClick={handleOpenNewPostModal} />
@@ -304,16 +279,6 @@ export default function Course() {
               )}
             </div>
           </div>
-        </div>
-
-        <div className="mr-4 flex flex-col">
-          <Ranking>
-            {isRankingLoading ? (
-              <p>Carregando ranking...</p>
-            ) : (
-              <RankingItem users={rankingUsers} />
-            )}
-          </Ranking>
         </div>
       </div>
 

@@ -13,13 +13,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const buttonVariants = cva(
-  'flex w-full min-h-16 bg-white items-center justify-center border-[3px] px-6 py-1 mb-5 text-center font-bold transition-all duration-200 ease-in-out',
+  'flex w-full min-h-[72px] items-center justify-center px-6 py-2 text-center font-bold transition-all duration-300 ease-in-out',
   {
     variants: {
       size: {
-        small: 'text-lg',
-        medium: 'pt-2 pb-2 text-2xl',
-        large: 'p-5 text-3xl',
+        small: 'text-base',
+        medium: 'pt-2 pb-2 text-lg',
+        large: 'p-5 text-2xl',
       },
     },
     defaultVariants: {
@@ -42,18 +42,18 @@ export default function ExerciseTemplate({
     <button
       className={cn(
         buttonVariants({ size }),
-        !disabled && 'hover:scale-[102%] cursor-pointer border-preto-default shadow-default-preto text-cinza-900',
+        !disabled && 'hover:scale-[1.01] cursor-pointer border-2 border-[#DDDDDD] bg-cinza-300 shadow-default-cinza-300',
         disabled && 'border-[#BBB] shadow-default-cinza text-[#888]',
         className
       )}
       disabled={disabled}
       {...rest}
     >
-      <div className="flex-grow justify-between items-center flex flex-wrap">
-        <span className='flex whitespace-nowrap mr-8'>{text}</span>
-        <div className="flex flex-row items-center justify-center gap-4">
+      <div className="w-full justify-between items-center flex flex-wrap text-lg md:text-xl">
+        <span className='flex'>{text}</span>
+        <div className="flex flex-row items-center justify-center gap-6">
           <span className="flex">{current_try}/{max_tries}</span>
-          <Icon className="flex h-7 w-7 shrink-0"></Icon>
+          <Icon className="flex aspect-square w-5 md:w-6 shrink-0"></Icon>
         </div>
       </div>
     </button>

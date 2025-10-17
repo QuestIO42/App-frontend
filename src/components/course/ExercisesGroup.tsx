@@ -72,44 +72,42 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
     }
 
     return(
-      <div className="mr-12">
-          <div className="flex flex-col">
-            {itens.map((quiz, index) => {
-              const status = quizStatusMap[String(quiz.id)];
-              const remainingTries = Number(status?.remaining_tries);
-              const isLocked = remainingTries === 0 && !status.is_open;
-              const Icon = isLocked ? LockIcon : UnlockIcon;
+      <div className="w-full flex flex-col">
+        {itens.map((quiz, index) => {
+          const status = quizStatusMap[String(quiz.id)];
+          const remainingTries = Number(status?.remaining_tries);
+          const isLocked = remainingTries === 0 && !status.is_open;
+          const Icon = isLocked ? LockIcon : UnlockIcon;
 
-              return (
-                <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mb-2`}>
-                  <ExerciseTemplate
-                    text={quiz.name}
-                    Icon={Icon}
-                    size="medium"
-                    onClick={!isLocked ? () => handleClick(quiz) : undefined}
-                    disabled={isLocked}
-                    current_try={status.try}
-                    max_tries={status.max_tries}
-                    key={`${quiz.name}-${index}`}
-                  />
+          return (
+            <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mb-2`}>
+              <ExerciseTemplate
+                text={quiz.name}
+                Icon={Icon}
+                size="medium"
+                onClick={!isLocked ? () => handleClick(quiz) : undefined}
+                disabled={isLocked}
+                current_try={status.try}
+                max_tries={status.max_tries}
+                key={`${quiz.name}-${index}`}
+              />
 
-                  {status &&(
-                    <div className="flex flex-col gap-3 mb-6">
-                      {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
-                        <button
-                          key={quiz.id + `try-${i}`}
-                          onClick={() => handleTriesClick(quiz, i + 1)}
-                          className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer transition-all duration-200 ease-in-out
-                                     hover:border-[#777] hover:text-cinza-900 hover:scale-105">
-                          Tentativa {i+1}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+              {status &&(
+                <div className="flex flex-col gap-3 mb-6">
+                  {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
+                    <button
+                      key={quiz.id + `try-${i}`}
+                      onClick={() => handleTriesClick(quiz, i + 1)}
+                      className="w-full h-12 bg-[#FCFCFC] text-start px-6 text-[#888] text-lg border-[2px] border-[#BBB] font-bold cursor-pointer transition-all duration-200 ease-in-out
+                                  hover:border-[#777] hover:text-cinza-900 hover:scale-105">
+                      Tentativa {i+1}
+                    </button>
+                  ))}
                 </div>
-              );
-            })}
-          </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     )
 }
