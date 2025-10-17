@@ -91,28 +91,28 @@ export default function CoursesTemplate({
   }, [courses])
 
   return (
-    <div className="flex flex-col items-start justify-start gap-10">
-      <div className="flex flex-row gap-8">
-        <div className="flex min-w-[260px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
+    <div className="w-full flex flex-col items-start justify-start gap-10">
+      <div className="w-full flex flex-row flex-wrap gap-5 sm:gap-8">
+        <div className="flex w-full sm:w-fit min-w-[250px] py-4 px-6 items-center justify-center text-[#555] bg-[#DDD] shadow-default-cinza gap-4">
           {Icon}
-          <h2 className="mr-2 text-xl font-bold text-[#555]">{title}</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#555]">{title}</h2>
         </div>
 
         {createButton && user?.role === 2 &&
-          <button onClick={() => {navigate('/create/course')}} className="flex min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
+          <button onClick={() => {navigate('/create/course')}} className="flex w-full sm:w-fit min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
             <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-2xl" />
-            <h2 className="mr-2 text-xl font-bold text-[#2f6e4e]">{createButton}</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#2f6e4e]">{createButton}</h2>
           </button>
         }
       </div>
 
-      <div className="ml-3 flex flex-wrap items-start justify-start gap-16">
+      <div className="ml-3 flex flex-wrap items-start justify-start gap-12">
         {hasCourses ? (
           courses.map((course) => {
             const imagePath = course.cover_image?.replace("/media/", "") || "";
 
             return (
-            <div key={course.id} className="flex flex-col gap-3 items-center">
+            <div key={course.id} className="flex flex-col items-center">
               <div
                 // O card só é clicável se o usuário estiver inscrito
                 onClick={() => course.isSubscribed && navigate(`/Course/${course.id}`)}
@@ -123,7 +123,7 @@ export default function CoursesTemplate({
                   key={course.id}
                   courseName={course.name}
                   courseTeacher={teachers[course.id]}
-                  borderColor={course.isSubscribed ? '#9c96a1ff' : '#cacacaff'}
+                  borderColor={course.isSubscribed ? '#beb1eeff' : '#e7e3f5ff'}
                 >
                   <div
                     className={`flex items-end pb-4 justify-center ${IsRectangle ? 'h-[157px] w-[264px]' : 'h-[240px] w-[240px]'}
@@ -152,7 +152,7 @@ export default function CoursesTemplate({
               key={lab.link}
               title={lab.alt}
               onClick={() => window.open(lab.link, '_blank')}
-              className="cursor-pointer"
+              className="cursor-pointer mr-6"
             >
               <ModalSquareForm
                 IsRectangle={IsRectangle}

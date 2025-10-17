@@ -87,10 +87,10 @@ export default function Home() {
       <Header />
 
       <div className="w-full px-8 md:px-16 flex flex-col my-12 xl:my-16 gap-12 xl:flex-row">
-          <div className="flex flex-col flex-1 items-start justify-start">
+          <div className="w-full flex flex-col flex-1 items-start justify-start">
             <UserProgression />
 
-            <div className="flex flex-col items-start justify-start gap-20 mt-24">
+            <div className="w-full flex flex-col items-start justify-start gap-20 mt-16 xl:mt-24">
               {/* Cursos */}
               <CoursesTemplate
                 Icon={<FontAwesomeIcon icon={faGraduationCap} className="text-[#555] text-2xl" />}
@@ -121,6 +121,7 @@ export default function Home() {
             </Ranking>
           </div>
         </div>
+
       <Footer />
     </div>
   );

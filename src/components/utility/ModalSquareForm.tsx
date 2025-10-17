@@ -12,8 +12,8 @@ export default function ModalSquareForm({ children, courseName, courseTeacher, I
   return (
     <div className="flex flex-col h-fit w-fit">
       <div className={`group relative flex h-fit w-fit items-center justify-center ${IsRectangle ? 'p-1' : ''}`}>
-        <div style={{ border: `4px solid ${borderColor}` }} className={` absolute h-[105%] w-[105%] ${IsRectangle ? 'bottom-[1px] left-0 ' : 'bottom-0 left-0'} `}> </div>
-        <div style={{ border: `4px solid ${borderColor}` }} className={` absolute h-[105%] w-[105%] border-4 ${IsRectangle ? 'right-0 top-[1px]' : 'right-0 top-0'} `}></div>
+        <div style={{ border: `3px solid ${borderColor}` }} className={` absolute h-[105%] w-[105%] ${IsRectangle ? 'bottom-[1px] left-0 ' : 'bottom-0 left-0'} `}> </div>
+        <div style={{ border: `3px solid ${borderColor}` }} className={` absolute h-[105%] w-[105%] border-4 ${IsRectangle ? 'right-0 top-[1px]' : 'right-0 top-0'} `}></div>
         {children}
 
       </div>
