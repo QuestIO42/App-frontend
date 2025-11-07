@@ -311,7 +311,7 @@ export default function Quiz() {
             </div>
 
             {question.type === 0 && (
-                <div className="flex mx-auto items-start px-10 py-12 border-2 border-[#a8a8a8] bg-white">
+                <div className="flex mx-auto items-start px-10 py-12 border-solid border-2 border-[#DDDDDD] bg-cinza-300">
                   <Paragraph title={question.name} text={question.content} />
                 </div>
             )}
