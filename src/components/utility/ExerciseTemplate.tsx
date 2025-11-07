@@ -42,7 +42,7 @@ export default function ExerciseTemplate({
     <button
       className={cn(
         buttonVariants({ size }),
-        !disabled && 'hover:scale-[1.01] cursor-pointer border-2 border-[#DDDDDD] bg-cinza-300 shadow-default-cinza-300',
+        !disabled && 'hover:scale-[1.005] cursor-pointer border-2 border-[#CACACA] bg-cinza-300 rounded-lg',
         disabled && 'border-[#BBB] shadow-default-cinza text-[#888]',
         className
       )}
