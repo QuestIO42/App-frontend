@@ -268,8 +268,8 @@ export default function QuizTries() {
 
         <div className="flex gap-8 pb-12 px-4 sm:px-8 md:px-20">
           <div className="w-full transition-all duration-300 flex flex-col gap-8 items-center">
-            <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500">
-              <p className="text-[#bab1fc] font-bold">{score}/{quizMaxScore}</p>
+            <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500 mt-8">
+              <p className="text-[#bab1fc]"> <span className="font-semibold">Sua pontuação: </span>{score}/{quizMaxScore}</p>
             </div>
 
             {Questions && renderQuestions(Questions)}
