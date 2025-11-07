@@ -259,18 +259,10 @@ export default function QuizTries() {
       <div className="w-full min-h-screen bg-grid-pattern overflow-x-hidden">
         <Header />
 
-        <div className="flex flex-col col-span-full justify-start gap-4">
-          <div className="w-30 justify-start">
-            <div className="ml-10 md:ml-20 mt-10">
-              <Voltar />
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-bold text-black">{nome}</h1>
-            <div className="flex my-6 px-10 justify-center">
-              <Description text={quizDesc} variant={'purple'} />
-            </div>
+        <div className="flex flex-col col-span-full items-center justify-center mt-16 gap-4">
+          <h1 className="text-4xl font-bold text-black">{nome}</h1>
+          <div className="flex my-6 px-10 justify-center">
+            <Description text={quizDesc} variant={'purple'} />
           </div>
         </div>
 
