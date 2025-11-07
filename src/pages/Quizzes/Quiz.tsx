@@ -417,7 +417,7 @@ export default function Quiz() {
 
           {/* Coluna Lateral: Fórum (renderizada condicionalmente) */}
           {isSidebarOpen && (
-            <div className="w-full md:w-1/3">
+            <div className="fixed top-0 right-10 w-full md:w-[30%] h-screen overflow-y-auto z-50">
               <QuestionForumSidebar
                 questionId={activeQuestionId}
                 posts={posts ?? []}
