@@ -72,8 +72,8 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
       )
     }
 
-    return(
-      <div className="w-full flex flex-col">
+    return (
+      <div className="w-full flex flex-col gap-6">
         {itens.map((quiz, index) => {
           const status = quizStatusMap[String(quiz.id)];
           const remainingTries = Number(status?.remaining_tries);
@@ -81,7 +81,10 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
           const Icon = isLocked ? LockIcon : UnlockIcon;
 
           return (
-            <div key={`quiz-wrapper-${quiz.id}`} className={`flex flex-col flex-wrap mb-2 gap-6`}>
+            <div
+              key={`quiz-wrapper-${quiz.id}`}
+              className="flex flex-col gap-3 p-4 bg-white rounded-2xl shadow-sm border border-gray-200"
+            >
               <ExerciseTemplate
                 text={quiz.name}
                 Icon={Icon}
@@ -90,24 +93,30 @@ export default function ExercisesGroup({itens} : ExercisesGroupProps) {
                 disabled={isLocked}
                 current_try={status.try}
                 max_tries={status.max_tries}
-                key={`${quiz.name}-${index}`}
               />
 
-              {status &&(
-                <div className="flex flex-col gap-2 mb-6">
-                  {Array.from({ length: status.is_open ? status.try - 1 : status.try  }).map((_, i) => (
-                    <button
-                      key={quiz.id + `try-${i}`}
-                      onClick={() => handleTriesClick(quiz, i + 1)}
-                      className="w-full h-12 border-2 border-[#DDDDDD] bg-cinza-300 text-start px-6 text-[#888] text-lg font-bold cursor-pointer transition-all duration-200 ease-in-out hover:text-cinza-900 hover:scale-[1.01]">
-                      Tentativa {i+1}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {status && (() => {
+                const triesCount = status.is_open ? status.try - 1 : status.try;
+                if (triesCount <= 0) return null;
+
+                return (
+                  <div className="flex flex-col gap-2 mt-4">
+                    {Array.from({ length: triesCount }).map((_, i) => (
+                      <button
+                        key={quiz.id + `try-${i}`}
+                        onClick={() => handleTriesClick(quiz, i + 1)}
+                        className="w-full h-12 border border-gray-300 bg-cinza-300 text-start px-6 text-[#888] text-lg font-bold rounded-lg cursor-pointer transition-all duration-200 ease-in-out hover:text-cinza-900 hover:scale-[1.01]"
+                      >
+                        Tentativa {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
           );
         })}
       </div>
-    )
+    );
+
 }
