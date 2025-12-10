@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchAllQuizes, fetchUserQuizProgress } from '@/services/api/quiz';
 import { fetchCourse, exportCourseGrades } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
@@ -16,6 +16,8 @@ import ExercisesGroup from '@/components/course/ExercisesGroup';
 import PostThreadCourse from '@/components/course/PostThreadCourse';
 import NewPostForm from '@/components/course/NewPostForm';
 import ReplyForm from '@/components/course/ReplyForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 export default function Course() {
   const [Quizes, setQuizes] = useState<Quiz[]>([]);
@@ -29,6 +31,8 @@ export default function Course() {
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isExporting, setIsExporting] = useState(false);
+
+  const navigate = useNavigate();
 
   const topLevelPosts = posts.filter(p => p.id_parent === null);
   const replies = posts.filter(p => p.id_parent !== null);
@@ -211,32 +215,8 @@ export default function Course() {
           </div>
         )}
 
-        <div className="w-[25%] my-12 flex justify-end">
-          {isUserTheCourseTeacher && (
-            <>
-              <Button
-                upload
-                uploadUrl="/user"
-                fieldName="file"
-                courseId={courseId!}
-                onUploadSuccess={handleImportSuccess}
-                onUploadError={handleImportError}
-                variant='secondary'
-                className="mr-10 bg-white text-xl"
-                text="importar alunos"
-                size="small"
-              ></Button>
-              <Button
-                onClick={handleExportGrades}
-                disabled={isExporting}
-                courseId={courseId!}
-                variant='quaternary'
-                className="mr-[90px] text-cinza-900 bg-white text-xl"
-                text={isExporting ? "Exportando..." : "exportar notas"}
-                size="small"
-              ></Button>
-            </>
-          )}
+        <div className="w-full my-8 flex justify-end px-8 md:px-20">
+
         </div>
       </div>
 
@@ -244,10 +224,49 @@ export default function Course() {
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
           <div className="flex flex-col w-full mb-8">
-            <div className="flex w-full sm:w-fit py-4 px-8 items-center justify-center bg-roxo-300 shadow-default-roxo-500 mb-6">
-              <p className="text-lg sm:text-xl font-bold text-[#bab1fc]">
-                Questionários
-              </p>
+            <div className="w-full flex flex-row justify-between">
+              <div className="flex flex-row flex-wrap gap-5 sm:gap-8">
+                <div className="flex w-full sm:w-fit py-4 px-8 items-center justify-center bg-roxo-300 shadow-default-roxo-500">
+                  <p className="text-lg sm:text-xl font-bold text-[#bab1fc]">
+                    Questionários
+                  </p>
+                </div>
+
+                {user?.role === 2 &&
+                  <button onClick={() => {navigate('/create/course')}} className="flex w-full sm:w-fit min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
+                    <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-2xl" />
+                    <h2 className="text-lg sm:text-xl font-bold text-[#2f6e4e]">Novo questionário</h2>
+                  </button>
+                }
+              </div>
+
+              <div className="flex flex-row flex-wrap gap-5 sm:gap-8">
+                {isUserTheCourseTeacher && (
+                  <>
+                    <Button
+                      upload
+                      uploadUrl="/user"
+                      fieldName="file"
+                      courseId={courseId!}
+                      onUploadSuccess={handleImportSuccess}
+                      onUploadError={handleImportError}
+                      variant='default'
+                      className="text-lg"
+                      text="Importar alunos"
+                      size="small"
+                    ></Button>
+                    <Button
+                      onClick={handleExportGrades}
+                      disabled={isExporting}
+                      courseId={courseId!}
+                      variant='default'
+                      className="text-lg"
+                      text={isExporting ? "Exportando..." : "Exportar notas"}
+                      size="small"
+                    ></Button>
+                  </>
+                )}
+              </div>
             </div>
 
             <ExercisesGroup itens={Quizes} />
