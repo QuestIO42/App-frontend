@@ -1,8 +1,7 @@
 import Footer from '@/components/footer/Footer'
 import Header from '@/components/header/Header'
 import { CreateCourseForm } from '@/interfaces/Course'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function CreateCourse() {
   const handleDateChange = (field: 'beginDate' | 'endDate') => (e: React.ChangeEvent<HTMLInputElement>) => {
