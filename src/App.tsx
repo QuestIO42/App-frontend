@@ -22,6 +22,7 @@ import Quiz from './pages/Quizzes/Quiz'
 import QuizTries from './pages/Quizzes/QuizTries'
 import Waveform from './pages/Quizzes/Waveform'
 import CreateCourse from './pages/Professor/CreateCourse'
+import CreateQuiz from './pages/Professor/CreateQuiz'
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/course/:courseId/quiz/:quizId/waveform" element={<Waveform />} />
             <Route path="/course/:courseId/quiz/:quizId/try/:currentTry" element={<QuizTries />} />
             <Route path="/create/course" element={<CreateCourse />} />
+            <Route path="/create/quiz/:courseId" element={<CreateQuiz />} />
             {/* <Route path="/course/:courseId/practice" element={<Practice />} /> */}
             {/* <Route path="/exercises" element={<Exercises />} /> */}
             {/* <Route path="/exercises/:quizId" element={<Practice />} /> */}

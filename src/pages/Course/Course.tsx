@@ -224,7 +224,7 @@ export default function Course() {
         <div className="flex flex-col flex-1 min-w-[60%]">
           {/* Seção de Questionários */}
           <div className="flex flex-col w-full mb-8">
-            <div className="w-full flex flex-row justify-between">
+            <div className="w-full flex flex-row justify-between mb-8">
               <div className="flex flex-row flex-wrap gap-5 sm:gap-8">
                 <div className="flex w-full sm:w-fit py-4 px-8 items-center justify-center bg-roxo-300 shadow-default-roxo-500">
                   <p className="text-lg sm:text-xl font-bold text-[#bab1fc]">
@@ -233,7 +233,7 @@ export default function Course() {
                 </div>
 
                 {user?.role === 2 &&
-                  <button onClick={() => {navigate('/create/course')}} className="flex w-full sm:w-fit min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
+                  <button onClick={() => {navigate(`/create/quiz/${courseId}`)}} className="flex w-full sm:w-fit min-w-[200px] py-4 px-6 items-center justify-center bg-verde-300 shadow-default-verde-900 gap-4 transition-all duration-300 hover:scale-[1.03]">
                     <FontAwesomeIcon icon={faPencil} className="text-[#2f6e4e] text-2xl" />
                     <h2 className="text-lg sm:text-xl font-bold text-[#2f6e4e]">Novo questionário</h2>
                   </button>
