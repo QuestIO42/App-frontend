@@ -104,6 +104,17 @@ export default function CoursesTemplate({
             <h2 className="text-lg sm:text-xl font-bold text-[#2f6e4e]">{createButton}</h2>
           </button>
         }
+
+        {createButton && user?.role === 2 &&
+          // Em criação
+          <Button
+            onClick={() => {}}
+            variant='default'
+            className="text-lg"
+            text="Importar curso"
+            size="small"
+          ></Button>
+        }
       </div>
 
       <div className="ml-3 flex flex-wrap items-start justify-start gap-12">
