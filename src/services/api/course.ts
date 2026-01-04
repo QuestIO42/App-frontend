@@ -16,7 +16,7 @@ const fetchAllUserCourses = async (id: string) => {
 }
 
 const subscribeToCourse = async (courseId: string, userId: string) => {
-  const response = await api.post(`/usercourse`, { 
+  const response = await api.post(`/usercourse`, {
     id_course: courseId,
     id_user: userId,
     xp: 0
@@ -36,10 +36,8 @@ const checkSubscriptionStatus = async (courseId: string, userId: string) => {
 
 const exportCourseGrades = async (courseId: string) => {
   try {
-    //                                     👇
-    // URL ajustada para corresponder exatamente à sua rota do backend
     const response = await api.get(`/course/exportgrade/${courseId}`, {
-      responseType: 'blob', // Essencial para o download de arquivos
+      responseType: 'blob',
     });
     return response;
   } catch (error) {
@@ -48,4 +46,34 @@ const exportCourseGrades = async (courseId: string) => {
   }
 };
 
-export { fetchAllCourses, fetchCourse, fetchAllUserCourses, subscribeToCourse, unsubscribeFromCourse, checkSubscriptionStatus, exportCourseGrades }
+const exportCourse = async (courseId: string) => {
+  try {
+    const response = await api.get(`/course/export/${courseId}`, {
+      responseType: 'blob', 
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro ao exportar curso:", error);
+    throw error;
+  }
+};
+
+const importCourse = async (file: File) => {
+  try {
+    const text = await file.text();
+    const jsonData = JSON.parse(text);
+
+    const response = await api.post(`/course/import`, jsonData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Erro ao importar curso:", error);
+    throw error;
+  }
+};
+
+export { fetchAllCourses, fetchCourse, fetchAllUserCourses, subscribeToCourse, unsubscribeFromCourse, checkSubscriptionStatus, exportCourseGrades, exportCourse, importCourse }
