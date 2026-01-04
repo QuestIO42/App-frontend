@@ -1,10 +1,11 @@
-import { ReactNode } from 'react'
+import { ReactNode, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Course } from '@/interfaces/Course'
 import { Lab } from '@/interfaces/Lab'
 import { User } from '@/interfaces/User'
 import { getUsersInCourse } from '@/services/api/user'
+import { importCourse } from '@/services/api/course';
 import { useAuth } from '@/hooks/useAuth'
 import { subscribeToCourse } from '@/services/api/course'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,6 +39,8 @@ export default function CoursesTemplate({
   const hasCourses = courses && courses.length > 0;
   const hasLabs = labs && labs.length > 0;
   const [teachers, setTeachers] = useState<Record<string, string>>({});
+  const [isImporting, setIsImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -90,6 +93,28 @@ export default function CoursesTemplate({
     }
   }, [courses])
 
+  const handleImportCourseClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleCourseFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || isImporting) return;
+
+    setIsImporting(true);
+
+    try {
+      await importCourse(file);
+      alert('Curso importado com sucesso!');
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao importar curso.');
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-start justify-start gap-10">
       <div className="w-full flex flex-row flex-wrap gap-5 sm:gap-8">
@@ -106,14 +131,24 @@ export default function CoursesTemplate({
         }
 
         {createButton && user?.role === 2 &&
-          // Em criação
-          <Button
-            onClick={() => {}}
-            variant='default'
-            className="text-lg"
-            text="Importar curso"
-            size="small"
-          ></Button>
+          <>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleCourseFileSelected}
+              className="hidden"
+            />
+
+            <Button
+              onClick={handleImportCourseClick}
+              disabled={isImporting}
+              variant='default'
+              className="text-lg"
+              text={isImporting ? "Importando..." : "Importar curso"}
+              size="small"
+            />
+          </>
         }
       </div>
 

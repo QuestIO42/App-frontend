@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchAllQuizes, fetchUserQuizProgress } from '@/services/api/quiz';
-import { fetchCourse, exportCourseGrades } from '@/services/api/course';
+import { fetchCourse, exportCourseGrades, exportCourse } from '@/services/api/course';
 import { Quiz } from '@/interfaces/Quiz';
 import { Course as CourseData } from '@/interfaces/Course';
 import { useAuth } from '@/hooks/useAuth';
@@ -179,9 +179,47 @@ export default function Course() {
     }
   };
 
-  // Em criação
-  const handleExportCourse = (err: any) => {
+  const handleExportCourse = async () => {
+    if (!courseId || isExportingCourse) return;
 
+    setIsExportingCourse(true);
+
+    try {
+      const response = await exportCourse(courseId);
+
+      const contentDisposition = response.headers['content-disposition'];
+
+      let filename = Course?.name
+        ? `${Course.name}.json`
+        : 'curso.json';
+
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="?(.+)"?/);
+        if (match?.[1]) {
+          filename = match[1];
+        }
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
+
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      alert('Falha ao exportar o curso. Verifique sua permissão e tente novamente.');
+      console.error(error);
+    } finally {
+      setIsExportingCourse(false);
+    }
   };
 
   return (
