@@ -30,7 +30,8 @@ export default function Course() {
   const [isCourseLoading, setIsCourseLoading] = useState(true);
   const { courseId } = useParams();
   const { user, isLoading: isAuthLoading } = useAuth();
-  const [isExporting, setIsExporting] = useState(false);
+  const [isExportingGrades, setIsExportingGrades] = useState(false);
+  const [isExportingCourse, setIsExportingCourse] = useState(false);
 
   const navigate = useNavigate();
 
@@ -147,9 +148,9 @@ export default function Course() {
   };
 
   const handleExportGrades = async () => {
-    if (!courseId || isExporting) return;
+    if (!courseId || isExportingGrades) return;
 
-    setIsExporting(true);
+    setIsExportingGrades(true);
 
     try {
       const response = await exportCourseGrades(courseId);
@@ -174,8 +175,13 @@ export default function Course() {
     } catch (error) {
       alert('Falha ao exportar as notas. Verifique se você tem permissão e tente novamente.');
     } finally {
-      setIsExporting(false);
+      setIsExportingGrades(false);
     }
+  };
+
+  // Em criação
+  const handleExportCourse = (err: any) => {
+
   };
 
   return (
@@ -255,13 +261,24 @@ export default function Course() {
                       text="Importar alunos"
                       size="small"
                     ></Button>
+
                     <Button
                       onClick={handleExportGrades}
-                      disabled={isExporting}
+                      disabled={isExportingGrades}
                       courseId={courseId!}
                       variant='default'
                       className="text-lg"
-                      text={isExporting ? "Exportando..." : "Exportar notas"}
+                      text={isExportingGrades ? "Exportando..." : "Exportar notas"}
+                      size="small"
+                    ></Button>
+
+                    <Button
+                      onClick={handleExportCourse}
+                      disabled={isExportingCourse}
+                      courseId={courseId!}
+                      variant='default'
+                      className="text-lg"
+                      text={isExportingCourse ? "Exportando..." : "Exportar curso"}
                       size="small"
                     ></Button>
                   </>
