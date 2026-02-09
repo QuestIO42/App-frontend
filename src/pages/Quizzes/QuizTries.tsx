@@ -2,17 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchQuestion } from '@/services/api/quiz';
 import { getQuizAnswers, getAllAnswers } from '@/services/api/answer';
+import { fetchPostsByQuestion } from '@/services/api/post';
 import { useAuth } from '@/hooks/useAuth';
 import { Question, UserQuizQuestionAnswer } from '@/interfaces/Quiz';
+import { Post } from '@/interfaces/Post';
 import Footer from '@/components/footer/Footer';
 import Header from '@/components/header/Header';
-import Voltar from '@/components/course/Voltar';
 import Paragraph from '@/components/quiz/Paragraph';
 import Description from '@/components/quiz/Description';
 import RadioButtonGroup from '@/components/quiz/RadioButtonGroup';
 import QuestionBox from '@/components/quiz/QuestionBox';
 import OpenAnswer from '@/components/quiz/OpenAnswer';
 import Practice from '@/components/verilogIDE/Practice';
+import Button from '@/components/utility/Button';
+import QuestionForumSidebar from '@/components/quiz/Forum/QuestionForumSidebar';
 
 interface Answer {
   answer: string;
@@ -47,6 +50,10 @@ export default function QuizTries() {
   const [quizDesc, setQuizDesc] = useState("Descrição do questionário");
   const [isLoading, setIsLoading] = useState(true);
 
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
+
   useEffect(() => {
     if (!nome) return;
     const originalTitle = document.title;
@@ -78,6 +85,12 @@ export default function QuizTries() {
         const questionIds = userAnswersData.map((item: UserQuizQuestionAnswer) => item.id_question);
         const questionObjects = await fetchQuestion(questionIds);
         setQuestions(questionObjects);
+
+        if (questionIds.length > 0 && quizId) {
+            const promises = questionIds.map((id: string) => fetchPostsByQuestion(id, quizId));
+            const postsForAllQuestions = await Promise.all(promises);
+            setPosts(postsForAllQuestions.flat());
+        }
 
         const mcQuestionIds = questionObjects
           .filter((q) => q.type === 1)
@@ -141,6 +154,15 @@ export default function QuizTries() {
     startQuiz();
   }, [quizId]);
 
+  const handleOpenDiscussion = (questionId: string) => {
+    setActiveQuestionId(questionId);
+    setIsSidebarOpen(true);
+  };
+
+  const handlePostCreated = (newPost: Post) => {
+    setPosts(prev => [newPost, ...(prev ?? [])]);
+  };
+
   const renderQuestions = (questions: Question[]) => {
     return questions.map((question) => {
       const resultData = UserQuizQuestion?.find(
@@ -166,6 +188,18 @@ export default function QuizTries() {
             <div className="w-full flex flex-row justify-between">
               <div className={`w-fit flex self-start justify-center px-8 py-2 mb-6 font-bold bg-[#DDDDDD] shadow-default-cinza text-[#777]`}>
                   <p className="text-left text-2xl">{getTitle(question.type)}</p>
+              </div>
+
+              <div className="mr-2">
+                <Button
+                    text="Abrir Fórum"
+                    variant="tertiary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenDiscussion(question.id);
+                    }}
+                    className={`text-xl border-laranja py-2 text-[#754011] bg-laranja shadow-default-laranja ${isSidebarOpen ? "hidden" : "flex"}`}
+                />
               </div>
             </div>
 
@@ -259,22 +293,39 @@ export default function QuizTries() {
       <div className="w-full min-h-screen bg-grid-pattern overflow-x-hidden">
         <Header />
 
-        <div className="flex flex-col col-span-full items-center justify-center mt-16 gap-4">
-          <h1 className="text-4xl font-bold text-black">{nome}</h1>
-          <div className="flex my-6 px-10 justify-center">
-            <Description text={quizDesc} variant={'purple'} />
+        <div className="flex flex-col px-4 sm:px-8 md:px-12 py-10">
+          <div className="flex flex-col items-center justify-center mt-4">
+            <h1 className="text-4xl font-bold text-[#454545] text-center">{nome}</h1>
+            <div className="flex mt-5 mb-10 px-10 justify-center">
+              <Description text={quizDesc} variant={'purple'} />
+            </div>
           </div>
         </div>
 
-        <div className="flex gap-8 pb-12 px-4 sm:px-8 md:px-20">
-          <div className="w-full transition-all duration-300 flex flex-col gap-8 items-center">
-            <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500 mt-8">
+        <main className="flex gap-8 pb-12 px-4 sm:px-8 md:px-20">
+          {/* Coluna Principal: Conteúdo do Quiz */}
+          <div className={`transition-all duration-300 flex flex-col gap-8 items-center`}>
+            <div className="px-8 py-5 bg-roxo-300 shadow-default-roxo-500 mt-8 text-center">
               <p className="text-[#bab1fc]"> <span className="font-semibold">Sua pontuação: </span>{score}/{quizMaxScore}</p>
             </div>
 
             {Questions && renderQuestions(Questions)}
           </div>
-        </div>
+
+          {/* Coluna Lateral: Fórum (renderizada condicionalmente) */}
+          {isSidebarOpen && (
+            <div className="fixed top-0 right-10 w-full md:w-[30%] h-screen overflow-y-auto z-50">
+              <QuestionForumSidebar
+                questionId={activeQuestionId}
+                posts={posts ?? []}
+                onPostCreated={handlePostCreated}
+                onClose={() => setIsSidebarOpen(false)}
+                quizId={quizId!}
+              />
+            </div>
+          )}
+        </main>
+
         <Footer />
       </div>
     </>
