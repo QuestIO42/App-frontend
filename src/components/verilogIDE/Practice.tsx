@@ -216,7 +216,7 @@ export default function Practice({ question, id_quiz, initialCode, onChangeCode,
           <div className="flex flex-col gap-12 bg-white border-[3px] px-6 py-1 font-bold border-preto-default shadow-default-preto text-cinza-900">
             <div className="flex flex-col h-[100%]" ref={divRef}>
               <div className="flex flex-row mt-4 mb-2 justify-end">
-                <IconGroup onIconClick={handleIconClick} disabled={disabled} />
+                <IconGroup onIconClick={handleIconClick} disabled={false} />
               </div>
               <CodeSpace
                 verilogLang={verilogAnswer}
