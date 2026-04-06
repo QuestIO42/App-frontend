@@ -53,7 +53,7 @@ export default function Footer() {
       </div>
 
       <div className="w-[95%] flex items-center justify-center pt-6 mt-6 text-roxo-500 border-t-[1px] border-[#51469c]">
-        <p>&#169; 2024 QuestIO Lab. Todos os direitos reservados.</p>
+        <p>&#169; 2026 QuestIO Lab. Todos os direitos reservados.</p>
       </div>
     </footer>
   )
